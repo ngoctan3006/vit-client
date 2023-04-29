@@ -4,3 +4,20 @@
   font-family: 'Noto Sans', sans-serif;
   scroll-behavior: smooth;
 }
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
