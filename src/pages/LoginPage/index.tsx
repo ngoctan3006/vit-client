@@ -12,6 +12,7 @@ interface LoginState {
 
 const LoginPage: React.FC = () => {
   const [form] = Form.useForm();
+
   const handleLogin = async (data: LoginState) => {
     console.log(data);
 
