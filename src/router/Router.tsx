@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Home, Landing, Login, Profile } from '../pages';
+import { Home, Landing, Login, NotFound, Profile } from '../pages';
 import ProtectedRouter from './ProtectedRouter';
 
 const Router: React.FC = () => {
@@ -13,6 +13,7 @@ const Router: React.FC = () => {
           <Route index element={<Home />} />
           <Route path="profile" element={<Profile />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
