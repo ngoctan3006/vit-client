@@ -1,0 +1,37 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { message } from 'antd';
+import { LoginState } from '../../pages/Login';
+import { API } from '../../services/axios';
+
+export const getMe = createAsyncThunk(
+  'auth/getMe',
+  async (_, { rejectWithValue }) => {
+    try {
+      const {
+        data: { data: resData },
+      } = await API.get('auth/me');
+      return resData;
+    } catch (error: any) {
+      console.log(error.response.data);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const login = createAsyncThunk(
+  'auth/login',
+  async (data: LoginState, { rejectWithValue }) => {
+    try {
+      const {
+        data: { data: resData },
+      } = await API.post('auth/signin', data);
+      localStorage.setItem('accessToken', resData.accessToken);
+      localStorage.setItem('refreshToken', resData.refreshToken);
+      return resData.user;
+    } catch (error: any) {
+      console.log(error.response.data);
+      message.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
