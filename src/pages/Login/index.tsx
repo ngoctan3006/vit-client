@@ -1,22 +1,35 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import React from 'react';
 import { BiLockAlt } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
-import LogginButton from '../../components/LoginButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { Loading, LoginButton } from '../../components';
+import { login } from '../../redux/actions/auth.action';
+import { authSelector } from '../../redux/slices/auth.slice';
+import { AppDispatch } from '../../redux/store';
 import './login.scss';
 
-interface LoginState {
+export interface LoginState {
   username: string;
   password: string;
 }
 
 const LoginPage: React.FC = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, isAuthenticated, user } = useSelector(authSelector);
 
   const handleLogin = async (data: LoginState) => {
     console.log(data);
 
-    form.resetFields();
+    try {
+      dispatch(login(data)).then((res) => {
+        if (res.type.includes('fulfilled')) {
+          form.resetFields();
+          message.success('Đăng nhập thành công');
+        }
+      });
+    } catch (error) {}
   };
 
   return (
@@ -67,9 +80,11 @@ const LoginPage: React.FC = () => {
           <div className="text-right">
             <Button type="text">Quên mật khẩu?</Button>
           </div>
-          <LogginButton type="submit">Đăng nhập</LogginButton>
+          <LoginButton type="submit">Đăng nhập</LoginButton>
         </Form>
       </div>
+
+      {loading && <Loading />}
     </div>
   );
 };

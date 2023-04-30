@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { LoginState } from '../../pages/LoginPage';
+import { LoginState } from '../../pages/Login';
 import { API } from '../../services/axios';
 import { message } from 'antd';
 
