@@ -3,7 +3,7 @@ import React from 'react';
 import { BiLockAlt } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading, LoginButton } from '../../components';
 import { login } from '../../redux/actions/auth.action';
 import { authSelector } from '../../redux/slices/auth.slice';
@@ -20,16 +20,16 @@ const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, isAuthenticated, user } = useSelector(authSelector);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/home' } };
 
   const handleLogin = async (data: LoginState) => {
-    console.log(data);
-
     try {
       dispatch(login(data)).then((res) => {
         if (res.type.includes('fulfilled')) {
           form.resetFields();
           message.success('Đăng nhập thành công');
-          navigate('/home');
+          navigate(from, { replace: true });
         }
       });
     } catch (error) {}

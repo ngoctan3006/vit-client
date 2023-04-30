@@ -7,10 +7,11 @@ const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<ProtectedRouter />}>
-          <Route index element={<Home />} />
+        <Route index element={<Landing />} />
+        <Route path="landing" element={<Landing />} />
+        <Route path="login" element={<Login />} />
+        <Route element={<ProtectedRouter />}>
+          <Route path="home" element={<Home />} />
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="*" element={<NotFound />} />

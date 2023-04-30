@@ -15,13 +15,17 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
   const { isAuthenticated } = useSelector(authSelector);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const from = window.location.pathname;
 
   useEffect(() => {
     if (!isAuthenticated) {
       dispatch(getMe()).then((res) => {
         if (res.type.includes('rejected')) {
           message.info('Bạn cần đăng nhập để tiếp tục');
-          navigate('/login');
+          navigate('/login', {
+            replace: true,
+            state: { from },
+          });
         }
         // if (role && res.payload?.role !== role) {
         //   navigate('/home');
