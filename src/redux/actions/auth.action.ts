@@ -7,8 +7,12 @@ export const login = createAsyncThunk(
   'auth/login',
   async (data: LoginState, { rejectWithValue }) => {
     try {
-      const res = await API.post('auth/signin', data);
-      return res.data.data.user;
+      const {
+        data: { data: resData },
+      } = await API.post('auth/signin', data);
+      localStorage.setItem('accessToken', resData.accessToken);
+      localStorage.setItem('refreshToken', resData.refreshToken);
+      return resData.user;
     } catch (error: any) {
       console.log(error.response.data);
       message.error(error.response.data.message);

@@ -1,3 +1,4 @@
-export { default as HomePage } from './Home';
-export { default as LandingPage } from './Landing';
-export { default as LoginPage } from './Login';
+export { default as Home } from './Home';
+export { default as Landing } from './Landing';
+export { default as Login } from './Login';
+export { default as Profile } from './Profile';

@@ -3,6 +3,7 @@ import React from 'react';
 import { BiLockAlt } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Loading, LoginButton } from '../../components';
 import { login } from '../../redux/actions/auth.action';
 import { authSelector } from '../../redux/slices/auth.slice';
@@ -14,10 +15,11 @@ export interface LoginState {
   password: string;
 }
 
-const LoginPage: React.FC = () => {
+const Login: React.FC = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch<AppDispatch>();
   const { loading, isAuthenticated, user } = useSelector(authSelector);
+  const navigate = useNavigate();
 
   const handleLogin = async (data: LoginState) => {
     console.log(data);
@@ -27,6 +29,7 @@ const LoginPage: React.FC = () => {
         if (res.type.includes('fulfilled')) {
           form.resetFields();
           message.success('Đăng nhập thành công');
+          navigate('/home');
         }
       });
     } catch (error) {}
@@ -89,4 +92,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default Login;
