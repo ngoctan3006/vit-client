@@ -1,20 +1,37 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { message } from 'antd';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Layout, Loading } from '../components';
+import { getMe } from '../redux/actions/auth.action';
 import { authSelector } from '../redux/slices/auth.slice';
+import { AppDispatch } from '../redux/store';
 
 interface ProtectedRouterProps {
-  role?: string;
+  role?: 'admin' | 'member';
 }
 
 const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
-  const { loading, isAuthenticated } = useSelector(authSelector);
+  const { isAuthenticated } = useSelector(authSelector);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
-  if (loading) return <Loading />;
-  if (!loading && !isAuthenticated) return <Navigate to="/login" />;
+  useEffect(() => {
+    if (!isAuthenticated) {
+      dispatch(getMe()).then((res) => {
+        if (res.type.includes('rejected')) {
+          message.info('Bạn cần đăng nhập để tiếp tục');
+          navigate('/login');
+        }
+        // if (role && res.payload?.role !== role) {
+        //   navigate('/home');
+        // }
+      });
+    }
+  }, []);
 
-  return <Layout />;
+  if (isAuthenticated) return <Layout />;
+  return <Loading />;
 };
 
 export default ProtectedRouter;

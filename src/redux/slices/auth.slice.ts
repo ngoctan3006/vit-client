@@ -1,5 +1,6 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { login } from '../actions/auth.action';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { getMe, login } from '../actions/auth.action';
 import { RootState } from '../store';
 
 export interface User {
@@ -40,14 +41,7 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    startLoading: (state) => {
-      state.loading = true;
-    },
-    endLoading: (state) => {
-      state.loading = false;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state: AuthState) => {
       state.loading = true;
@@ -65,11 +59,26 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = null;
     });
+
+    builder.addCase(getMe.pending, (state: AuthState) => {
+      state.loading = true;
+    });
+    builder.addCase(
+      getMe.fulfilled,
+      (state: AuthState, action: PayloadAction<User>) => {
+        state.user = action.payload;
+        state.isAuthenticated = true;
+        state.loading = false;
+      }
+    );
+    builder.addCase(getMe.rejected, (state: AuthState) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+    });
   },
 });
 
 export const authSelector = (state: RootState) => state.auth;
-
-export const { startLoading, endLoading } = authSlice.actions;
 
 export default authSlice.reducer;
