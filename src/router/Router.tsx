@@ -7,6 +7,7 @@ import {
   Login,
   NotFound,
   Profile,
+  ResetPassword,
 } from '../pages';
 import ProtectedRouter from './ProtectedRouter';
 
@@ -18,6 +19,7 @@ const Router: React.FC = () => {
         <Route path="landing" element={<Landing />} />
         <Route path="login" element={<Login />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password" element={<ResetPassword />} />
         <Route element={<ProtectedRouter />}>
           <Route path="home" element={<Home />} />
           <Route path="profile" element={<Profile />} />
