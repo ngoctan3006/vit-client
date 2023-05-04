@@ -1,6 +1,14 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Home, Landing, Login, NotFound, Profile } from '../pages';
+import {
+  ForgotPassword,
+  Home,
+  Landing,
+  Login,
+  NotFound,
+  Profile,
+  ResetPassword,
+} from '../pages';
 import ProtectedRouter from './ProtectedRouter';
 
 const Router: React.FC = () => {
@@ -10,6 +18,8 @@ const Router: React.FC = () => {
         <Route index element={<Landing />} />
         <Route path="landing" element={<Landing />} />
         <Route path="login" element={<Login />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="reset-password" element={<ResetPassword />} />
         <Route element={<ProtectedRouter />}>
           <Route path="home" element={<Home />} />
           <Route path="profile" element={<Profile />} />
