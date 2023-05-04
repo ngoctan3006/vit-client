@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { message } from 'antd';
-import { LoginState } from '../../pages/Login';
+import { LoginState } from '../../pages/Auth/Login';
 import { API } from '../../services/axios';
 
 export const getMe = createAsyncThunk(
@@ -12,7 +12,6 @@ export const getMe = createAsyncThunk(
       } = await API.get('auth/me');
       return resData;
     } catch (error: any) {
-      console.log(error.response.data);
       return rejectWithValue(error.response.data);
     }
   }
@@ -29,7 +28,6 @@ export const login = createAsyncThunk(
       localStorage.setItem('refreshToken', resData.refreshToken);
       return resData.user;
     } catch (error: any) {
-      console.log(error.response.data);
       message.error(error.response.data.message);
       return rejectWithValue(error.response.data);
     }

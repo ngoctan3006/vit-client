@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 * {
-  font-family: 'Noto Sans', sans-serif;
+  font-family: Noto Sans, sans-serif;
   scroll-behavior: smooth;
 }
 
@@ -10,6 +10,75 @@
   font-weight: 700;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.italic {
+  font-style: italic;
+}
+
+@mixin spacing($property, $num) {
+  #{$property}: 0.25rem * $num;
+}
+
+@function class-name($prefix, $num) {
+  @return '#{$prefix}-#{$num}';
+}
+
+@for $i from 1 through 20 {
+  .#{class-name('mt', $i)} {
+    @include spacing('margin-top', $i);
+  }
+  .#{class-name('mb', $i)} {
+    @include spacing('margin-bottom', $i);
+  }
+  .#{class-name('ml', $i)} {
+    @include spacing('margin-left', $i);
+  }
+  .#{class-name('mr', $i)} {
+    @include spacing('margin-right', $i);
+  }
+  .#{class-name('mx', $i)} {
+    @include spacing('margin-left', $i);
+    @include spacing('margin-right', $i);
+  }
+  .#{class-name('my', $i)} {
+    @include spacing('margin-top', $i);
+    @include spacing('margin-bottom', $i);
+  }
+  .#{class-name('m', $i)} {
+    @include spacing('margin', $i);
+  }
+  .#{class-name('pt', $i)} {
+    @include spacing('padding-top', $i);
+  }
+  .#{class-name('pb', $i)} {
+    @include spacing('padding-bottom', $i);
+  }
+  .#{class-name('pl', $i)} {
+    @include spacing('padding-left', $i);
+  }
+  .#{class-name('pr', $i)} {
+    @include spacing('padding-right', $i);
+  }
+  .#{class-name('px', $i)} {
+    @include spacing('padding-left', $i);
+    @include spacing('padding-right', $i);
+  }
+  .#{class-name('py', $i)} {
+    @include spacing('padding-top', $i);
+    @include spacing('padding-bottom', $i);
+  }
+  .#{class-name('p', $i)} {
+    @include spacing('padding', $i);
+  }
+}

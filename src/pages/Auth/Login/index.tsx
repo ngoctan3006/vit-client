@@ -4,11 +4,11 @@ import { BiLockAlt } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Loading, LoginButton } from '../../components';
-import { getMe, login } from '../../redux/actions/auth.action';
-import { authSelector } from '../../redux/slices/auth.slice';
-import { AppDispatch } from '../../redux/store';
-import './login.scss';
+import { Loading, LoginButton } from '../../../components';
+import { getMe, login } from '../../../redux/actions/auth.action';
+import { authSelector } from '../../../redux/slices/auth.slice';
+import { AppDispatch } from '../../../redux/store';
+import '../index.scss';
 
 export interface LoginState {
   username: string;
@@ -36,18 +36,19 @@ const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(getMe()).then((res) => {
-      if (res.type.includes('fulfilled')) {
-        navigate(from, { replace: true });
-      }
-    });
+    if (localStorage.getItem('accessToken'))
+      dispatch(getMe()).then((res) => {
+        if (res.type.includes('fulfilled')) {
+          navigate(from, { replace: true });
+        }
+      });
   }, []);
 
   return (
     <div className="login-container">
       <div className="wrap">
         <Form form={form} onFinish={handleLogin}>
-          <h3 className="title text-center">Đăng nhập</h3>
+          <h3 className="title text-center mb-12">Đăng nhập</h3>
           <div className="group">
             <label className="label" htmlFor="username">
               Tên đăng nhập
@@ -88,10 +89,12 @@ const Login: React.FC = () => {
               />
             </Form.Item>
           </div>
-          <div className="text-right">
-            <Button type="text">Quên mật khẩu?</Button>
+          <div className="text-right mt-2 mb-8">
+            <Button type="text" onClick={() => navigate('/forgot-password')}>
+              Quên mật khẩu?
+            </Button>
           </div>
-          <LoginButton type="submit">Đăng nhập</LoginButton>
+          <LoginButton type="submit">đăng nhập</LoginButton>
         </Form>
       </div>
 
