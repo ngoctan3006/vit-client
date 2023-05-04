@@ -1,9 +1,9 @@
-import { Alert, Form, Input } from 'antd';
+import { Alert, Form, Input, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { BiLockAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { Loading, LoginButton } from '../../../components';
-import { checkTokenAPI } from '../../../services/auth';
+import { checkTokenAPI, resetPasswordAPI } from '../../../services/auth';
 
 export interface ResetPasswordState {
   token?: string;
@@ -36,11 +36,25 @@ const ResetPassword: React.FC = () => {
     checkValidToken();
   }, []);
 
+  const handleResetPassword = async (data: ResetPasswordState) => {
+    try {
+      setLoading(true);
+      const res = await resetPasswordAPI({ ...data, token });
+      message.success(res.data.data.message);
+      navigate('/login', { replace: true });
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      console.log(error.response.data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="wrap">
         {isValid ? (
-          <Form form={form}>
+          <Form form={form} onFinish={handleResetPassword}>
             <h3 className="title text-center mb-12">Đặt lại mật khẩu</h3>
             <div className="group">
               <label className="label" htmlFor="password">
