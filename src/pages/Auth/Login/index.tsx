@@ -25,7 +25,7 @@ const Login: React.FC = () => {
 
   const handleLogin = async (data: LoginState) => {
     dispatch(login(data)).then((res) => {
-      if (res.type.includes('fulfilled')) {
+      if (res.type.endsWith('fulfilled')) {
         form.resetFields();
         message.success('Đăng nhập thành công');
         navigate(from, { replace: true });

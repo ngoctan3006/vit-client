@@ -12,7 +12,7 @@ interface ProtectedRouterProps {
 }
 
 const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
-  const { isAuthenticated } = useSelector(authSelector);
+  const { isAuthenticated, user } = useSelector(authSelector);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const from = window.location.pathname;
@@ -26,7 +26,7 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
             replace: true,
             state: { from },
           });
-        } else if (res.type.includes('rejected')) {
+        } else if (res.type.endsWith('rejected')) {
           message.info('Bạn cần đăng nhập để tiếp tục');
           navigate('/login', {
             replace: true,
@@ -36,6 +36,11 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
         // if (role && res.payload?.role !== role) {
         //   navigate('/home');
         // }
+      });
+    } else if (user?.status === 'INACTIVE') {
+      navigate('/welcome', {
+        replace: true,
+        state: { from },
       });
     }
   }, []);
