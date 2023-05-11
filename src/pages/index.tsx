@@ -1,3 +1,4 @@
+export { default as FirstLogin } from './Auth/FirstLogin';
 export { default as ForgotPassword } from './Auth/ForgotPassword';
 export { default as Login } from './Auth/Login';
 export { default as ResetPassword } from './Auth/ResetPassword';

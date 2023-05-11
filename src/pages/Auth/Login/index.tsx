@@ -5,6 +5,7 @@ import { FaRegUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading, LoginButton } from '../../../components';
+import { CONSTANTS } from '../../../constants';
 import { getMe, login } from '../../../redux/actions/auth.action';
 import { authSelector } from '../../../redux/slices/auth.slice';
 import { AppDispatch } from '../../../redux/store';
@@ -24,19 +25,17 @@ const Login: React.FC = () => {
   const { from } = location.state || { from: { pathname: '/home' } };
 
   const handleLogin = async (data: LoginState) => {
-    try {
-      dispatch(login(data)).then((res) => {
-        if (res.type.includes('fulfilled')) {
-          form.resetFields();
-          message.success('Đăng nhập thành công');
-          navigate(from, { replace: true });
-        }
-      });
-    } catch (error) {}
+    dispatch(login(data)).then((res) => {
+      if (res.type.endsWith('fulfilled')) {
+        form.resetFields();
+        message.success('Đăng nhập thành công');
+        navigate(from, { replace: true });
+      }
+    });
   };
 
   useEffect(() => {
-    if (localStorage.getItem('accessToken'))
+    if (localStorage.getItem(CONSTANTS.ACCESS_TOKEN))
       dispatch(getMe()).then((res) => {
         if (res.type.includes('fulfilled')) {
           navigate(from, { replace: true });

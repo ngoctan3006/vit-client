@@ -4,6 +4,7 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from 'axios';
+import { CONSTANTS } from '../constants';
 
 const baseURL =
   import.meta.env.MODE === 'production'
@@ -11,7 +12,7 @@ const baseURL =
     : import.meta.env.VITE_DEVELOPMENT_BASE_URL;
 
 const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = localStorage.getItem(CONSTANTS.ACCESS_TOKEN);
   if (accessToken) {
     config.headers['Authorization'] = `Bearer ${accessToken}`;
   }
@@ -28,18 +29,18 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 
 const onResponseError = async (error: AxiosError) => {
   if (error.response && error.response.status === 401) {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = localStorage.getItem(CONSTANTS.REFRESH_TOKEN);
 
     try {
       const { data } = await axios.post(`${baseURL}/auth/refresh-token`, {
         refreshToken,
       });
-      localStorage.setItem('accessToken', data.data.accessToken);
+      localStorage.setItem(CONSTANTS.ACCESS_TOKEN, data.data.accessToken);
       error.config.headers['Authorization'] = `Bearer ${data.data.accessToken}`;
       return axios(error.config);
     } catch (err: any) {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      localStorage.removeItem(CONSTANTS.ACCESS_TOKEN);
+      localStorage.removeItem(CONSTANTS.REFRESH_TOKEN);
       return Promise.reject(err);
     }
   }
