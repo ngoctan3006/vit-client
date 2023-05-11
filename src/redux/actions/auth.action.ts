@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { message } from 'antd';
+import { CONSTANTS } from '../../constants';
 import { LoginState } from '../../pages/Auth/Login';
 import { API } from '../../services/axios';
 
@@ -24,8 +25,8 @@ export const login = createAsyncThunk(
       const {
         data: { data: resData },
       } = await API.post('auth/signin', data);
-      localStorage.setItem('accessToken', resData.accessToken);
-      localStorage.setItem('refreshToken', resData.refreshToken);
+      localStorage.setItem(CONSTANTS.ACCESS_TOKEN, resData.accessToken);
+      localStorage.setItem(CONSTANTS.REFRESH_TOKEN, resData.refreshToken);
       return resData.user;
     } catch (error: any) {
       message.error(error.response.data.message);
