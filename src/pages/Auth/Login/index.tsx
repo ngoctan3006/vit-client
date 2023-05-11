@@ -24,15 +24,13 @@ const Login: React.FC = () => {
   const { from } = location.state || { from: { pathname: '/home' } };
 
   const handleLogin = async (data: LoginState) => {
-    try {
-      dispatch(login(data)).then((res) => {
-        if (res.type.includes('fulfilled')) {
-          form.resetFields();
-          message.success('Đăng nhập thành công');
-          navigate(from, { replace: true });
-        }
-      });
-    } catch (error) {}
+    dispatch(login(data)).then((res) => {
+      if (res.type.includes('fulfilled')) {
+        form.resetFields();
+        message.success('Đăng nhập thành công');
+        navigate(from, { replace: true });
+      }
+    });
   };
 
   useEffect(() => {
