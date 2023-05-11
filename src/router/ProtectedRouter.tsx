@@ -20,7 +20,13 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
   useEffect(() => {
     if (!isAuthenticated) {
       dispatch(getMe()).then((res) => {
-        if (res.type.includes('rejected')) {
+        console.log(res);
+        if (res.payload.code === 'USER_0007') {
+          navigate('/welcome', {
+            replace: true,
+            state: { from },
+          });
+        } else if (res.type.includes('rejected')) {
           message.info('Bạn cần đăng nhập để tiếp tục');
           navigate('/login', {
             replace: true,
