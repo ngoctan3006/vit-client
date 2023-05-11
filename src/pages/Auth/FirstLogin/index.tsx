@@ -1,18 +1,50 @@
-import { Form, Input } from 'antd';
-import React, { useState } from 'react';
+import { Form, Input, message } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { BiLockAlt } from 'react-icons/bi';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading, LoginButton } from '../../../components';
+import { CONSTANTS } from '../../../constants';
+import { active } from '../../../redux/slices/auth.slice';
+import { firstLogin } from '../../../services/auth';
+
+export interface FirstLogin {
+  password?: string;
+  cfPassword?: string;
+}
 
 const FirstLogin: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/home' } };
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem(CONSTANTS.ACCESS_TOKEN);
+    if (!token) navigate('/login', { replace: true });
+  }, []);
+
+  const handleChangePassword = async (data: FirstLogin) => {
+    try {
+      setLoading(true);
+      const res = await firstLogin(data);
+      message.success(res.data.data.message);
+      dispatch(active());
+      navigate(from, { replace: true });
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      navigate('/login', { replace: true });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="login-container">
       <div className="wrap">
-        <Form form={form}>
+        <Form form={form} onFinish={handleChangePassword}>
           <h3 className="title text-center mb-8">
             Chào mừng bạn đã đến với Đại gia đình VIT
           </h3>

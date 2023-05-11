@@ -3,12 +3,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Layout, Loading } from '../components';
+import { CONSTANTS } from '../constants';
 import { getMe } from '../redux/actions/auth.action';
 import { authSelector } from '../redux/slices/auth.slice';
 import { AppDispatch } from '../redux/store';
 
 interface ProtectedRouterProps {
-  role?: 'admin' | 'member';
+  role?: CONSTANTS.ADMIN | CONSTANTS.USER;
 }
 
 const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
@@ -37,7 +38,7 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
         //   navigate('/home');
         // }
       });
-    } else if (user?.status === 'INACTIVE') {
+    } else if (user?.status === CONSTANTS.INACTIVE) {
       navigate('/welcome', {
         replace: true,
         state: { from },

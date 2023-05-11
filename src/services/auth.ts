@@ -1,7 +1,8 @@
 import { AxiosResponse } from 'axios';
+import { FirstLogin } from '../pages/Auth/FirstLogin';
 import { RequestResetPasswordState } from '../pages/Auth/ForgotPassword';
-import { API } from './axios';
 import { ResetPasswordState } from '../pages/Auth/ResetPassword';
+import { API } from './axios';
 
 export const requestResetPasswordAPI = (
   data: RequestResetPasswordState
@@ -16,3 +17,6 @@ export const resetPasswordAPI = (
 export const checkTokenAPI = (
   token: string
 ): Promise<AxiosResponse<{ data: true }>> => API.post('auth/token', { token });
+
+export const firstLogin = (data: FirstLogin): Promise<AxiosResponse<any>> =>
+  API.put('/auth/first-login', data);
