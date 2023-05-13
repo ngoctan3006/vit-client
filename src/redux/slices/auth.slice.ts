@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { CONSTANTS } from '../../constants';
+import { COMMON } from '../../constants';
 import { getMe, login } from '../actions/auth.action';
 import { RootState } from '../store';
 
@@ -44,7 +44,7 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     active(state: AuthState) {
-      if (state.user) state.user = { ...state.user, status: CONSTANTS.ACTIVE };
+      if (state.user) state.user = { ...state.user, status: COMMON.ACTIVE };
     },
   },
   extraReducers: (builder) => {

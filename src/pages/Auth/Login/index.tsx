@@ -5,7 +5,7 @@ import { FaRegUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading, LoginButton } from '../../../components';
-import { CONSTANTS } from '../../../constants';
+import { COMMON } from '../../../constants';
 import { getMe, login } from '../../../redux/actions/auth.action';
 import { authSelector } from '../../../redux/slices/auth.slice';
 import { AppDispatch } from '../../../redux/store';
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem(CONSTANTS.ACCESS_TOKEN))
+    if (localStorage.getItem(COMMON.ACCESS_TOKEN))
       dispatch(getMe()).then((res) => {
         if (res.type.includes('fulfilled')) {
           navigate(from, { replace: true });
