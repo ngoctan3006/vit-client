@@ -1,0 +1,52 @@
+@import '../../assets/scss/variables';
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $headerHeight;
+
+  .container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+
+    .logo {
+      width: 60px;
+    }
+
+    .right {
+      margin-left: auto;
+
+      .nav {
+        display: flex;
+        gap: 12px;
+
+        .navlink {
+          color: #333;
+          text-decoration: none;
+          font-weight: 600;
+          animation: all 0.3s ease-in-out;
+
+          &:hover {
+            color: purple;
+          }
+        }
+
+        .active {
+          color: purple;
+        }
+      }
+
+      .dropdown {
+        margin-left: 24px;
+        cursor: pointer;
+
+        .avatar {
+          width: 36px;
+        }
+      }
+    }
+  }
+}

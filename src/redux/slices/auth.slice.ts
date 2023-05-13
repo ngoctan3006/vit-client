@@ -46,6 +46,10 @@ export const authSlice = createSlice({
     active(state: AuthState) {
       if (state.user) state.user = { ...state.user, status: COMMON.ACTIVE };
     },
+    logout(state: AuthState) {
+      state.isAuthenticated = false;
+      state.user = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state: AuthState) => {
@@ -86,6 +90,6 @@ export const authSlice = createSlice({
 
 export const authSelector = (state: RootState) => state.auth;
 
-export const { active } = authSlice.actions;
+export const { active, logout } = authSlice.actions;
 
 export default authSlice.reducer;
