@@ -24,7 +24,7 @@ const Router: React.FC = () => {
         <Route path="welcome" element={<FirstLogin />} />
         <Route element={<ProtectedRouter />}>
           <Route path="home" element={<Home />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile/:id?" element={<Profile />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
