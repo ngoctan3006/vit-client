@@ -10,7 +10,7 @@ import {
   Profile,
   ResetPassword,
 } from '../pages';
-import ProtectedRouter from './ProtectedRouter';
+import { ProtectedRouter } from './';
 
 const Router: React.FC = () => {
   return (
