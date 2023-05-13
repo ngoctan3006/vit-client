@@ -3,13 +3,13 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Layout, Loading } from '../components';
-import { CONSTANTS } from '../constants';
+import { COMMON } from '../constants';
 import { getMe } from '../redux/actions/auth.action';
 import { authSelector } from '../redux/slices/auth.slice';
 import { AppDispatch } from '../redux/store';
 
 interface ProtectedRouterProps {
-  role?: CONSTANTS.ADMIN | CONSTANTS.USER;
+  role?: COMMON.ADMIN | COMMON.USER;
 }
 
 const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
@@ -21,7 +21,6 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
   useEffect(() => {
     if (!isAuthenticated) {
       dispatch(getMe()).then((res) => {
-        console.log(res);
         if (res.payload.code === 'USER_0007') {
           navigate('/welcome', {
             replace: true,
@@ -38,7 +37,7 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
         //   navigate('/home');
         // }
       });
-    } else if (user?.status === CONSTANTS.INACTIVE) {
+    } else if (user?.status === COMMON.INACTIVE) {
       navigate('/welcome', {
         replace: true,
         state: { from },

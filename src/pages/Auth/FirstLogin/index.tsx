@@ -4,7 +4,7 @@ import { BiLockAlt } from 'react-icons/bi';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading, LoginButton } from '../../../components';
-import { CONSTANTS } from '../../../constants';
+import { COMMON } from '../../../constants';
 import { active } from '../../../redux/slices/auth.slice';
 import { firstLogin } from '../../../services/auth';
 
@@ -22,7 +22,7 @@ const FirstLogin: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const token = localStorage.getItem(CONSTANTS.ACCESS_TOKEN);
+    const token = localStorage.getItem(COMMON.ACCESS_TOKEN);
     if (!token) navigate('/login', { replace: true });
   }, []);
 
