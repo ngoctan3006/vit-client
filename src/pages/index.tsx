@@ -1,7 +1,7 @@
 export { default as Activity } from './Admin/Activity';
 export { default as Dashboard } from './Admin/Dashboard';
 export { default as Department } from './Admin/Department';
-export { default as Employee } from './Admin/Employee';
+export { default as Member } from './Admin/Member';
 export { default as Event } from './Admin/Event';
 export { default as Group } from './Admin/Group';
 export { default as FirstLogin } from './Auth/FirstLogin';

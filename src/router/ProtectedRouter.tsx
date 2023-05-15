@@ -2,7 +2,7 @@ import { message } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { AdminLayout, Layout, Loading } from '../components';
+import { AdminLayout, DefaultLayout, Loading } from '../components';
 import { COMMON } from '../constants';
 import { getMe } from '../redux/actions/auth.action';
 import { authSelector } from '../redux/slices/auth.slice';
@@ -46,7 +46,7 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
   }, []);
 
   if (isAuthenticated)
-    return role === COMMON.ADMIN ? <AdminLayout /> : <Layout />;
+    return role === COMMON.ADMIN ? <AdminLayout /> : <DefaultLayout />;
   return <Loading />;
 };
 

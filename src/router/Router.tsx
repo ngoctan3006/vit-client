@@ -5,7 +5,6 @@ import {
   Activity,
   Dashboard,
   Department,
-  Employee,
   Event,
   FirstLogin,
   ForgotPassword,
@@ -13,6 +12,7 @@ import {
   Home,
   Landing,
   Login,
+  Member,
   NotFound,
   Profile,
   ResetPassword,
@@ -37,7 +37,7 @@ const Router: React.FC = () => {
           <Route index element={<Dashboard />} />
           <Route path="activity" element={<Activity />} />
           <Route path="department" element={<Department />} />
-          <Route path="Employee" element={<Employee />} />
+          <Route path="member" element={<Member />} />
           <Route path="event" element={<Event />} />
           <Route path="group" element={<Group />} />
         </Route>

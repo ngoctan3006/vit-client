@@ -1,19 +1,22 @@
-import React from 'react';
+import { Layout } from 'antd';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { AdminHeader, Sidebar } from '../';
 import './index.scss';
 
 const AdminLayout: React.FC = () => {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className="admin-layout">
-      <div className="sidebar">
-        <Sidebar />
-      </div>
-      <div className="main">
-        <AdminHeader />
-        <Outlet />
-      </div>
-    </div>
+    <Layout className="admin-layout">
+      <Sidebar collapsed={collapsed} />
+      <Layout className="main">
+        <AdminHeader collapsed={collapsed} setCollapsed={setCollapsed} />
+        <Layout.Content>
+          <Outlet />
+        </Layout.Content>
+      </Layout>
+    </Layout>
   );
 };
 
