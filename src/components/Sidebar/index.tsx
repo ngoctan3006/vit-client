@@ -6,7 +6,7 @@ import {
   MdOutlineSpaceDashboard,
   MdOutlineSportsKabaddi,
 } from 'react-icons/md';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './index.scss';
 
 interface SidebarProps {
@@ -51,12 +51,14 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
       collapsed={collapsed}
     >
       <div className="d-center my-10">
-        <img
-          className="logo"
-          src="/logo.png"
-          alt="logo"
-          width={collapsed ? 50 : 100}
-        />
+        <Link to="/home">
+          <img
+            className="logo"
+            src="/logo.png"
+            alt="logo"
+            width={collapsed ? 50 : 100}
+          />
+        </Link>
       </div>
       <Menu
         mode="inline"
