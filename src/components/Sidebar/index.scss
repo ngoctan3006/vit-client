@@ -1,5 +1,7 @@
 .sidebar {
   background-color: #fff !important;
+  border-right: 1px solid #ccc;
+  min-height: 100vh;
 
   .logo {
     cursor: pointer;

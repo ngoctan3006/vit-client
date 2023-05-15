@@ -12,7 +12,7 @@ const AdminLayout: React.FC = () => {
       <Sidebar collapsed={collapsed} />
       <Layout className="main">
         <AdminHeader collapsed={collapsed} setCollapsed={setCollapsed} />
-        <Layout.Content>
+        <Layout.Content className="main-content">
           <Outlet />
         </Layout.Content>
       </Layout>

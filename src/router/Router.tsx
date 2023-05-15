@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { COMMON } from '../constants';
 import {
   Activity,
+  Club,
   Dashboard,
   Department,
   Event,
@@ -40,6 +41,7 @@ const Router: React.FC = () => {
           <Route path="member" element={<Member />} />
           <Route path="event" element={<Event />} />
           <Route path="group" element={<Group />} />
+          <Route path="club" element={<Club />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

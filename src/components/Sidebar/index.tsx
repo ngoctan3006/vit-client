@@ -1,7 +1,8 @@
 import { Layout, Menu } from 'antd';
 import React from 'react';
-import { BsCalendarEvent } from 'react-icons/bs';
+import { BsCalendarEvent, BsSuitClub } from 'react-icons/bs';
 import { FaRegUser } from 'react-icons/fa';
+import { HiOutlineBuildingOffice2 } from 'react-icons/hi2';
 import {
   MdOutlineSpaceDashboard,
   MdOutlineSportsKabaddi,
@@ -37,6 +38,18 @@ const menuItems = [
     label: 'Sự kiện',
     icon: <BsCalendarEvent className="icon" />,
     path: '/admin/event',
+  },
+  {
+    key: 'department',
+    label: 'Mảng',
+    icon: <HiOutlineBuildingOffice2 className="icon" />,
+    path: '/admin/department',
+  },
+  {
+    key: 'club',
+    label: 'Câu lạc bộ',
+    icon: <BsSuitClub className="icon" />,
+    path: '/admin/club',
   },
 ];
 
