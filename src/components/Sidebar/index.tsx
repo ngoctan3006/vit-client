@@ -55,6 +55,9 @@ const menuItems = [
 
 const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
   const navigate = useNavigate();
+  const defaultSelected =
+    menuItems.find((item) => item.path === window.location.pathname)?.key ||
+    'dashboard';
 
   return (
     <Layout.Sider
@@ -75,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed = false }) => {
       </div>
       <Menu
         mode="inline"
-        defaultSelectedKeys={['dashboard']}
+        defaultSelectedKeys={[defaultSelected]}
         items={menuItems.map(({ path, ...rest }) => ({
           ...rest,
           onClick: () => navigate(path),
