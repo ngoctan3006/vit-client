@@ -22,9 +22,9 @@ export interface User {
   date_join?: string;
   date_out?: string;
   last_login?: string;
-  gender?: string;
-  status?: string;
-  position?: string;
+  gender: string;
+  status: string;
+  position: string;
 }
 
 export interface AuthState {
