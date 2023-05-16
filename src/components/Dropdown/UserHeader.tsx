@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { COMMON } from '../../constants';
 import { authSelector, logout } from '../../redux/slices/auth.slice';
+import { AppDispatch } from '../../redux/store';
 import './index.scss';
 
 const UserHeader: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { user } = useSelector(authSelector);
 

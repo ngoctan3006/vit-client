@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { COMMON } from '../../constants';
 import { authSelector, logout } from '../../redux/slices/auth.slice';
+import { AppDispatch } from '../../redux/store';
 import './index.scss';
 
 const NavLinkItems = [
@@ -38,7 +39,7 @@ const NavLinkItems = [
 const Header: React.FC = () => {
   const { user } = useSelector(authSelector);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const items: MenuProps['items'] = [
     {

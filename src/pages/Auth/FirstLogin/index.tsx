@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Loading, LoginButton } from '../../../components';
 import { COMMON } from '../../../constants';
 import { active } from '../../../redux/slices/auth.slice';
+import { AppDispatch } from '../../../redux/store';
 import { firstLogin } from '../../../services/auth';
 
 export interface FirstLogin {
@@ -19,7 +20,7 @@ const FirstLogin: React.FC = () => {
   const location = useLocation();
   const { from } = location.state || { from: { pathname: '/home' } };
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const token = localStorage.getItem(COMMON.ACCESS_TOKEN);
