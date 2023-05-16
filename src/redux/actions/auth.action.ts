@@ -9,9 +9,9 @@ export const getMe = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const {
-        data: { data: resData },
+        data: { data: res },
       } = await API.get('auth/me');
-      return resData;
+      return res;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
@@ -23,11 +23,11 @@ export const login = createAsyncThunk(
   async (data: LoginState, { rejectWithValue }) => {
     try {
       const {
-        data: { data: resData },
+        data: { data: res },
       } = await API.post('auth/signin', data);
-      localStorage.setItem(COMMON.ACCESS_TOKEN, resData.accessToken);
-      localStorage.setItem(COMMON.REFRESH_TOKEN, resData.refreshToken);
-      return resData.user;
+      localStorage.setItem(COMMON.ACCESS_TOKEN, res.accessToken);
+      localStorage.setItem(COMMON.REFRESH_TOKEN, res.refreshToken);
+      return res.user;
     } catch (error: any) {
       message.error(error.response.data.message);
       return rejectWithValue(error.response.data);
