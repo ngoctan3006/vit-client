@@ -6,7 +6,11 @@ const Activity: React.FC = () => {
     document.title = 'VIT | Quản lý hoạt động';
   }, []);
 
-  return <div>Activity</div>;
+  return (
+    <div className="content activity">
+      <h2 className="title mb-15">Quản lý hoạt động</h2>
+    </div>
+  );
 };
 
 export default Activity;
