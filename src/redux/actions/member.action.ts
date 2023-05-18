@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { QueryParamType, defaultQueryParam } from '../../constants/type';
 import { API } from '../../services/axios';
+import { User } from '../slices/auth.slice';
 
-export const getAllMember = createAsyncThunk(
+export const getAllMember = createAsyncThunk<User[], QueryParamType>(
   'member/getAll',
   async (
     { page, limit }: QueryParamType = defaultQueryParam,
