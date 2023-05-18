@@ -67,6 +67,19 @@
   margin: auto;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #afe5ff;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
 @mixin spacing($property, $num) {
   #{$property}: 0.25rem * $num;
 }
