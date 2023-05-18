@@ -17,11 +17,9 @@
 .text-center {
   text-align: center;
 }
-
 .text-left {
   text-align: left;
 }
-
 .text-right {
   text-align: right;
 }
@@ -33,23 +31,48 @@
 .d-flex {
   display: flex;
 }
-
 .justify-center {
   justify-content: center;
 }
-
 .align-center {
   align-content: center;
 }
-
 .d-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.mt-auto {
+  margin-top: auto;
+}
+.mb-auto {
+  margin-bottom: auto;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-auto {
+  margin-right: auto;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.my-auto {
+  margin: auto;
+}
+
 @mixin spacing($property, $num) {
   #{$property}: 0.25rem * $num;
+}
+
+@mixin gap($num) {
+  gap: 0.25rem * $num;
 }
 
 @function class-name($prefix, $num) {
@@ -102,5 +125,8 @@
   }
   .#{class-name('p', $i)} {
     @include spacing('padding', $i);
+  }
+  .#{class-name('gap', $i)} {
+    @include gap($i);
   }
 }

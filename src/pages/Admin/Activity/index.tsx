@@ -1,7 +1,8 @@
-import { Button, Space, Table, Tooltip } from 'antd';
+import { Button, Space, Table, Tooltip, Typography } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import moment from 'moment';
 import React, { useEffect } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { MdModeEditOutline } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +13,7 @@ import {
   activitySelector,
 } from '../../../redux/slices/activity.slice';
 import { AppDispatch } from '../../../redux/store';
+import { getColorOfDate } from '../../../utils';
 import './index.scss';
 
 interface DataType extends ActivityType {
@@ -43,13 +45,25 @@ const Activity: React.FC = () => {
       key: 'start_date',
       title: 'Thời gian bắt đầu',
       dataIndex: 'start_date',
-      render: (text) => (text ? moment(text).format('HH:mm DD/MM/YYYY') : ''),
+      render: (_, item) => (
+        <Typography.Text type={getColorOfDate(item.start_date, item.end_date)}>
+          {item.start_date
+            ? moment(item.start_date).format('HH:mm DD/MM/YYYY')
+            : ''}
+        </Typography.Text>
+      ),
     },
     {
       key: 'end_date',
       title: 'Thời gian kết thúc',
       dataIndex: 'end_date',
-      render: (text) => (text ? moment(text).format('HH:mm DD/MM/YYYY') : ''),
+      render: (_, item) => (
+        <Typography.Text type={getColorOfDate(item.start_date, item.end_date)}>
+          {item.end_date
+            ? moment(item.end_date).format('HH:mm DD/MM/YYYY')
+            : ''}
+        </Typography.Text>
+      ),
     },
     {
       key: 'location',
@@ -109,6 +123,15 @@ const Activity: React.FC = () => {
   return (
     <div className="content activity">
       <h2 className="title mb-15">Quản lý hoạt động</h2>
+      <div className="mb-10">
+        <Button
+          className="d-center ml-auto gap-2"
+          type="primary"
+          icon={<AiOutlinePlus />}
+        >
+          Tạo hoạt động
+        </Button>
+      </div>
       <Table
         loading={loading}
         columns={columns}
