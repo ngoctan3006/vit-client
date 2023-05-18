@@ -133,7 +133,6 @@ const Member: React.FC = () => {
         size="small"
         bordered
       />
-      ;
     </div>
   );
 };
