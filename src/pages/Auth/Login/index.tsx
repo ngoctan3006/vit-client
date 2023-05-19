@@ -28,7 +28,6 @@ const Login: React.FC = () => {
     dispatch(login(data)).then((res) => {
       if (res.type.endsWith('fulfilled')) {
         form.resetFields();
-        message.success('Đăng nhập thành công');
         navigate(from, { replace: true });
       }
     });
