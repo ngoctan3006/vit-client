@@ -1,5 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { getAllActivity, getAllActivityDeleted } from '../actions';
+import {
+  createActivity,
+  getAllActivity,
+  getAllActivityDeleted,
+} from '../actions';
 import { RootState } from '../store';
 
 export interface Activity {
@@ -32,6 +36,9 @@ export const activitySlice = createSlice({
     builder.addCase(getAllActivity.pending, (state: ActivityState) => {
       state.loading = true;
     });
+    builder.addCase(getAllActivity.rejected, (state: ActivityState) => {
+      state.loading = false;
+    });
     builder.addCase(
       getAllActivity.fulfilled,
       (state: ActivityState, action: PayloadAction<Activity[]>) => {
@@ -42,11 +49,28 @@ export const activitySlice = createSlice({
     builder.addCase(getAllActivityDeleted.pending, (state: ActivityState) => {
       state.loading = true;
     });
+    builder.addCase(getAllActivityDeleted.rejected, (state: ActivityState) => {
+      state.loading = false;
+    });
     builder.addCase(
       getAllActivityDeleted.fulfilled,
       (state: ActivityState, action: PayloadAction<Activity[]>) => {
         state.loading = false;
         state.deletedActivities = action.payload;
+      }
+    );
+
+    builder.addCase(createActivity.pending, (state: ActivityState) => {
+      state.loading = true;
+    });
+    builder.addCase(createActivity.rejected, (state: ActivityState) => {
+      state.loading = false;
+    });
+    builder.addCase(
+      createActivity.fulfilled,
+      (state: ActivityState, action: PayloadAction<Activity>) => {
+        state.loading = false;
+        state.activities.unshift(action.payload);
       }
     );
   },

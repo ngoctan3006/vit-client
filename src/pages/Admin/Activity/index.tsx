@@ -20,13 +20,13 @@ import { HiOutlineTrash } from 'react-icons/hi2';
 import { MdModeEditOutline } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { defaultQueryParam } from '../../../constants/type';
-import { getAllActivity } from '../../../redux/actions';
+import { createActivity, getAllActivity } from '../../../redux/actions';
 import {
   Activity as ActivityType,
   activitySelector,
 } from '../../../redux/slices/activity.slice';
 import { AppDispatch } from '../../../redux/store';
-import { getColorOfDate } from '../../../utils';
+import { formatTime, getColorOfDate } from '../../../utils';
 import './index.scss';
 
 interface DataType extends ActivityType {
@@ -150,8 +150,6 @@ const Activity: React.FC = () => {
   }, []);
 
   const handleOk = () => {
-    // setIsCreateModalOpen(false);
-    // form.validateFields();
     form.submit();
   };
 
@@ -160,7 +158,22 @@ const Activity: React.FC = () => {
   };
 
   const handleSubmit = async (data: FormValues) => {
-    console.log('data:', moment(data.start_time['$d']).format(timeFormat));
+    dispatch(
+      createActivity({
+        name: data.name,
+        description: data.description,
+        location: data.location,
+        start_date: formatTime(
+          moment(data.start_date['$d']).format('YYYY-MM-DD'),
+          moment(data.start_time['$d']).format(timeFormat)
+        ),
+        end_date: formatTime(
+          moment(data.end_date['$d']).format('YYYY-MM-DD'),
+          moment(data.end_time['$d']).format(timeFormat)
+        ),
+      })
+    );
+    setIsCreateModalOpen(false);
   };
 
   return (
