@@ -1,7 +1,20 @@
-import { Button, Space, Table, Tooltip, Typography } from 'antd';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Space,
+  Table,
+  TimePicker,
+  Tooltip,
+  Typography,
+} from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { MdModeEditOutline } from 'react-icons/md';
@@ -20,10 +33,26 @@ interface DataType extends ActivityType {
   key: string;
 }
 
+interface FormValues {
+  name: string;
+  description: string;
+  location: string;
+  start_date: any;
+  start_time: any;
+  end_date: any;
+  end_time: any;
+}
+
+const dateFormat = 'DD/MM/YYYY';
+const timeFormat = 'HH:mm';
+
 const Activity: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { activities, deletedActivities, loading } =
     useSelector(activitySelector);
+  const [form] = Form.useForm<FormValues>();
+
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -48,7 +77,7 @@ const Activity: React.FC = () => {
       render: (_, item) => (
         <Typography.Text type={getColorOfDate(item.start_date, item.end_date)}>
           {item.start_date
-            ? moment(item.start_date).format('HH:mm DD/MM/YYYY')
+            ? moment(item.start_date).format(`${timeFormat} ${dateFormat}`)
             : ''}
         </Typography.Text>
       ),
@@ -60,7 +89,7 @@ const Activity: React.FC = () => {
       render: (_, item) => (
         <Typography.Text type={getColorOfDate(item.start_date, item.end_date)}>
           {item.end_date
-            ? moment(item.end_date).format('HH:mm DD/MM/YYYY')
+            ? moment(item.end_date).format(`${timeFormat} ${dateFormat}`)
             : ''}
         </Typography.Text>
       ),
@@ -120,14 +149,29 @@ const Activity: React.FC = () => {
     getActivities();
   }, []);
 
+  const handleOk = () => {
+    // setIsCreateModalOpen(false);
+    // form.validateFields();
+    form.submit();
+  };
+
+  const handleCancel = () => {
+    setIsCreateModalOpen(false);
+  };
+
+  const handleSubmit = async (data: FormValues) => {
+    console.log('data:', moment(data.start_time['$d']).format(timeFormat));
+  };
+
   return (
     <div className="content activity">
-      <h2 className="title mb-15">Quản lý hoạt động</h2>
-      <div className="mb-10">
+      <h2 className="title mb-3">Quản lý hoạt động</h2>
+      <div className="mb-6">
         <Button
           className="d-center ml-auto gap-2"
           type="primary"
           icon={<AiOutlinePlus />}
+          onClick={() => setIsCreateModalOpen(true)}
         >
           Tạo hoạt động
         </Button>
@@ -139,6 +183,112 @@ const Activity: React.FC = () => {
         size="small"
         bordered
       />
+
+      <Modal
+        title="Tạo hoạt động mới"
+        open={isCreateModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form
+          form={form}
+          name="basic"
+          layout="vertical"
+          onFinish={handleSubmit}
+          autoComplete="off"
+          className="mt-10"
+        >
+          <Form.Item
+            label="Tên hoạt động"
+            name="name"
+            rules={[{ required: true, message: 'Vui lòng nhập tên hoạt động' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Mô tả"
+            name="description"
+            rules={[
+              { required: true, message: 'Vui lòng nhập mô tả của hoạt động' },
+            ]}
+          >
+            <Input.TextArea rows={3} />
+          </Form.Item>
+          <Form.Item
+            label="Địa điểm"
+            name="location"
+            rules={[
+              {
+                required: true,
+                message: 'Vui lòng nhập địa điểm diễn ra hoạt động',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label="Ngày bắt đầu"
+                name="start_date"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng chọn ngày bắt đầu diễn ra hoạt động',
+                  },
+                ]}
+              >
+                <DatePicker className="w-full" format={dateFormat} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Thời gian bắt đầu"
+                name="start_time"
+                rules={[
+                  {
+                    required: true,
+                    message:
+                      'Vui lòng chọn thời gian bắt đầu diễn ra hoạt động',
+                  },
+                ]}
+              >
+                <TimePicker className="w-full" format={timeFormat} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                label="Ngày kết thúc"
+                name="end_date"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng chọn ngày kết thúc hoạt động',
+                  },
+                ]}
+              >
+                <DatePicker className="w-full" format={dateFormat} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Thời gian kết thúc"
+                name="end_time"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Vui lòng chọn thời gian kết thúc hoạt động',
+                  },
+                ]}
+              >
+                <TimePicker className="w-full" format={timeFormat} />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
     </div>
   );
 };
