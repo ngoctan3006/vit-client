@@ -44,6 +44,7 @@ interface FormValues {
 }
 
 const dateFormat = 'DD/MM/YYYY';
+const dateFormat2 = 'YYYY-MM-DD';
 const timeFormat = 'HH:mm';
 
 const Activity: React.FC = () => {
@@ -164,11 +165,11 @@ const Activity: React.FC = () => {
         description: data.description,
         location: data.location,
         start_date: formatTime(
-          moment(data.start_date['$d']).format('YYYY-MM-DD'),
+          moment(data.start_date['$d']).format(dateFormat2),
           moment(data.start_time['$d']).format(timeFormat)
         ),
         end_date: formatTime(
-          moment(data.end_date['$d']).format('YYYY-MM-DD'),
+          moment(data.end_date['$d']).format(dateFormat2),
           moment(data.end_time['$d']).format(timeFormat)
         ),
       })
