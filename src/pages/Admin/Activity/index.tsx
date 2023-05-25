@@ -5,12 +5,14 @@ import {
   Form,
   Input,
   Modal,
+  Popconfirm,
   Row,
   Space,
   Table,
   TimePicker,
   Tooltip,
   Typography,
+  message,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import moment from 'moment';
@@ -52,8 +54,15 @@ const Activity: React.FC = () => {
   const { activities, deletedActivities, loading } =
     useSelector(activitySelector);
   const [form] = Form.useForm<FormValues>();
-
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [currAct, setCurrAct] = useState<number>();
+
+  const confirmDelete = (
+    e: React.MouseEvent<HTMLElement, MouseEvent> | undefined
+  ) => {
+    message.success('Xoá hoạt động thành công');
+    console.log(currAct);
+  };
 
   const columns: ColumnsType<DataType> = [
     {
@@ -120,17 +129,23 @@ const Activity: React.FC = () => {
               }}
             />
           </Tooltip>
-          <Tooltip title="Xoá">
-            <Button
-              type="primary"
-              danger
-              shape="circle"
-              icon={<HiOutlineTrash />}
-              onClick={() => {
-                console.log('delete ', item.id);
-              }}
-            />
-          </Tooltip>
+          <Popconfirm
+            title="Xoá hoạt động"
+            description="Bạn chắc chắn muốn xoá hoạt động này?"
+            onConfirm={confirmDelete}
+            okText="OK"
+            cancelText="Huỷ"
+          >
+            <Tooltip title="Xoá">
+              <Button
+                type="primary"
+                danger
+                shape="circle"
+                icon={<HiOutlineTrash />}
+                onClick={() => setCurrAct(item.id)}
+              />
+            </Tooltip>
+          </Popconfirm>
         </Space>
       ),
     },
