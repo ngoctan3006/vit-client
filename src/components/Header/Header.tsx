@@ -1,6 +1,7 @@
 import { Avatar, Dropdown, MenuProps } from 'antd';
 import React from 'react';
 import { BiLogOutCircle, BiUser } from 'react-icons/bi';
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { COMMON } from '../../constants';
@@ -47,11 +48,18 @@ const Header: React.FC = () => {
       label: <Link to="/profile">Thông tin cá nhân</Link>,
       icon: <BiUser />,
     },
+    user?.position === 'ADMIN'
+      ? {
+          key: '2',
+          label: <Link to="/admin">Trang quản trị</Link>,
+          icon: <MdOutlineAdminPanelSettings />,
+        }
+      : false,
     {
       type: 'divider',
     },
     {
-      key: '3',
+      key: '4',
       label: <span>Đăng xuẩt</span>,
       danger: true,
       icon: <BiLogOutCircle />,
@@ -63,7 +71,7 @@ const Header: React.FC = () => {
         window.location.reload();
       },
     },
-  ];
+  ].filter(Boolean) as MenuProps['items'];
 
   return (
     <div className="header d-center">
