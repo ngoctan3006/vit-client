@@ -1,62 +1,41 @@
 import {
   Button,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  Modal,
   Popconfirm,
-  Row,
   Space,
   Table,
-  TimePicker,
   Tooltip,
   Typography,
   message,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { MdModeEditOutline } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { defaultQueryParam } from '../../../constants/type';
-import { createActivity, getAllActivity } from '../../../redux/actions';
+import { getAllActivity } from 'redux/actions';
 import {
-  ActivityTime,
   Activity as ActivityType,
   activitySelector,
-} from '../../../redux/slices/activity.slice';
-import { AppDispatch } from '../../../redux/store';
-import { formatTime, getColorOfDate } from '../../../utils';
+} from 'redux/slices/activity.slice';
+import { AppDispatch } from 'redux/store';
+import { DATE_FORMAT, TIME_FORMAT, defaultQueryParam } from 'src/constants';
+import { getColorOfDate } from 'utils';
+import CreateActivityModal from './CreateActivityModal';
 import './index.scss';
 
 interface DataType extends ActivityType {
   key: string;
 }
 
-interface FormValues {
-  name: string;
-  description: string;
-  location: string;
-  start_date: any;
-  start_time: any;
-  end_date: any;
-  end_time: any;
-}
-
-const dateFormat = 'DD/MM/YYYY';
-const dateFormat2 = 'YYYY-MM-DD';
-const timeFormat = 'HH:mm';
-
 const Activity: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { activities, deletedActivities, loading } =
     useSelector(activitySelector);
-  const [form] = Form.useForm<FormValues>();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [currAct, setCurrAct] = useState<number>();
+  const currActRef = useRef(null);
 
   const confirmDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent> | undefined
@@ -67,37 +46,32 @@ const Activity: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      key: 'id',
       title: '#',
       dataIndex: 'id',
     },
     {
-      key: 'name',
       title: 'Tên hoạt động',
       dataIndex: 'name',
     },
     {
-      key: 'description',
       title: 'Mô tả',
       dataIndex: 'description',
     },
     {
-      key: 'deadline',
       title: 'Hạn đăng ký',
       dataIndex: 'deadline',
       render: (deadline: string) => (
         <Typography.Text
           type={moment().isBefore(moment(deadline)) ? 'success' : 'danger'}
         >
-          {moment(deadline).format(`${timeFormat} ${dateFormat}`)}
+          {moment(deadline).format(`${TIME_FORMAT} ${DATE_FORMAT}`)}
         </Typography.Text>
       ),
     },
     {
       key: 'start_date',
       title: 'Thời gian bắt đầu',
-      dataIndex: 'times',
-      render: (times: ActivityTime[]) => (
+      render: (_, { times }) => (
         <Typography.Text
           type={getColorOfDate(
             times[0].start_time,
@@ -105,7 +79,9 @@ const Activity: React.FC = () => {
           )}
         >
           {times[0].start_time
-            ? moment(times[0].start_time).format(`${timeFormat} ${dateFormat}`)
+            ? moment(times[0].start_time).format(
+                `${TIME_FORMAT} ${DATE_FORMAT}`
+              )
             : ''}
         </Typography.Text>
       ),
@@ -113,8 +89,7 @@ const Activity: React.FC = () => {
     {
       key: 'end_date',
       title: 'Thời gian kết thúc',
-      dataIndex: 'times',
-      render: (times: ActivityTime[]) => (
+      render: (_, { times }) => (
         <Typography.Text
           type={getColorOfDate(
             times[0].start_time,
@@ -123,29 +98,29 @@ const Activity: React.FC = () => {
         >
           {times[times.length - 1].end_time
             ? moment(times[times.length - 1].end_time).format(
-                `${timeFormat} ${dateFormat}`
+                `${TIME_FORMAT} ${DATE_FORMAT}`
               )
             : ''}
         </Typography.Text>
       ),
     },
     {
-      key: 'location',
       title: 'Địa điểm',
       dataIndex: 'location',
     },
     {
-      key: 'event_id',
       title: 'Sự kiện',
       dataIndex: 'event_id',
     },
     {
       key: 'action',
       title: 'Thao tác',
+      dataIndex: '',
       render: (_, { id }) => (
         <Space>
           <Tooltip title="Sửa">
             <Button
+              ref={currActRef}
               type="primary"
               shape="circle"
               icon={<MdModeEditOutline />}
@@ -163,6 +138,7 @@ const Activity: React.FC = () => {
           >
             <Tooltip title="Xoá">
               <Button
+                ref={currActRef}
                 type="primary"
                 danger
                 shape="circle"
@@ -190,33 +166,6 @@ const Activity: React.FC = () => {
     getActivities();
   }, []);
 
-  const handleOk = () => {
-    form.submit();
-  };
-
-  const handleCancel = () => {
-    setIsCreateModalOpen(false);
-  };
-
-  const handleSubmit = async (data: FormValues) => {
-    dispatch(
-      createActivity({
-        name: data.name,
-        description: data.description,
-        location: data.location,
-        start_date: formatTime(
-          moment(data.start_date['$d']).format(dateFormat2),
-          moment(data.start_time['$d']).format(timeFormat)
-        ),
-        end_date: formatTime(
-          moment(data.end_date['$d']).format(dateFormat2),
-          moment(data.end_time['$d']).format(timeFormat)
-        ),
-      })
-    );
-    setIsCreateModalOpen(false);
-  };
-
   return (
     <div className="content activity">
       <h2 className="title mb-3">Quản lý hoạt động</h2>
@@ -238,111 +187,10 @@ const Activity: React.FC = () => {
         bordered
       />
 
-      <Modal
-        title="Tạo hoạt động mới"
-        open={isCreateModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Form
-          form={form}
-          name="basic"
-          layout="vertical"
-          onFinish={handleSubmit}
-          autoComplete="off"
-          className="mt-10"
-        >
-          <Form.Item
-            label="Tên hoạt động"
-            name="name"
-            rules={[{ required: true, message: 'Vui lòng nhập tên hoạt động' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Mô tả"
-            name="description"
-            rules={[
-              { required: true, message: 'Vui lòng nhập mô tả của hoạt động' },
-            ]}
-          >
-            <Input.TextArea rows={3} />
-          </Form.Item>
-          <Form.Item
-            label="Địa điểm"
-            name="location"
-            rules={[
-              {
-                required: true,
-                message: 'Vui lòng nhập địa điểm diễn ra hoạt động',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item
-                label="Ngày bắt đầu"
-                name="start_date"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Vui lòng chọn ngày bắt đầu diễn ra hoạt động',
-                  },
-                ]}
-              >
-                <DatePicker className="w-full" format={dateFormat} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label="Thời gian bắt đầu"
-                name="start_time"
-                rules={[
-                  {
-                    required: true,
-                    message:
-                      'Vui lòng chọn thời gian bắt đầu diễn ra hoạt động',
-                  },
-                ]}
-              >
-                <TimePicker className="w-full" format={timeFormat} />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item
-                label="Ngày kết thúc"
-                name="end_date"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Vui lòng chọn ngày kết thúc hoạt động',
-                  },
-                ]}
-              >
-                <DatePicker className="w-full" format={dateFormat} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                label="Thời gian kết thúc"
-                name="end_time"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Vui lòng chọn thời gian kết thúc hoạt động',
-                  },
-                ]}
-              >
-                <TimePicker className="w-full" format={timeFormat} />
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </Modal>
+      <CreateActivityModal
+        show={isCreateModalOpen}
+        setShow={setIsCreateModalOpen}
+      />
     </div>
   );
 };
