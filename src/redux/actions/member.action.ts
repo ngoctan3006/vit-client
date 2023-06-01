@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { QueryParamType, defaultQueryParam } from '../../constants/type';
+import { QueryParamType, defaultQueryParam } from '../../constants';
 import { API } from '../../services/axios';
 import { User } from '../slices/auth.slice';
 

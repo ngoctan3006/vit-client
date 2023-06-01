@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { message } from 'antd';
 import { API } from '../../services/axios';
 import { Activity } from '../slices/activity.slice';
-import { QueryParamType, defaultQueryParam } from './../../constants/type';
+import { QueryParamType, defaultQueryParam } from './../../constants';
 
 export interface CreateActivityProps {
   name: string;
