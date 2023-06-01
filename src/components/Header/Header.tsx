@@ -48,13 +48,11 @@ const Header: React.FC = () => {
       label: <Link to="/profile">Thông tin cá nhân</Link>,
       icon: <BiUser />,
     },
-    user?.position === 'ADMIN'
-      ? {
-          key: '2',
-          label: <Link to="/admin">Trang quản trị</Link>,
-          icon: <MdOutlineAdminPanelSettings />,
-        }
-      : false,
+    user?.position === 'ADMIN' && {
+      key: '2',
+      label: <Link to="/admin">Trang quản trị</Link>,
+      icon: <MdOutlineAdminPanelSettings />,
+    },
     {
       type: 'divider',
     },
