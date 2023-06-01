@@ -1,13 +1,13 @@
 import { Form, Input, message } from 'antd';
+import { Loading, LoginButton } from 'components';
 import React, { useEffect, useState } from 'react';
 import { BiLockAlt } from 'react-icons/bi';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Loading, LoginButton } from '../../../components';
-import { COMMON } from '../../../constants';
-import { active } from '../../../redux/slices/auth.slice';
-import { AppDispatch } from '../../../redux/store';
-import { firstLogin } from '../../../services/auth';
+import { active } from 'redux/slices/auth.slice';
+import { AppDispatch } from 'redux/store';
+import { firstLogin } from 'services/auth';
+import { COMMON } from 'src/constants';
 
 export interface FirstLogin {
   password?: string;

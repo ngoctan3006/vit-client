@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { QueryParamType, defaultQueryParam } from '../../constants';
-import { API } from '../../services/axios';
+import { API } from 'services/axios';
+import { QueryParamType, defaultQueryParam } from 'src/constants';
 import { User } from '../slices/auth.slice';
 
 export const getAllMember = createAsyncThunk<User[], QueryParamType>(

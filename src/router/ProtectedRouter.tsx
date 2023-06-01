@@ -1,12 +1,12 @@
 import { message } from 'antd';
+import { AdminLayout, DefaultLayout, Loading } from 'components';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { AdminLayout, DefaultLayout, Loading } from '../components';
+import { getMe } from 'redux/actions/auth.action';
+import { authSelector } from 'redux/slices/auth.slice';
+import { AppDispatch } from 'redux/store';
 import { COMMON } from '../constants';
-import { getMe } from '../redux/actions/auth.action';
-import { authSelector } from '../redux/slices/auth.slice';
-import { AppDispatch } from '../redux/store';
 
 interface ProtectedRouterProps {
   role?: COMMON.ADMIN | COMMON.USER;

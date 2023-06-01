@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
-import { FirstLogin } from '../pages/Auth/FirstLogin';
-import { RequestResetPasswordState } from '../pages/Auth/ForgotPassword';
-import { ResetPasswordState } from '../pages/Auth/ResetPassword';
+import { FirstLogin } from 'pages/Auth/FirstLogin';
+import { RequestResetPasswordState } from 'pages/Auth/ForgotPassword';
+import { ResetPasswordState } from 'pages/Auth/ResetPassword';
 import { API } from './axios';
 
 export const requestResetPasswordAPI = (

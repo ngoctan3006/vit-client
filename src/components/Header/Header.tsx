@@ -4,9 +4,9 @@ import { BiLogOutCircle, BiUser } from 'react-icons/bi';
 import { MdOutlineAdminPanelSettings } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { COMMON } from '../../constants';
-import { authSelector, logout } from '../../redux/slices/auth.slice';
-import { AppDispatch } from '../../redux/store';
+import { authSelector, logout } from 'redux/slices/auth.slice';
+import { AppDispatch } from 'redux/store';
+import { COMMON } from 'src/constants';
 import './index.scss';
 
 const NavLinkItems = [

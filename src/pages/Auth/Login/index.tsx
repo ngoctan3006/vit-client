@@ -1,14 +1,14 @@
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input } from 'antd';
+import { Loading, LoginButton } from 'components';
 import React, { useEffect } from 'react';
 import { BiLockAlt } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Loading, LoginButton } from '../../../components';
-import { COMMON } from '../../../constants';
-import { getMe, login } from '../../../redux/actions/auth.action';
-import { authSelector } from '../../../redux/slices/auth.slice';
-import { AppDispatch } from '../../../redux/store';
+import { getMe, login } from 'redux/actions/auth.action';
+import { authSelector } from 'redux/slices/auth.slice';
+import { AppDispatch } from 'redux/store';
+import { COMMON } from 'src/constants';
 import '../index.scss';
 
 export interface LoginState {

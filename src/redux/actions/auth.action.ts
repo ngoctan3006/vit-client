@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { message } from 'antd';
-import { COMMON } from '../../constants';
-import { LoginState } from '../../pages/Auth/Login';
-import { API } from '../../services/axios';
+import { LoginState } from 'pages/Auth/Login';
+import { API } from 'services/axios';
+import { COMMON } from 'src/constants';
 
 export const getMe = createAsyncThunk(
   'auth/getMe',
