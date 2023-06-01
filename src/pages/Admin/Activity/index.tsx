@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { defaultQueryParam } from '../../../constants/type';
 import { createActivity, getAllActivity } from '../../../redux/actions';
 import {
+  ActivityTime,
   Activity as ActivityType,
   activitySelector,
 } from '../../../redux/slices/activity.slice';
@@ -81,13 +82,30 @@ const Activity: React.FC = () => {
       dataIndex: 'description',
     },
     {
+      key: 'deadline',
+      title: 'Hạn đăng ký',
+      dataIndex: 'deadline',
+      render: (deadline: string) => (
+        <Typography.Text
+          type={moment().isBefore(moment(deadline)) ? 'success' : 'danger'}
+        >
+          {moment(deadline).format(`${timeFormat} ${dateFormat}`)}
+        </Typography.Text>
+      ),
+    },
+    {
       key: 'start_date',
       title: 'Thời gian bắt đầu',
-      dataIndex: 'start_date',
-      render: (_, item) => (
-        <Typography.Text type={getColorOfDate(item.start_date, item.end_date)}>
-          {item.start_date
-            ? moment(item.start_date).format(`${timeFormat} ${dateFormat}`)
+      dataIndex: 'times',
+      render: (times: ActivityTime[]) => (
+        <Typography.Text
+          type={getColorOfDate(
+            times[0].start_time,
+            times[times.length - 1].end_time
+          )}
+        >
+          {times[0].start_time
+            ? moment(times[0].start_time).format(`${timeFormat} ${dateFormat}`)
             : ''}
         </Typography.Text>
       ),
@@ -95,11 +113,18 @@ const Activity: React.FC = () => {
     {
       key: 'end_date',
       title: 'Thời gian kết thúc',
-      dataIndex: 'end_date',
-      render: (_, item) => (
-        <Typography.Text type={getColorOfDate(item.start_date, item.end_date)}>
-          {item.end_date
-            ? moment(item.end_date).format(`${timeFormat} ${dateFormat}`)
+      dataIndex: 'times',
+      render: (times: ActivityTime[]) => (
+        <Typography.Text
+          type={getColorOfDate(
+            times[0].start_time,
+            times[times.length - 1].end_time
+          )}
+        >
+          {times[times.length - 1].end_time
+            ? moment(times[times.length - 1].end_time).format(
+                `${timeFormat} ${dateFormat}`
+              )
             : ''}
         </Typography.Text>
       ),
@@ -117,7 +142,7 @@ const Activity: React.FC = () => {
     {
       key: 'action',
       title: 'Thao tác',
-      render: (_, item) => (
+      render: (_, { id }) => (
         <Space>
           <Tooltip title="Sửa">
             <Button
@@ -125,7 +150,7 @@ const Activity: React.FC = () => {
               shape="circle"
               icon={<MdModeEditOutline />}
               onClick={() => {
-                console.log('edit ', item.id);
+                console.log('edit ', id);
               }}
             />
           </Tooltip>
@@ -142,7 +167,7 @@ const Activity: React.FC = () => {
                 danger
                 shape="circle"
                 icon={<HiOutlineTrash />}
-                onClick={() => setCurrAct(item.id)}
+                onClick={() => setCurrAct(id)}
               />
             </Tooltip>
           </Popconfirm>

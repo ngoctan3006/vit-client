@@ -10,10 +10,17 @@ export interface Activity {
   id: number;
   name: string;
   description: string;
-  start_date: string;
-  end_date: string;
   location: string;
-  event_id: number;
+  deadline: string;
+  times: ActivityTime[];
+  event_id?: number;
+}
+
+export interface ActivityTime {
+  id: number;
+  name: string;
+  start_time: string;
+  end_time: string;
 }
 
 export interface ActivityState {
