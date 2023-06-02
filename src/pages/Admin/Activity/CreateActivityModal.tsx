@@ -1,6 +1,17 @@
-import { Col, DatePicker, Form, Input, Modal, Row, TimePicker } from 'antd';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  TimePicker,
+  Typography,
+} from 'antd';
 import moment from 'moment';
 import React from 'react';
+import { HiOutlineTrash } from 'react-icons/hi2';
 import { useDispatch } from 'react-redux';
 import { createActivity } from 'redux/actions';
 import { AppDispatch } from 'redux/store';
@@ -16,11 +27,13 @@ interface FormValues {
   name: string;
   description: string;
   location: string;
-  deadline: string;
-  start_date: any;
-  start_time: any;
-  end_date: any;
-  end_time: any;
+  deadline_date: any;
+  deadline_time: any;
+  times: Array<{
+    name: string;
+    date: any;
+    time: any[];
+  }>;
 }
 
 const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
@@ -39,32 +52,34 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
   };
 
   const handleSubmit = async (data: FormValues) => {
-    dispatch(
-      createActivity({
-        name: data.name,
-        description: data.description,
-        location: data.location,
-        start_date: formatTime(
-          moment(data.start_date['$d']).format(DATE_FORMAT2),
-          moment(data.start_time['$d']).format(TIME_FORMAT)
-        ),
-        end_date: formatTime(
-          moment(data.end_date['$d']).format(DATE_FORMAT2),
-          moment(data.end_time['$d']).format(TIME_FORMAT)
-        ),
-      })
-    );
-    setShow(false);
+    console.log({ data });
+    // dispatch(
+    //   createActivity({
+    //     name: data.name,
+    //     description: data.description,
+    //     location: data.location,
+    //     start_date: formatTime(
+    //       moment(data.start_date['$d']).format(DATE_FORMAT2),
+    //       moment(data.start_time['$d']).format(TIME_FORMAT)
+    //     ),
+    //     end_date: formatTime(
+    //       moment(data.end_date['$d']).format(DATE_FORMAT2),
+    //       moment(data.end_time['$d']).format(TIME_FORMAT)
+    //     ),
+    //   })
+    // );
+    // setShow(false);
   };
 
   return (
     <Modal
       title="Tạo hoạt động mới"
-      open={show}
+      open={true}
       onOk={handleOk}
       onCancel={handleCancel}
       okText="Tạo hoạt động"
       cancelText="Huỷ"
+      width={600}
     >
       <Form
         form={form}
@@ -73,6 +88,9 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
         onFinish={handleSubmit}
         autoComplete="off"
         className="mt-10"
+        initialValues={{
+          times: [{}],
+        }}
       >
         <Form.Item
           label="Tên hoạt động"
@@ -88,7 +106,7 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
             { required: true, message: 'Vui lòng nhập mô tả của hoạt động' },
           ]}
         >
-          <Input.TextArea rows={3} />
+          <Input />
         </Form.Item>
         <Form.Item
           label="Địa điểm"
@@ -102,66 +120,128 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
         >
           <Input />
         </Form.Item>
+        <Typography>Deadline đăng ký</Typography>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
-              label="Ngày bắt đầu"
-              name="start_date"
+              label="Ngày"
+              name="deadline_date"
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng chọn ngày bắt đầu diễn ra hoạt động',
+                  message: 'Vui lòng chọn deadline đăng ký hoạt động',
                 },
               ]}
             >
-              <DatePicker className="w-full" format={DATE_FORMAT} />
+              <DatePicker
+                placeholder=""
+                className="w-full"
+                format={DATE_FORMAT}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              label="Thời gian bắt đầu"
-              name="start_time"
+              label="Giờ"
+              name="deadline_time"
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng chọn thời gian bắt đầu diễn ra hoạt động',
+                  message: 'Vui lòng chọn deadline đăng ký hoạt động',
                 },
               ]}
             >
-              <TimePicker className="w-full" format={TIME_FORMAT} />
+              <TimePicker
+                placeholder=""
+                className="w-full"
+                format={TIME_FORMAT}
+              />
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              label="Ngày kết thúc"
-              name="end_date"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng chọn ngày kết thúc hoạt động',
-                },
-              ]}
-            >
-              <DatePicker className="w-full" format={DATE_FORMAT} />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Thời gian kết thúc"
-              name="end_time"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng chọn thời gian kết thúc hoạt động',
-                },
-              ]}
-            >
-              <TimePicker className="w-full" format={TIME_FORMAT} />
-            </Form.Item>
-          </Col>
-        </Row>
+        <Typography>Thời gian diễn ra</Typography>
+        <Form.List name="times">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }, index) => (
+                <Row gutter={16} key={key}>
+                  <Col span={6}>
+                    <Form.Item
+                      {...restField}
+                      label="Tên"
+                      name={[name, 'name']}
+                      initialValue={`Kíp ${index + 1}`}
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Vui lòng nhập tên kíp hoạt động này',
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      {...restField}
+                      label="Ngày"
+                      name={[name, 'date']}
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            'Vui lòng chọn ngày diễn ra kíp hoạt động này',
+                        },
+                      ]}
+                    >
+                      <DatePicker
+                        placeholder=""
+                        className="w-full"
+                        format={DATE_FORMAT}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      {...restField}
+                      label="Giờ"
+                      name={[name, 'time']}
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            'Vui lòng chọn giờ diễn ra kíp hoạt động này',
+                        },
+                      ]}
+                    >
+                      <TimePicker.RangePicker
+                        className="w-full"
+                        placeholder={['Bắt đầu', 'Kết thúc']}
+                        format={[TIME_FORMAT, TIME_FORMAT]}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={2} className="d-flex">
+                    <Button
+                      className="my-auto"
+                      type="primary"
+                      danger
+                      shape="circle"
+                      icon={<HiOutlineTrash />}
+                      disabled={fields.length <= 1}
+                      onClick={() => remove(name)}
+                    />
+                  </Col>
+                </Row>
+              ))}
+              <Form.Item>
+                <Button type="dashed" onClick={() => add()} block>
+                  Thêm kíp
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
       </Form>
     </Modal>
   );

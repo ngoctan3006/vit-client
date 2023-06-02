@@ -9,7 +9,7 @@ import {
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import moment from 'moment';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { MdModeEditOutline } from 'react-icons/md';
@@ -35,7 +35,6 @@ const Activity: React.FC = () => {
     useSelector(activitySelector);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [currAct, setCurrAct] = useState<number>();
-  const currActRef = useRef(null);
 
   const confirmDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent> | undefined
@@ -120,7 +119,6 @@ const Activity: React.FC = () => {
         <Space>
           <Tooltip title="Sửa">
             <Button
-              ref={currActRef}
               type="primary"
               shape="circle"
               icon={<MdModeEditOutline />}
@@ -138,7 +136,6 @@ const Activity: React.FC = () => {
           >
             <Tooltip title="Xoá">
               <Button
-                ref={currActRef}
                 type="primary"
                 danger
                 shape="circle"
