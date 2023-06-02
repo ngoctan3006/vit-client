@@ -11,7 +11,6 @@ export const getMe = createAsyncThunk(
       const {
         data: { data: res },
       } = await API.get('auth/me');
-      message.success('Đăng nhập thành công');
       return res;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
