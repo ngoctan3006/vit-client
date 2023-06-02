@@ -4,6 +4,8 @@ import { API } from 'services/axios';
 import { QueryParamType, defaultQueryParam } from 'src/constants';
 import { Activity } from '../slices/activity.slice';
 
+const prefix = 'activity';
+
 export interface CreateActivityProps {
   name: string;
   description: string;
@@ -26,7 +28,7 @@ export const getAllActivity = createAsyncThunk<Activity[], QueryParamType>(
     try {
       const {
         data: { data: res },
-      } = await API.get(`activity?page=${page}&limit=${limit}`);
+      } = await API.get(`${prefix}?page=${page}&limit=${limit}`);
       return res;
     } catch (error: any) {
       message.error(error.response.data.message);
@@ -47,7 +49,7 @@ export const getAllActivityDeleted = createAsyncThunk<
     try {
       const {
         data: { data: res },
-      } = await API.get(`activity/trash?page=${page}&limit=${limit}`);
+      } = await API.get(`${prefix}/trash?page=${page}&limit=${limit}`);
       return res;
     } catch (error: any) {
       message.error(error.response.data.message);
@@ -62,9 +64,23 @@ export const createActivity = createAsyncThunk<Activity, CreateActivityProps>(
     try {
       const {
         data: { data: res },
-      } = await API.post('activity', data);
+      } = await API.post(prefix, data);
       message.success('Tạo hoạt động mới thành công');
       return res;
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteActivity = createAsyncThunk<number, number>(
+  'activity/delete',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const { data } = await API.delete(`${prefix}/${id}`);
+      message.success(data.data.message);
+      return id;
     } catch (error: any) {
       message.error(error.response.data.message);
       return rejectWithValue(error.response.data);

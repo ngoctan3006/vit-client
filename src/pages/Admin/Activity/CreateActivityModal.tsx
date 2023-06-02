@@ -89,7 +89,7 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
     >
       <Form
         form={form}
-        name="basic"
+        name="create-activity"
         layout="vertical"
         onFinish={handleSubmit}
         autoComplete="off"

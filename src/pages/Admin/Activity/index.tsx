@@ -14,7 +14,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { MdModeEditOutline } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllActivity } from 'redux/actions';
+import { deleteActivity, getAllActivity } from 'redux/actions';
 import {
   Activity as ActivityType,
   activitySelector,
@@ -39,8 +39,7 @@ const Activity: React.FC = () => {
   const confirmDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent> | undefined
   ) => {
-    message.success('Xoá hoạt động thành công');
-    console.log(currAct);
+    dispatch(deleteActivity(currAct!));
   };
 
   const columns: ColumnsType<DataType> = [
