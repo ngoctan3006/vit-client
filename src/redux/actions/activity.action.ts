@@ -7,10 +7,14 @@ import { Activity } from '../slices/activity.slice';
 export interface CreateActivityProps {
   name: string;
   description: string;
-  start_date: string;
-  end_date: string;
   location: string;
+  deadline: string;
   event_id?: number;
+  times: Array<{
+    name: string;
+    start_time: string;
+    end_time: string;
+  }>;
 }
 
 export const getAllActivity = createAsyncThunk<Activity[], QueryParamType>(

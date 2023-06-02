@@ -52,29 +52,35 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
   };
 
   const handleSubmit = async (data: FormValues) => {
-    console.log({ data });
-    // dispatch(
-    //   createActivity({
-    //     name: data.name,
-    //     description: data.description,
-    //     location: data.location,
-    //     start_date: formatTime(
-    //       moment(data.start_date['$d']).format(DATE_FORMAT2),
-    //       moment(data.start_time['$d']).format(TIME_FORMAT)
-    //     ),
-    //     end_date: formatTime(
-    //       moment(data.end_date['$d']).format(DATE_FORMAT2),
-    //       moment(data.end_time['$d']).format(TIME_FORMAT)
-    //     ),
-    //   })
-    // );
-    // setShow(false);
+    dispatch(
+      createActivity({
+        name: data.name,
+        description: data.description,
+        location: data.location,
+        deadline: formatTime(
+          moment(data.deadline_date['$d']).format(DATE_FORMAT2),
+          moment(data.deadline_time['$d']).format(TIME_FORMAT)
+        ),
+        times: data.times.map((time) => ({
+          name: time.name,
+          start_time: formatTime(
+            moment(time.date['$d']).format(DATE_FORMAT2),
+            moment(time.time[0]['$d']).format(TIME_FORMAT)
+          ),
+          end_time: formatTime(
+            moment(time.date['$d']).format(DATE_FORMAT2),
+            moment(time.time[1]['$d']).format(TIME_FORMAT)
+          ),
+        })),
+      })
+    );
+    setShow(false);
   };
 
   return (
     <Modal
       title="Tạo hoạt động mới"
-      open={true}
+      open={show}
       onOk={handleOk}
       onCancel={handleCancel}
       okText="Tạo hoạt động"
