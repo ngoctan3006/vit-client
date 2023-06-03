@@ -1,20 +1,25 @@
+import { Badge, TabsProps } from 'antd';
 import {
   Button,
   Popconfirm,
   Space,
   Table,
+  Tabs,
   Tooltip,
   Typography,
-  message,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { HiOutlineTrash } from 'react-icons/hi2';
-import { MdModeEditOutline } from 'react-icons/md';
+import { MdModeEditOutline, MdRestore } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteActivity, getAllActivity } from 'redux/actions';
+import {
+  deleteActivity,
+  getAllActivity,
+  getAllActivityDeleted,
+} from 'redux/actions';
 import {
   Activity as ActivityType,
   activitySelector,
@@ -35,11 +40,16 @@ const Activity: React.FC = () => {
     useSelector(activitySelector);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [currAct, setCurrAct] = useState<number>();
+  const [tab, setTab] = useState('active');
 
   const confirmDelete = (
     e: React.MouseEvent<HTMLElement, MouseEvent> | undefined
   ) => {
     dispatch(deleteActivity(currAct!));
+  };
+
+  const onChange = (key: string) => {
+    setTab(key);
   };
 
   const columns: ColumnsType<DataType> = [
@@ -114,47 +124,92 @@ const Activity: React.FC = () => {
       key: 'action',
       title: 'Thao tác',
       dataIndex: '',
-      render: (_, { id }) => (
-        <Space>
-          <Tooltip title="Sửa">
+      render: (_, { id }) =>
+        tab === 'deleted' ? (
+          <Tooltip title="Khôi phục">
             <Button
+              className="d-center"
               type="primary"
               shape="circle"
-              icon={<MdModeEditOutline />}
+              icon={<MdRestore />}
               onClick={() => {
-                console.log('edit ', id);
+                console.log('restore ', id);
               }}
             />
           </Tooltip>
-          <Popconfirm
-            title="Xoá hoạt động"
-            description="Bạn chắc chắn muốn xoá hoạt động này?"
-            onConfirm={confirmDelete}
-            okText="OK"
-            cancelText="Huỷ"
-          >
-            <Tooltip title="Xoá">
+        ) : (
+          <Space>
+            <Tooltip title="Sửa">
               <Button
+                className="d-center"
                 type="primary"
-                danger
                 shape="circle"
-                icon={<HiOutlineTrash />}
-                onClick={() => setCurrAct(id)}
+                icon={<MdModeEditOutline />}
+                onClick={() => {
+                  console.log('edit ', id);
+                }}
               />
             </Tooltip>
-          </Popconfirm>
-        </Space>
-      ),
+            <Popconfirm
+              title="Xoá hoạt động"
+              description="Bạn chắc chắn muốn xoá hoạt động này?"
+              onConfirm={confirmDelete}
+              okText="OK"
+              cancelText="Huỷ"
+            >
+              <Tooltip title="Xoá">
+                <Button
+                  className="d-center"
+                  type="primary"
+                  danger
+                  shape="circle"
+                  icon={<HiOutlineTrash />}
+                  onClick={() => setCurrAct(id)}
+                />
+              </Tooltip>
+            </Popconfirm>
+          </Space>
+        ),
     },
   ];
 
-  const dataSource: DataType[] = activities.map((item) => ({
-    key: `${item.id}`,
-    ...item,
-  }));
+  const dataSource: DataType[] = useMemo(
+    () =>
+      tab === 'deleted'
+        ? deletedActivities.map((item) => ({
+            key: `${item.id}`,
+            ...item,
+          }))
+        : tab === 'active'
+        ? activities
+            .filter((item) =>
+              moment(item.times[item.times.length - 1].end_time).isAfter(
+                moment()
+              )
+            )
+            .map((item) => ({
+              key: `${item.id}`,
+              ...item,
+            }))
+        : activities
+            .filter((item) =>
+              moment(item.times[item.times.length - 1].end_time).isBefore(
+                moment()
+              )
+            )
+            .map((item) => ({
+              key: `${item.id}`,
+              ...item,
+            })),
+    [tab, activities, deletedActivities]
+  );
 
   const getActivities = async () => {
     dispatch(getAllActivity(defaultQueryParam));
+  };
+
+  const getActivitiesDeleted = async () => {
+    dispatch(getAllActivityDeleted(defaultQueryParam));
   };
 
   useEffect(() => {
@@ -162,25 +217,80 @@ const Activity: React.FC = () => {
     getActivities();
   }, []);
 
+  useEffect(() => {
+    if (tab === 'deleted') getActivitiesDeleted();
+    else getActivities();
+  }, [tab]);
+
+  const items: TabsProps['items'] = [
+    {
+      key: 'active',
+      label: <Badge status="success" text="Đang hoạt động" />,
+      children: (
+        <>
+          <div className="d-flex mb-6">
+            <Button
+              className="d-center ml-auto gap-2"
+              type="primary"
+              icon={<AiOutlinePlus />}
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              Tạo hoạt động
+            </Button>
+          </div>
+          <Table
+            loading={loading}
+            columns={columns}
+            dataSource={dataSource}
+            size="small"
+            bordered
+          />
+        </>
+      ),
+    },
+    {
+      key: 'expired',
+      label: <Badge status="error" text="Đã diễn ra" />,
+      children: (
+        <Table
+          loading={loading}
+          columns={columns}
+          dataSource={dataSource}
+          size="small"
+          bordered
+        />
+      ),
+    },
+    {
+      key: 'deleted',
+      label: (
+        <Badge
+          className="d-center gap-1"
+          count={<HiOutlineTrash color="#ff4d4f" />}
+          text={<Typography.Text type="danger">Đã xoá</Typography.Text>}
+        />
+      ),
+      children: (
+        <Table
+          loading={loading}
+          columns={columns}
+          dataSource={dataSource}
+          size="small"
+          bordered
+        />
+      ),
+    },
+  ];
+
   return (
     <div className="content activity">
-      <h2 className="title mb-3">Quản lý hoạt động</h2>
-      <div className="mb-6">
-        <Button
-          className="d-center ml-auto gap-2"
-          type="primary"
-          icon={<AiOutlinePlus />}
-          onClick={() => setIsCreateModalOpen(true)}
-        >
-          Tạo hoạt động
-        </Button>
-      </div>
-      <Table
-        loading={loading}
-        columns={columns}
-        dataSource={dataSource}
-        size="small"
-        bordered
+      <h2 className="title mb-10">Quản lý hoạt động</h2>
+
+      <Tabs
+        defaultActiveKey="1"
+        type="card"
+        items={items}
+        onChange={onChange}
       />
 
       <CreateActivityModal
