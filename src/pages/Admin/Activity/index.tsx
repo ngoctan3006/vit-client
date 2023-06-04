@@ -19,6 +19,7 @@ import {
   deleteActivity,
   getAllActivity,
   getAllActivityDeleted,
+  restoreActivity,
 } from 'redux/actions';
 import {
   Activity as ActivityType,
@@ -133,7 +134,7 @@ const Activity: React.FC = () => {
               shape="circle"
               icon={<MdRestore />}
               onClick={() => {
-                console.log('restore ', id);
+                dispatch(restoreActivity(id));
               }}
             />
           </Tooltip>

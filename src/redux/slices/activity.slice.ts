@@ -4,6 +4,7 @@ import {
   deleteActivity,
   getAllActivity,
   getAllActivityDeleted,
+  restoreActivity,
 } from '../actions';
 import { RootState } from '../store';
 
@@ -92,6 +93,21 @@ export const activitySlice = createSlice({
       deleteActivity.fulfilled,
       (state: ActivityState, action: PayloadAction<number>) => {
         state.activities = state.activities.filter(
+          (act: Activity) => act.id !== action.payload
+        );
+        state.loading = false;
+      }
+    );
+    builder.addCase(restoreActivity.pending, (state: ActivityState) => {
+      state.loading = true;
+    });
+    builder.addCase(restoreActivity.rejected, (state: ActivityState) => {
+      state.loading = false;
+    });
+    builder.addCase(
+      restoreActivity.fulfilled,
+      (state: ActivityState, action: PayloadAction<number>) => {
+        state.deletedActivities = state.deletedActivities.filter(
           (act: Activity) => act.id !== action.payload
         );
         state.loading = false;

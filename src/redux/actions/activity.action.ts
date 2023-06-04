@@ -87,3 +87,17 @@ export const deleteActivity = createAsyncThunk<number, number>(
     }
   }
 );
+
+export const restoreActivity = createAsyncThunk<number, number>(
+  'activity/restore',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const { data } = await API.put(`${prefix}/restore/${id}`);
+      message.success(data.data.message);
+      return id;
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);

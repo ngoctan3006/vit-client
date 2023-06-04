@@ -229,7 +229,7 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
                   </Col>
                   <Col span={2} className="d-flex">
                     <Button
-                      className="my-auto"
+                      className="d-center my-auto"
                       type="primary"
                       danger
                       shape="circle"
