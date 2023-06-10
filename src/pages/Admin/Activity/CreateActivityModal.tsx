@@ -9,31 +9,18 @@ import {
   TimePicker,
   Typography,
 } from 'antd';
-import moment from 'moment';
-import React from 'react';
+import dayjs from 'dayjs';
+import React, { Dispatch, SetStateAction } from 'react';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { useDispatch } from 'react-redux';
 import { createActivity } from 'redux/actions';
 import { AppDispatch } from 'redux/store';
-import { DATE_FORMAT, DATE_FORMAT2, TIME_FORMAT } from 'src/constants';
-import { formatTime } from 'utils';
+import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
+import { ActivityValues } from './types';
 
 interface CreateActivityModalProps {
   show: boolean;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface FormValues {
-  name: string;
-  description: string;
-  location: string;
-  deadline_date: any;
-  deadline_time: any;
-  times: Array<{
-    name: string;
-    date: any;
-    time: any[];
-  }>;
+  setShow: Dispatch<SetStateAction<boolean>>;
 }
 
 const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
@@ -41,7 +28,7 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
   setShow,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [form] = Form.useForm<FormValues>();
+  const [form] = Form.useForm<ActivityValues>();
 
   const handleOk = () => {
     form.submit();
@@ -51,26 +38,32 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
     setShow(false);
   };
 
-  const handleSubmit = async (data: FormValues) => {
+  const handleSubmit = async (data: ActivityValues) => {
     dispatch(
       createActivity({
         name: data.name,
         description: data.description,
         location: data.location,
-        deadline: formatTime(
-          moment(data.deadline_date['$d']).format(DATE_FORMAT2),
-          moment(data.deadline_time['$d']).format(TIME_FORMAT)
-        ),
+        deadline: dayjs(data.deadline_date)
+          .hour(data.deadline_time.hour())
+          .minute(data.deadline_time.minute())
+          .second(0)
+          .millisecond(0)
+          .toISOString(),
         times: data.times.map((time) => ({
           name: time.name,
-          start_time: formatTime(
-            moment(time.date['$d']).format(DATE_FORMAT2),
-            moment(time.time[0]['$d']).format(TIME_FORMAT)
-          ),
-          end_time: formatTime(
-            moment(time.date['$d']).format(DATE_FORMAT2),
-            moment(time.time[1]['$d']).format(TIME_FORMAT)
-          ),
+          start_time: dayjs(time.date)
+            .hour(time.time[0].hour())
+            .minute(time.time[0].minute())
+            .second(0)
+            .millisecond(0)
+            .toISOString(),
+          end_time: dayjs(time.date)
+            .hour(time.time[1].hour())
+            .minute(time.time[1].minute())
+            .second(0)
+            .millisecond(0)
+            .toISOString(),
         })),
       })
     );
