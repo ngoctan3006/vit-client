@@ -1,10 +1,10 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export const getColorOfDate = (
   startDate: string,
   endDate: string
 ): 'danger' | 'success' | 'warning' => {
-  if (moment().isBefore(moment(startDate))) return 'warning';
-  if (moment().isAfter(moment(endDate))) return 'danger';
+  if (dayjs().isBefore(dayjs(startDate))) return 'warning';
+  if (dayjs().isAfter(dayjs(endDate))) return 'danger';
   return 'success';
 };
