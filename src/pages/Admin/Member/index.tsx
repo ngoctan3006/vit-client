@@ -1,13 +1,13 @@
 import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { defaultQueryParam } from '../../../constants/type';
-import { getAllMember } from '../../../redux/actions';
-import { memberSelector } from '../../../redux/slices/member.slice';
-import { AppDispatch } from '../../../redux/store';
-import { getPosition } from '../../../utils';
+import { getAllMember } from 'redux/actions';
+import { memberSelector } from 'redux/slices/member.slice';
+import { AppDispatch } from 'redux/store';
+import { defaultQueryParam } from 'src/constants/type';
+import { getPosition } from 'utils';
 import './index.scss';
 
 interface DataType {
@@ -52,13 +52,13 @@ const Member: React.FC = () => {
       key: 'date_join',
       title: 'Ngày vào Đội',
       dataIndex: 'date_join',
-      render: (text) => (text ? moment(new Date(text)).format('MM/YYYY') : ''),
+      render: (text) => (text ? dayjs(new Date(text)).format('MM/YYYY') : ''),
     },
     {
       key: 'date_out',
       title: 'Ngày rời Đội',
       dataIndex: 'date_out',
-      render: (text) => (text ? moment(new Date(text)).format('MM/YYYY') : ''),
+      render: (text) => (text ? dayjs(new Date(text)).format('MM/YYYY') : ''),
     },
     {
       key: 'gender',
