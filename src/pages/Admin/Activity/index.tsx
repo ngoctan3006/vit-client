@@ -1,15 +1,16 @@
-import { Badge, TabsProps } from 'antd';
 import {
+  Badge,
   Button,
   Popconfirm,
   Space,
   Table,
   Tabs,
+  TabsProps,
   Tooltip,
   Typography,
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { HiOutlineTrash } from 'react-icons/hi2';
@@ -29,6 +30,7 @@ import { AppDispatch } from 'redux/store';
 import { DATE_FORMAT, TIME_FORMAT, defaultQueryParam } from 'src/constants';
 import { getColorOfDate } from 'utils';
 import CreateActivityModal from './CreateActivityModal';
+import EditActivity from './EditActivity';
 import './index.scss';
 
 interface DataType extends ActivityType {
@@ -40,6 +42,7 @@ const Activity: React.FC = () => {
   const { activities, deletedActivities, loading } =
     useSelector(activitySelector);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditActivityOpen, setIsEditActivityOpen] = useState(false);
   const [currAct, setCurrAct] = useState<number>();
   const [tab, setTab] = useState('active');
 
@@ -62,7 +65,7 @@ const Activity: React.FC = () => {
       title: 'Tên hoạt động',
       dataIndex: 'name',
     },
-    {
+    tab !== 'deleted' && {
       title: 'Mô tả',
       dataIndex: 'description',
     },
@@ -71,16 +74,16 @@ const Activity: React.FC = () => {
       dataIndex: 'deadline',
       render: (deadline: string) => (
         <Typography.Text
-          type={moment().isBefore(moment(deadline)) ? 'success' : 'danger'}
+          type={dayjs().isBefore(dayjs(deadline)) ? 'success' : 'danger'}
         >
-          {moment(deadline).format(`${TIME_FORMAT} ${DATE_FORMAT}`)}
+          {dayjs(deadline).format(`${TIME_FORMAT} ${DATE_FORMAT}`)}
         </Typography.Text>
       ),
     },
     {
       key: 'start_date',
       title: 'Thời gian bắt đầu',
-      render: (_, { times }) => (
+      render: (_: string, { times }: DataType) => (
         <Typography.Text
           type={getColorOfDate(
             times[0].start_time,
@@ -88,9 +91,7 @@ const Activity: React.FC = () => {
           )}
         >
           {times[0].start_time
-            ? moment(times[0].start_time).format(
-                `${TIME_FORMAT} ${DATE_FORMAT}`
-              )
+            ? dayjs(times[0].start_time).format(`${TIME_FORMAT} ${DATE_FORMAT}`)
             : ''}
         </Typography.Text>
       ),
@@ -98,7 +99,7 @@ const Activity: React.FC = () => {
     {
       key: 'end_date',
       title: 'Thời gian kết thúc',
-      render: (_, { times }) => (
+      render: (_: string, { times }: DataType) => (
         <Typography.Text
           type={getColorOfDate(
             times[0].start_time,
@@ -106,7 +107,7 @@ const Activity: React.FC = () => {
           )}
         >
           {times[times.length - 1].end_time
-            ? moment(times[times.length - 1].end_time).format(
+            ? dayjs(times[times.length - 1].end_time).format(
                 `${TIME_FORMAT} ${DATE_FORMAT}`
               )
             : ''}
@@ -121,11 +122,20 @@ const Activity: React.FC = () => {
       title: 'Sự kiện',
       dataIndex: 'event_id',
     },
+    tab === 'deleted' && {
+      title: 'Ngày xoá',
+      dataIndex: 'deleted_at',
+      render: (deleted_at: string) => (
+        <Typography.Text type="danger">
+          {dayjs(deleted_at).format(`${TIME_FORMAT} ${DATE_FORMAT}`)}
+        </Typography.Text>
+      ),
+    },
     {
       key: 'action',
       title: 'Thao tác',
       dataIndex: '',
-      render: (_, { id }) =>
+      render: (_: any, { id }: DataType) =>
         tab === 'deleted' ? (
           <Tooltip title="Khôi phục">
             <Button
@@ -147,7 +157,8 @@ const Activity: React.FC = () => {
                 shape="circle"
                 icon={<MdModeEditOutline />}
                 onClick={() => {
-                  console.log('edit ', id);
+                  setCurrAct(id);
+                  setIsEditActivityOpen(true);
                 }}
               />
             </Tooltip>
@@ -172,7 +183,7 @@ const Activity: React.FC = () => {
           </Space>
         ),
     },
-  ];
+  ].filter(Boolean) as ColumnsType<DataType>;
 
   const dataSource: DataType[] = useMemo(
     () =>
@@ -184,9 +195,7 @@ const Activity: React.FC = () => {
         : tab === 'active'
         ? activities
             .filter((item) =>
-              moment(item.times[item.times.length - 1].end_time).isAfter(
-                moment()
-              )
+              dayjs(item.times[item.times.length - 1].end_time).isAfter(dayjs())
             )
             .map((item) => ({
               key: `${item.id}`,
@@ -194,8 +203,8 @@ const Activity: React.FC = () => {
             }))
         : activities
             .filter((item) =>
-              moment(item.times[item.times.length - 1].end_time).isBefore(
-                moment()
+              dayjs(item.times[item.times.length - 1].end_time).isBefore(
+                dayjs()
               )
             )
             .map((item) => ({
@@ -297,6 +306,12 @@ const Activity: React.FC = () => {
       <CreateActivityModal
         show={isCreateModalOpen}
         setShow={setIsCreateModalOpen}
+      />
+
+      <EditActivity
+        activity={activities.find((activity) => activity.id === currAct)}
+        open={isEditActivityOpen}
+        setOpen={setIsEditActivityOpen}
       />
     </div>
   );
