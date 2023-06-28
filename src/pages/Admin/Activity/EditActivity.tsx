@@ -11,11 +11,19 @@ import {
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
+import weekday from 'dayjs/plugin/weekday';
 import React, { useEffect } from 'react';
 import { HiOutlineTrash } from 'react-icons/hi2';
+import { useDispatch } from 'react-redux';
 import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
 import { Activity } from 'src/redux/slices/activity.slice';
+import { AppDispatch } from 'src/redux/store';
 import { ActivityValues } from './types';
+import { updateActivity } from 'src/redux/actions';
+
+dayjs.extend(weekday);
+dayjs.extend(localeData);
 
 interface EditActivityProps {
   activity?: Activity;
@@ -28,10 +36,42 @@ const EditActivity: React.FC<EditActivityProps> = ({
   open,
   setOpen,
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm<ActivityValues>();
 
   const handleSubmit = async (data: ActivityValues) => {
-    console.log(data);
+    if (activity)
+      dispatch(
+        updateActivity({
+          id: activity.id,
+          name: data.name,
+          description: data.description,
+          location: data.location,
+          deadline: dayjs(data.deadline_date)
+            .hour(data.deadline_time.hour())
+            .minute(data.deadline_time.minute())
+            .second(0)
+            .millisecond(0)
+            .toISOString(),
+          times: data.times.map((time) => ({
+            id: time.id ? time.id : 0,
+            name: time.name,
+            start_time: dayjs(time.date)
+              .hour(time.time[0].hour())
+              .minute(time.time[0].minute())
+              .second(0)
+              .millisecond(0)
+              .toISOString(),
+            end_time: dayjs(time.date)
+              .hour(time.time[1].hour())
+              .minute(time.time[1].minute())
+              .second(0)
+              .millisecond(0)
+              .toISOString(),
+          })),
+        })
+      );
+    onClose();
   };
 
   const initialValues = activity && {
@@ -73,7 +113,7 @@ const EditActivity: React.FC<EditActivityProps> = ({
           <Button onClick={handleReset} type="primary">
             Đặt lại
           </Button>
-          <Button onClick={onClose} type="primary">
+          <Button onClick={() => form.submit()} type="primary">
             Xác nhận
           </Button>
         </Space>

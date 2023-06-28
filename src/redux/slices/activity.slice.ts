@@ -5,6 +5,7 @@ import {
   getAllActivity,
   getAllActivityDeleted,
   restoreActivity,
+  updateActivity,
 } from '../actions';
 import { RootState } from '../store';
 
@@ -82,6 +83,22 @@ export const activitySlice = createSlice({
       createActivity.fulfilled,
       (state: ActivityState, action: PayloadAction<Activity>) => {
         state.activities.unshift(action.payload);
+        state.loading = false;
+      }
+    );
+
+    builder.addCase(updateActivity.pending, (state: ActivityState) => {
+      state.loading = true;
+    });
+    builder.addCase(updateActivity.rejected, (state: ActivityState) => {
+      state.loading = false;
+    });
+    builder.addCase(
+      updateActivity.fulfilled,
+      (state: ActivityState, action: PayloadAction<Activity>) => {
+        state.activities = state.activities.map((activity) =>
+          activity.id === action.payload.id ? action.payload : activity
+        );
         state.loading = false;
       }
     );

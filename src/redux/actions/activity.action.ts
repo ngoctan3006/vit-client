@@ -6,13 +6,23 @@ import { Activity } from '../slices/activity.slice';
 
 const prefix = 'activity';
 
-export interface CreateActivityProps {
+export interface CreateActivityDto {
   name: string;
   description: string;
   location: string;
   deadline: string;
   event_id?: number;
   times: Array<{
+    name: string;
+    start_time: string;
+    end_time: string;
+  }>;
+}
+
+export interface UpdateActivityDto extends CreateActivityDto {
+  id: number;
+  times: Array<{
+    id: number;
     name: string;
     start_time: string;
     end_time: string;
@@ -58,14 +68,31 @@ export const getAllActivityDeleted = createAsyncThunk<
   }
 );
 
-export const createActivity = createAsyncThunk<Activity, CreateActivityProps>(
+export const createActivity = createAsyncThunk<Activity, CreateActivityDto>(
   'activity/create',
-  async (data: CreateActivityProps, { rejectWithValue }) => {
+  async (data: CreateActivityDto, { rejectWithValue }) => {
     try {
       const {
         data: { data: res },
       } = await API.post(prefix, data);
       message.success('Tạo hoạt động mới thành công');
+      return res;
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const updateActivity = createAsyncThunk<Activity, UpdateActivityDto>(
+  'activity/update',
+  async (data: UpdateActivityDto, { rejectWithValue }) => {
+    try {
+      const { id, ...rest } = data;
+      const {
+        data: { data: res },
+      } = await API.put(`${prefix}/${id}`, rest);
+      message.success('Cập nhật hoạt động thành công');
       return res;
     } catch (error: any) {
       message.error(error.response.data.message);
