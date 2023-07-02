@@ -2,20 +2,17 @@ import {
   Button,
   Col,
   DatePicker,
-  Drawer,
   Form,
   Input,
   Row,
   Space,
-  Tabs,
-  TabsProps,
   TimePicker,
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
 import weekday from 'dayjs/plugin/weekday';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { useDispatch } from 'react-redux';
 import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
@@ -29,18 +26,12 @@ dayjs.extend(localeData);
 
 interface EditActivityProps {
   activity?: Activity;
-  open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EditActivity: React.FC<EditActivityProps> = ({
-  activity,
-  open,
-  setOpen,
-}) => {
+const EditActivity: React.FC<EditActivityProps> = ({ activity, setOpen }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm<ActivityValues>();
-  const [tab, setTab] = useState('edit');
 
   const handleSubmit = async (data: ActivityValues) => {
     if (activity)
@@ -104,220 +95,179 @@ const EditActivity: React.FC<EditActivityProps> = ({
     handleReset();
   }, [activity]);
 
-  const onChange = (key: string) => {
-    setTab(key);
-  };
-
-  const items: TabsProps['items'] = [
-    {
-      key: 'edit',
-      label: 'Chỉnh sửa hoạt động',
-      children: (
-        <>
-          <div className="d-center">
-            <Form
-              className="mt-5"
-              form={form}
-              name="edit-activity"
-              layout="vertical"
-              onFinish={handleSubmit}
-              autoComplete="off"
-            >
-              <Form.Item
-                label="Tên hoạt động"
-                name="name"
-                rules={[
-                  { required: true, message: 'Vui lòng nhập tên hoạt động' },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Mô tả"
-                name="description"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Vui lòng nhập mô tả của hoạt động',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Địa điểm"
-                name="location"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Vui lòng nhập địa điểm diễn ra hoạt động',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Typography>Deadline đăng ký</Typography>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    label="Ngày"
-                    name="deadline_date"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Vui lòng chọn deadline đăng ký hoạt động',
-                      },
-                    ]}
-                  >
-                    <DatePicker
-                      placeholder=""
-                      className="w-full"
-                      format={DATE_FORMAT}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    label="Giờ"
-                    name="deadline_time"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Vui lòng chọn deadline đăng ký hoạt động',
-                      },
-                    ]}
-                  >
-                    <TimePicker
-                      placeholder=""
-                      className="w-full"
-                      format={TIME_FORMAT}
-                    />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Typography>Thời gian diễn ra</Typography>
-              <Form.List name="times">
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map(({ key, name, ...restField }, index) => (
-                      <Row gutter={16} key={key}>
-                        <Col span={6}>
-                          <Form.Item
-                            {...restField}
-                            label="Tên"
-                            name={[name, 'name']}
-                            initialValue={`Kíp ${index + 1}`}
-                            rules={[
-                              {
-                                required: true,
-                                message: 'Vui lòng nhập tên kíp hoạt động này',
-                              },
-                            ]}
-                          >
-                            <Input />
-                          </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                          <Form.Item
-                            {...restField}
-                            label="Ngày"
-                            name={[name, 'date']}
-                            rules={[
-                              {
-                                required: true,
-                                message:
-                                  'Vui lòng chọn ngày diễn ra kíp hoạt động này',
-                              },
-                            ]}
-                          >
-                            <DatePicker
-                              placeholder=""
-                              className="w-full"
-                              format={DATE_FORMAT}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={8}>
-                          <Form.Item
-                            {...restField}
-                            label="Giờ"
-                            name={[name, 'time']}
-                            rules={[
-                              {
-                                required: true,
-                                message:
-                                  'Vui lòng chọn giờ diễn ra kíp hoạt động này',
-                              },
-                            ]}
-                          >
-                            <TimePicker.RangePicker
-                              className="w-full"
-                              placeholder={['Bắt đầu', 'Kết thúc']}
-                              format={[TIME_FORMAT, TIME_FORMAT]}
-                            />
-                          </Form.Item>
-                        </Col>
-                        <Col span={2} className="d-flex">
-                          <Button
-                            className="d-center my-auto"
-                            type="primary"
-                            danger
-                            shape="circle"
-                            icon={<HiOutlineTrash />}
-                            disabled={fields.length <= 1}
-                            onClick={() => remove(name)}
-                          />
-                        </Col>
-                      </Row>
-                    ))}
-                    <Form.Item>
-                      <Space>
-                        <Button type="dashed" onClick={() => add()}>
-                          Thêm kíp
-                        </Button>
-                        <Button onClick={handleReset} type="primary">
-                          Đặt lại
-                        </Button>
-                        <Button onClick={() => form.submit()} type="primary">
-                          Xác nhận
-                        </Button>
-                      </Space>
-                    </Form.Item>
-                  </>
-                )}
-              </Form.List>
-            </Form>
-          </div>
-        </>
-      ),
-    },
-    {
-      key: 'member',
-      label: 'Thành viên tham gia',
-      children: <>Hello</>,
-    },
-  ];
-
   return (
-    <Drawer
-      title="Thông tin hoạt động"
-      placement="bottom"
-      height={700}
-      onClose={onClose}
-      open={open}
-      extra={
-        <Space>
-          <Button onClick={onClose}>Huỷ</Button>
-        </Space>
-      }
-    >
-      <Tabs
-        defaultActiveKey="edit"
-        tabPosition="left"
-        items={items}
-        onChange={onChange}
-      />
-    </Drawer>
+    <div className="d-center">
+      <Form
+        className="mt-5"
+        form={form}
+        name="edit-activity"
+        layout="vertical"
+        onFinish={handleSubmit}
+        autoComplete="off"
+      >
+        <Form.Item
+          label="Tên hoạt động"
+          name="name"
+          rules={[{ required: true, message: 'Vui lòng nhập tên hoạt động' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Mô tả"
+          name="description"
+          rules={[
+            {
+              required: true,
+              message: 'Vui lòng nhập mô tả của hoạt động',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Địa điểm"
+          name="location"
+          rules={[
+            {
+              required: true,
+              message: 'Vui lòng nhập địa điểm diễn ra hoạt động',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Typography>Deadline đăng ký</Typography>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              label="Ngày"
+              name="deadline_date"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng chọn deadline đăng ký hoạt động',
+                },
+              ]}
+            >
+              <DatePicker
+                placeholder=""
+                className="w-full"
+                format={DATE_FORMAT}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Giờ"
+              name="deadline_time"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng chọn deadline đăng ký hoạt động',
+                },
+              ]}
+            >
+              <TimePicker
+                placeholder=""
+                className="w-full"
+                format={TIME_FORMAT}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Typography>Thời gian diễn ra</Typography>
+        <Form.List name="times">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }, index) => (
+                <Row gutter={16} key={key}>
+                  <Col span={6}>
+                    <Form.Item
+                      {...restField}
+                      label="Tên"
+                      name={[name, 'name']}
+                      initialValue={`Kíp ${index + 1}`}
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Vui lòng nhập tên kíp hoạt động này',
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      {...restField}
+                      label="Ngày"
+                      name={[name, 'date']}
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            'Vui lòng chọn ngày diễn ra kíp hoạt động này',
+                        },
+                      ]}
+                    >
+                      <DatePicker
+                        placeholder=""
+                        className="w-full"
+                        format={DATE_FORMAT}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Item
+                      {...restField}
+                      label="Giờ"
+                      name={[name, 'time']}
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            'Vui lòng chọn giờ diễn ra kíp hoạt động này',
+                        },
+                      ]}
+                    >
+                      <TimePicker.RangePicker
+                        className="w-full"
+                        placeholder={['Bắt đầu', 'Kết thúc']}
+                        format={[TIME_FORMAT, TIME_FORMAT]}
+                      />
+                    </Form.Item>
+                  </Col>
+                  <Col span={2} className="d-flex">
+                    <Button
+                      className="d-center my-auto"
+                      type="primary"
+                      danger
+                      shape="circle"
+                      icon={<HiOutlineTrash />}
+                      disabled={fields.length <= 1}
+                      onClick={() => remove(name)}
+                    />
+                  </Col>
+                </Row>
+              ))}
+              <Form.Item>
+                <Space>
+                  <Button type="dashed" onClick={() => add()}>
+                    Thêm kíp
+                  </Button>
+                  <Button onClick={handleReset} type="primary">
+                    Đặt lại
+                  </Button>
+                  <Button onClick={() => form.submit()} type="primary">
+                    Xác nhận
+                  </Button>
+                </Space>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
+      </Form>
+    </div>
   );
 };
 

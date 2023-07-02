@@ -13,7 +13,7 @@ import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { HiOutlineTrash } from 'react-icons/hi2';
+import { HiOutlineEye, HiOutlineTrash } from 'react-icons/hi2';
 import { MdModeEditOutline, MdRestore } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -29,7 +29,7 @@ import {
 import { AppDispatch } from 'redux/store';
 import { DATE_FORMAT, TIME_FORMAT, defaultQueryParam } from 'src/constants';
 import { getColorOfDate } from 'utils';
-import { CreateActivityModal, EditActivity } from './components';
+import { ActivityDetail, CreateActivityModal } from './components';
 import './index.scss';
 
 interface DataType extends ActivityType {
@@ -41,7 +41,7 @@ const Activity: React.FC = () => {
   const { activities, deletedActivities, loading } =
     useSelector(activitySelector);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isEditActivityOpen, setIsEditActivityOpen] = useState(false);
+  const [isViewActivityOpen, setIsViewActivityOpen] = useState(false);
   const [currAct, setCurrAct] = useState<number>();
   const [tab, setTab] = useState('active');
 
@@ -149,15 +149,15 @@ const Activity: React.FC = () => {
           </Tooltip>
         ) : (
           <Space>
-            <Tooltip title="Sửa">
+            <Tooltip title="Xem thông tin chi tiết">
               <Button
                 className="d-center"
                 type="primary"
                 shape="circle"
-                icon={<MdModeEditOutline />}
+                icon={<HiOutlineEye />}
                 onClick={() => {
                   setCurrAct(id);
-                  setIsEditActivityOpen(true);
+                  setIsViewActivityOpen(true);
                 }}
               />
             </Tooltip>
@@ -307,10 +307,10 @@ const Activity: React.FC = () => {
         setShow={setIsCreateModalOpen}
       />
 
-      <EditActivity
+      <ActivityDetail
         activity={activities.find((activity) => activity.id === currAct)}
-        open={isEditActivityOpen}
-        setOpen={setIsEditActivityOpen}
+        open={isViewActivityOpen}
+        setOpen={setIsViewActivityOpen}
       />
     </div>
   );
