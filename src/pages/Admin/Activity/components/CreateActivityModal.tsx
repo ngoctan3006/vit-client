@@ -2,122 +2,83 @@ import {
   Button,
   Col,
   DatePicker,
-  Drawer,
   Form,
   Input,
+  Modal,
   Row,
-  Space,
   TimePicker,
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
-import localeData from 'dayjs/plugin/localeData';
-import weekday from 'dayjs/plugin/weekday';
-import React, { useEffect } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { useDispatch } from 'react-redux';
+import { createActivity } from 'redux/actions';
+import { AppDispatch } from 'redux/store';
 import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
-import { Activity } from 'src/redux/slices/activity.slice';
-import { AppDispatch } from 'src/redux/store';
-import { ActivityValues } from './types';
-import { updateActivity } from 'src/redux/actions';
+import { ActivityValues } from '../types';
 
-dayjs.extend(weekday);
-dayjs.extend(localeData);
-
-interface EditActivityProps {
-  activity?: Activity;
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+interface CreateActivityModalProps {
+  show: boolean;
+  setShow: Dispatch<SetStateAction<boolean>>;
 }
 
-const EditActivity: React.FC<EditActivityProps> = ({
-  activity,
-  open,
-  setOpen,
+const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
+  show,
+  setShow,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [form] = Form.useForm<ActivityValues>();
 
+  const handleOk = () => {
+    form.submit();
+  };
+
+  const handleCancel = () => {
+    setShow(false);
+  };
+
   const handleSubmit = async (data: ActivityValues) => {
-    if (activity)
-      dispatch(
-        updateActivity({
-          id: activity.id,
-          name: data.name,
-          description: data.description,
-          location: data.location,
-          deadline: dayjs(data.deadline_date)
-            .hour(data.deadline_time.hour())
-            .minute(data.deadline_time.minute())
+    dispatch(
+      createActivity({
+        name: data.name,
+        description: data.description,
+        location: data.location,
+        deadline: dayjs(data.deadline_date)
+          .hour(data.deadline_time.hour())
+          .minute(data.deadline_time.minute())
+          .second(0)
+          .millisecond(0)
+          .toISOString(),
+        times: data.times.map((time) => ({
+          name: time.name,
+          start_time: dayjs(time.date)
+            .hour(time.time[0].hour())
+            .minute(time.time[0].minute())
             .second(0)
             .millisecond(0)
             .toISOString(),
-          times: data.times.map((time) => ({
-            id: time.id ? time.id : 0,
-            name: time.name,
-            start_time: dayjs(time.date)
-              .hour(time.time[0].hour())
-              .minute(time.time[0].minute())
-              .second(0)
-              .millisecond(0)
-              .toISOString(),
-            end_time: dayjs(time.date)
-              .hour(time.time[1].hour())
-              .minute(time.time[1].minute())
-              .second(0)
-              .millisecond(0)
-              .toISOString(),
-          })),
-        })
-      );
-    onClose();
+          end_time: dayjs(time.date)
+            .hour(time.time[1].hour())
+            .minute(time.time[1].minute())
+            .second(0)
+            .millisecond(0)
+            .toISOString(),
+        })),
+      })
+    );
+    setShow(false);
   };
-
-  const initialValues = activity && {
-    id: activity.id,
-    name: activity.name,
-    description: activity.description,
-    location: activity.location,
-    deadline_date: dayjs(activity.deadline),
-    deadline_time: dayjs(activity.deadline),
-    times: activity.times.map((time) => ({
-      id: time.id,
-      name: time.name,
-      date: dayjs(time.start_time),
-      time: [dayjs(time.start_time), dayjs(time.end_time)],
-    })),
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
-
-  const handleReset = () => {
-    if (initialValues) form.setFieldsValue(initialValues);
-  };
-
-  useEffect(() => {
-    handleReset();
-  }, [activity]);
 
   return (
-    <Drawer
-      title="Chỉnh sửa hoạt động"
+    <Modal
+      title="Tạo hoạt động mới"
+      open={show}
+      onOk={handleOk}
+      onCancel={handleCancel}
+      okText="Tạo hoạt động"
+      cancelText="Huỷ"
       width={600}
-      onClose={onClose}
-      open={open}
-      extra={
-        <Space>
-          <Button onClick={onClose}>Huỷ</Button>
-          <Button onClick={handleReset} type="primary">
-            Đặt lại
-          </Button>
-          <Button onClick={() => form.submit()} type="primary">
-            Xác nhận
-          </Button>
-        </Space>
-      }
     >
       <Form
         form={form}
@@ -125,6 +86,10 @@ const EditActivity: React.FC<EditActivityProps> = ({
         layout="vertical"
         onFinish={handleSubmit}
         autoComplete="off"
+        className="mt-10"
+        initialValues={{
+          times: [{}],
+        }}
       >
         <Form.Item
           label="Tên hoạt động"
@@ -277,8 +242,8 @@ const EditActivity: React.FC<EditActivityProps> = ({
           )}
         </Form.List>
       </Form>
-    </Drawer>
+    </Modal>
   );
 };
 
-export default EditActivity;
+export default CreateActivityModal;

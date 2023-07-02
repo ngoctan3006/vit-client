@@ -29,8 +29,7 @@ import {
 import { AppDispatch } from 'redux/store';
 import { DATE_FORMAT, TIME_FORMAT, defaultQueryParam } from 'src/constants';
 import { getColorOfDate } from 'utils';
-import CreateActivityModal from './CreateActivityModal';
-import EditActivity from './EditActivity';
+import { CreateActivityModal, EditActivity } from './components';
 import './index.scss';
 
 interface DataType extends ActivityType {
@@ -297,7 +296,7 @@ const Activity: React.FC = () => {
       <h2 className="title mb-10">Quản lý hoạt động</h2>
 
       <Tabs
-        defaultActiveKey="1"
+        defaultActiveKey="active"
         type="card"
         items={items}
         onChange={onChange}
