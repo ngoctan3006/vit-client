@@ -258,7 +258,7 @@ const EditActivity: React.FC<EditActivityProps> = ({ activity, setOpen }) => {
                     Đặt lại
                   </Button>
                   <Button onClick={() => form.submit()} type="primary">
-                    Xác nhận
+                    Lưu
                   </Button>
                 </Space>
               </Form.Item>
