@@ -1,11 +1,11 @@
 import { message } from 'antd';
 import { AdminLayout, DefaultLayout, Loading } from 'components';
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getMe } from 'redux/actions/auth.action';
 import { authSelector } from 'redux/slices/auth.slice';
-import { AppDispatch } from 'redux/store';
+import { useAppDispatch } from 'redux/store';
 import { COMMON } from '../constants';
 
 interface ProtectedRouterProps {
@@ -14,7 +14,7 @@ interface ProtectedRouterProps {
 
 const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
   const { isAuthenticated, user } = useSelector(authSelector);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const from = window.location.pathname;
 

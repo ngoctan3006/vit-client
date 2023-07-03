@@ -14,8 +14,8 @@ import dayjs from 'dayjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { HiOutlineEye, HiOutlineTrash } from 'react-icons/hi2';
-import { MdModeEditOutline, MdRestore } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
+import { MdRestore } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 import {
   deleteActivity,
   getAllActivity,
@@ -26,7 +26,7 @@ import {
   Activity as ActivityType,
   activitySelector,
 } from 'redux/slices/activity.slice';
-import { AppDispatch } from 'redux/store';
+import { useAppDispatch } from 'redux/store';
 import { DATE_FORMAT, TIME_FORMAT, defaultQueryParam } from 'src/constants';
 import { getColorOfDate } from 'utils';
 import { ActivityDetail, CreateActivityModal } from './components';
@@ -37,7 +37,7 @@ interface DataType extends ActivityType {
 }
 
 const Activity: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { activities, deletedActivities, loading } =
     useSelector(activitySelector);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);

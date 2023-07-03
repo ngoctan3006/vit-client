@@ -1,7 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { message } from 'antd';
 import { API } from 'services/axios';
-import { QueryParamType, defaultQueryParam } from 'src/constants';
+import {
+  QueryParamType,
+  USER_ACTIVITY_STATUS,
+  defaultQueryParam,
+} from 'src/constants';
 import { Activity } from '../slices/activity.slice';
 
 const prefix = 'activity';
@@ -17,6 +21,20 @@ export interface CreateActivityDto {
     start_time: string;
     end_time: string;
   }>;
+}
+
+export interface ActivityMemberDto {
+  id: number;
+  username: string;
+  fullname: string;
+  avatar: string | null;
+  status: USER_ACTIVITY_STATUS;
+}
+
+export interface GetActivityMember {
+  id: number;
+  name: string;
+  member: ActivityMemberDto[];
 }
 
 export interface UpdateActivityDto extends CreateActivityDto {
@@ -122,6 +140,19 @@ export const restoreActivity = createAsyncThunk<number, number>(
       const { data } = await API.put(`${prefix}/restore/${id}`);
       message.success(data.data.message);
       return id;
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getActivityMember = createAsyncThunk(
+  'activity/get-member',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const { data } = await API.get(`${prefix}/member/${id}`);
+      console.log(data);
     } catch (error: any) {
       message.error(error.response.data.message);
       return rejectWithValue(error.response.data);

@@ -3,11 +3,11 @@ import { Loading, LoginButton } from 'components';
 import React, { useEffect } from 'react';
 import { BiLockAlt } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getMe, login } from 'redux/actions/auth.action';
 import { authSelector } from 'redux/slices/auth.slice';
-import { AppDispatch } from 'redux/store';
+import { useAppDispatch } from 'redux/store';
 import { COMMON } from 'src/constants';
 import '../index.scss';
 
@@ -18,7 +18,7 @@ export interface LoginState {
 
 const Login: React.FC = () => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { loading } = useSelector(authSelector);
   const navigate = useNavigate();
   const location = useLocation();

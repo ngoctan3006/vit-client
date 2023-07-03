@@ -1,7 +1,7 @@
 import { Drawer, Tabs, TabsProps } from 'antd';
 import React from 'react';
 import { Activity } from 'redux/slices/activity.slice';
-import { EditActivity } from '.';
+import { ActivityMember, EditActivity } from '.';
 
 interface ActivityDetailProps {
   activity?: Activity;
@@ -27,7 +27,7 @@ const ActivityDetail: React.FC<ActivityDetailProps> = ({
     {
       key: 'member',
       label: 'Thành viên tham gia',
-      children: <>Hello</>,
+      children: <ActivityMember />,
     },
   ];
 

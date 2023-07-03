@@ -2,10 +2,10 @@ import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getAllMember } from 'redux/actions';
 import { memberSelector } from 'redux/slices/member.slice';
-import { AppDispatch } from 'redux/store';
+import { useAppDispatch } from 'redux/store';
 import { defaultQueryParam } from 'src/constants/type';
 import { getPosition } from 'utils';
 import './index.scss';
@@ -24,7 +24,7 @@ interface DataType {
 }
 
 const Member: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { members, loading } = useSelector(memberSelector);
 
   const columns: ColumnsType<DataType> = [

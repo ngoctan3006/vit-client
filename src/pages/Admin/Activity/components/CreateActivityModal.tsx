@@ -12,9 +12,8 @@ import {
 import dayjs from 'dayjs';
 import React, { Dispatch, SetStateAction } from 'react';
 import { HiOutlineTrash } from 'react-icons/hi2';
-import { useDispatch } from 'react-redux';
 import { createActivity } from 'redux/actions';
-import { AppDispatch } from 'redux/store';
+import { useAppDispatch } from 'redux/store';
 import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
 import { ActivityValues } from '../types';
 
@@ -27,7 +26,7 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
   show,
   setShow,
 }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm<ActivityValues>();
 
   const handleOk = () => {

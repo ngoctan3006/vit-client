@@ -14,11 +14,10 @@ import localeData from 'dayjs/plugin/localeData';
 import weekday from 'dayjs/plugin/weekday';
 import React, { useEffect } from 'react';
 import { HiOutlineTrash } from 'react-icons/hi2';
-import { useDispatch } from 'react-redux';
 import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
 import { updateActivity } from 'src/redux/actions';
 import { Activity } from 'src/redux/slices/activity.slice';
-import { AppDispatch } from 'src/redux/store';
+import { useAppDispatch } from 'src/redux/store';
 import { ActivityValues } from '../types';
 
 dayjs.extend(weekday);
@@ -30,7 +29,7 @@ interface EditActivityProps {
 }
 
 const EditActivity: React.FC<EditActivityProps> = ({ activity, setOpen }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm<ActivityValues>();
 
   const handleSubmit = async (data: ActivityValues) => {
