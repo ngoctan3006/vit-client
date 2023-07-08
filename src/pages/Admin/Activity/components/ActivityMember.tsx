@@ -1,8 +1,13 @@
-import { Avatar, Badge, Button, Table, Tooltip } from 'antd';
+import { Avatar, Badge, Button, Table, Tooltip, message } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BsCheck, BsX } from 'react-icons/bs';
-import { getActivityMember } from 'services/activity';
+import {
+  ConfirmationDto,
+  approveActivity,
+  getActivityMember,
+  rejectActivity,
+} from 'services/activity';
 import { GetActivityMember } from 'src/redux/actions';
 import { convertData, getStatus } from '../utils';
 
@@ -34,6 +39,36 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
       } finally {
         setLoading(false);
       }
+    }
+  };
+
+  const approve = async (approveData: ConfirmationDto) => {
+    try {
+      setLoading(true);
+      const { data } = await approveActivity(approveData);
+      console.log(data);
+      await getMember();
+      message.success(data.data.message);
+    } catch (error: any) {
+      console.log(error);
+      message.error(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const reject = async (rejectData: ConfirmationDto) => {
+    try {
+      setLoading(true);
+      const { data } = await rejectActivity(rejectData);
+      console.log(data);
+      await getMember();
+      message.success(data.data.message);
+    } catch (error: any) {
+      console.log(error);
+      message.error(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,6 +108,9 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
                         shape="circle"
                         size="small"
                         icon={<BsCheck />}
+                        onClick={() =>
+                          approve({ userId: Number(row.id), timeId: item.id })
+                        }
                       />
                     </Tooltip>
                   )}
@@ -86,6 +124,9 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
                         shape="circle"
                         size="small"
                         icon={<BsX />}
+                        onClick={() =>
+                          reject({ userId: Number(row.id), timeId: item.id })
+                        }
                       />
                     </Tooltip>
                   )}
