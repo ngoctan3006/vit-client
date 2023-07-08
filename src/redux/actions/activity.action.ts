@@ -147,12 +147,12 @@ export const restoreActivity = createAsyncThunk<number, number>(
   }
 );
 
-export const getActivityMember = createAsyncThunk(
+export const getActivityMember = createAsyncThunk<GetActivityMember, number>(
   'activity/get-member',
   async (id: number, { rejectWithValue }) => {
     try {
       const { data } = await API.get(`${prefix}/member/${id}`);
-      console.log(data);
+      return data.data;
     } catch (error: any) {
       message.error(error.response.data.message);
       return rejectWithValue(error.response.data);

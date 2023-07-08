@@ -39,8 +39,20 @@
 .justify-center {
   justify-content: center;
 }
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
 .align-center {
   align-content: center;
+}
+.align-start {
+  align-content: flex-start;
+}
+.align-end {
+  align-content: flex-end;
 }
 .d-center {
   display: flex;
@@ -105,7 +117,7 @@
   @return '#{$prefix}-#{$num}';
 }
 
-@for $i from 1 through 20 {
+@for $i from 0 through 20 {
   .#{class-name('mt', $i)} {
     @include spacing('margin-top', $i);
   }
