@@ -1,22 +1,15 @@
-import { Avatar, Badge, Table, Tooltip, Typography } from 'antd';
+import { Avatar, Badge, Button, Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useMemo, useState } from 'react';
+import { BsCheck, BsX } from 'react-icons/bs';
 import { getActivityMember } from 'services/activity';
 import { GetActivityMember } from 'src/redux/actions';
-import { convertData } from '../utils';
+import { convertData, getStatus } from '../utils';
 
 interface ActivityMemberProps {
   id?: number;
   name?: string;
 }
-
-const getStatus = (status?: string | null) => {
-  if (status === 'REGISTERED') return ['blue', 'Đăng ký'];
-  if (status === 'ACCEPTED') return ['green', 'Đã chấp nhận'];
-  if (status === 'WITHDRAWN') return ['yellow', 'Xin nghỉ'];
-  if (status === 'REJECTED') return ['red', 'Từ chối'];
-  return [undefined, undefined];
-};
 
 export interface ActivityMemberState {
   id: string;
@@ -36,9 +29,6 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
         setLoading(true);
         const { data } = await getActivityMember(id);
         setActivityMember(data.data);
-        data.data.map((item) => ({
-          fullname: '',
-        }));
       } catch (error: any) {
         console.log(error);
       } finally {
@@ -70,9 +60,38 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
         render: (_: string, row: ActivityMemberState) => {
           const [color, text] = getStatus(row[`${item.id}`]);
           return (
-            <div className="d-flex justify-between">
-              <Badge color={color} text={text} />
-            </div>
+            row[`${item.id}`] && (
+              <div className="d-flex justify-between">
+                <Badge color={color} text={text} />
+                <div className="d-center gap-2">
+                  {(row[`${item.id}`] === 'REGISTERED' ||
+                    row[`${item.id}`] === 'REJECTED') && (
+                    <Tooltip title="Chấp nhận">
+                      <Button
+                        className="d-center"
+                        type="primary"
+                        shape="circle"
+                        size="small"
+                        icon={<BsCheck />}
+                      />
+                    </Tooltip>
+                  )}
+                  {(row[`${item.id}`] === 'REGISTERED' ||
+                    row[`${item.id}`] === 'ACCEPTED') && (
+                    <Tooltip title="Từ chối">
+                      <Button
+                        className="d-center"
+                        type="primary"
+                        danger
+                        shape="circle"
+                        size="small"
+                        icon={<BsX />}
+                      />
+                    </Tooltip>
+                  )}
+                </div>
+              </div>
+            )
           );
         },
       })),
