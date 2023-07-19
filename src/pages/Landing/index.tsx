@@ -1,7 +1,17 @@
 import React from 'react';
+import './index.scss';
+import Header from './components/Header';
+import About from './components/About';
 
 const Landing: React.FC = () => {
-  return <h1>Landing</h1>;
+  return (
+    <>
+      <div className="page">
+        <Header />
+        <About className="section about" />
+      </div>
+    </>
+  );
 };
 
 export default Landing;
