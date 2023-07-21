@@ -1,15 +1,15 @@
 import { Avatar, Dropdown, MenuProps } from 'antd';
 import React from 'react';
 import { BiLogOutCircle, BiUser } from 'react-icons/bi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { COMMON } from '../../constants';
-import { authSelector, logout } from '../../redux/slices/auth.slice';
-import { AppDispatch } from '../../redux/store';
+import { authSelector, logout } from 'redux/slices/auth.slice';
+import { useAppDispatch } from 'redux/store';
+import { COMMON } from 'src/constants';
 import './index.scss';
 
 const UserHeader: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { user } = useSelector(authSelector);
 

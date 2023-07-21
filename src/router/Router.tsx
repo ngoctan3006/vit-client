@@ -1,6 +1,3 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { COMMON } from '../constants';
 import {
   Activity,
   Club,
@@ -17,7 +14,10 @@ import {
   NotFound,
   Profile,
   ResetPassword,
-} from '../pages';
+} from 'pages';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { COMMON } from '../constants';
 import { ProtectedRouter } from './';
 
 const Router: React.FC = () => {

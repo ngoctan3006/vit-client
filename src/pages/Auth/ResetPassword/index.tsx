@@ -1,9 +1,9 @@
 import { Alert, Form, Input, message } from 'antd';
+import { Loading, LoginButton } from 'components';
 import React, { useEffect, useState } from 'react';
 import { BiLockAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { Loading, LoginButton } from '../../../components';
-import { checkTokenAPI, resetPasswordAPI } from '../../../services/auth';
+import { checkTokenAPI, resetPasswordAPI } from 'services/auth';
 
 export interface ResetPasswordState {
   token?: string;
