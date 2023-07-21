@@ -63,7 +63,7 @@ export const convertAnalyticData = (
   for (const time of activityTimes) {
     numberObject[time.id] = time.number_require;
   }
-  resultArray.unshift(totalObject);
   resultArray.unshift(numberObject);
+  resultArray.unshift(totalObject);
   return resultArray;
 };
