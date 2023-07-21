@@ -1,4 +1,12 @@
-import { Avatar, Badge, Button, Table, Tooltip, message } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Table,
+  Tooltip,
+  Typography,
+  message,
+} from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BsCheck, BsX } from 'react-icons/bs';
@@ -9,7 +17,8 @@ import {
   rejectActivity,
 } from 'services/activity';
 import { GetActivityMember } from 'src/redux/actions';
-import { convertData, getStatus } from '../utils';
+import { convertAnalyticData, convertData, getStatus } from '../utils';
+import { ActivityStatus } from '../constants';
 
 interface ActivityMemberProps {
   id?: number;
@@ -22,6 +31,11 @@ export interface ActivityMemberState {
   fullname: string;
   avatar: string | null;
   [key: string]: string | null;
+}
+
+export interface ActivityAnalytic {
+  [key: number]: number;
+  name: string;
 }
 
 const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
@@ -139,12 +153,33 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
     ];
   }, [activityMember]);
 
+  const analyticColumns: ColumnsType<ActivityAnalytic> = useMemo(() => {
+    return [
+      {
+        dataIndex: 'name',
+        title: '',
+        render: (text: string) => (
+          <Typography.Text>{ActivityStatus[text]}</Typography.Text>
+        ),
+      },
+      ...activityMember.map((item) => ({
+        dataIndex: `${item.id}`,
+        title: item.name,
+      })),
+    ];
+  }, [[activityMember]]);
+
   const dataSource: ActivityMemberState[] = useMemo(
     () => convertData(activityMember),
     [activityMember]
   );
 
-  console.log({ dataSource });
+  const analyticData: ActivityAnalytic[] = useMemo(
+    () => convertAnalyticData(activityMember),
+    [activityMember]
+  );
+
+  console.log({ analyticColumns, analyticData });
 
   useEffect(() => {
     getMember();
@@ -159,6 +194,14 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
         dataSource={dataSource}
         size="small"
         bordered
+      />
+
+      <Table
+        loading={loading}
+        columns={analyticColumns}
+        dataSource={analyticData}
+        size="small"
+        pagination={false}
       />
     </div>
   );
