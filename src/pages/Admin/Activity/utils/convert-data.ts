@@ -1,4 +1,5 @@
 import { GetActivityMember } from 'src/redux/actions';
+import { ActivityTime } from 'src/redux/slices/activity.slice';
 import {
   ActivityAnalytic,
   ActivityMemberState,
@@ -24,9 +25,12 @@ export const convertData = (data: GetActivityMember[]) => {
   return result;
 };
 
-export const convertAnalyticData = (inputArray: GetActivityMember[]) => {
+export const convertAnalyticData = (
+  memberData: GetActivityMember[],
+  activityTimes: ActivityTime[] = []
+) => {
   const statusCounts: { [key: string]: { [key: number]: number } } = {};
-  for (const day of inputArray) {
+  for (const day of memberData) {
     for (const member of day.member) {
       const { status } = member;
       if (!statusCounts[status]) {
@@ -38,7 +42,7 @@ export const convertAnalyticData = (inputArray: GetActivityMember[]) => {
   const fixedNames = ['ACCEPTED', 'REGISTERED', 'REJECTED', 'WITHDRAWN'];
   const resultArray: ActivityAnalytic[] = fixedNames.map((name) => {
     const statusObject: { name: string; [key: number]: number } = { name };
-    for (const day of inputArray) {
+    for (const day of memberData) {
       statusObject[day.id] = statusCounts[name]?.[day.id] || 0;
     }
     return statusObject;
@@ -46,13 +50,20 @@ export const convertAnalyticData = (inputArray: GetActivityMember[]) => {
   const totalObject: { name: string; [key: number]: number } = {
     name: 'TOTAL',
   };
-  for (const day of inputArray) {
+  for (const day of memberData) {
     let total = 0;
     for (const name of fixedNames) {
       total += statusCounts[name]?.[day.id] || 0;
     }
     totalObject[day.id] = total;
   }
+  const numberObject: { name: string; [key: number]: number } = {
+    name: 'NUMBER',
+  };
+  for (const time of activityTimes) {
+    numberObject[time.id] = time.number_require;
+  }
   resultArray.unshift(totalObject);
+  resultArray.unshift(numberObject);
   return resultArray;
 };

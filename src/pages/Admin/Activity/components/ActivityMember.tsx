@@ -17,12 +17,12 @@ import {
   rejectActivity,
 } from 'services/activity';
 import { GetActivityMember } from 'src/redux/actions';
-import { convertAnalyticData, convertData, getStatus } from '../utils';
+import { Activity } from 'src/redux/slices/activity.slice';
 import { ActivityStatus } from '../constants';
+import { convertAnalyticData, convertData, getStatus } from '../utils';
 
 interface ActivityMemberProps {
-  id?: number;
-  name?: string;
+  activity?: Activity;
 }
 
 export interface ActivityMemberState {
@@ -38,15 +38,15 @@ export interface ActivityAnalytic {
   name: string;
 }
 
-const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
+const ActivityMember: React.FC<ActivityMemberProps> = ({ activity }) => {
   const [loading, setLoading] = useState(false);
   const [activityMember, setActivityMember] = useState<GetActivityMember[]>([]);
 
   const getMember = async () => {
-    if (id) {
+    if (activity) {
       try {
         setLoading(true);
-        const { data } = await getActivityMember(id);
+        const { data } = await getActivityMember(activity.id);
         setActivityMember(data.data);
       } catch (error: any) {
         console.log(error);
@@ -175,17 +175,17 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
   );
 
   const analyticData: ActivityAnalytic[] = useMemo(
-    () => convertAnalyticData(activityMember),
+    () => convertAnalyticData(activityMember, activity?.times),
     [activityMember]
   );
 
   useEffect(() => {
     getMember();
-  }, [id]);
+  }, [activity?.id]);
 
   return (
     <div>
-      <p className="subtitle">{name}</p>
+      <p className="subtitle">{activity?.name}</p>
       <Table
         loading={loading}
         columns={columns}
