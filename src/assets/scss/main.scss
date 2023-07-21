@@ -112,7 +112,7 @@
 }
 
 @mixin spacing($property, $num) {
-  #{$property}: 0.25rem * $num;
+  #{$property}: 0.25rem * $num !important;
 }
 
 @mixin gap($num) {
