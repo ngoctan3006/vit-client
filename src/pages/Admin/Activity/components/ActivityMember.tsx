@@ -179,8 +179,6 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
     [activityMember]
   );
 
-  console.log({ analyticColumns, analyticData });
-
   useEffect(() => {
     getMember();
   }, [id]);
