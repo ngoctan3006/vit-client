@@ -1,8 +1,8 @@
+import animationData from 'assets/lotties/error-404.json';
+import { LoginButton } from 'components';
 import React from 'react';
 import Lottie from 'react-lottie';
 import { useNavigate } from 'react-router-dom';
-import animationData from '../../assets/lotties/error-404.json';
-import { LoginButton } from '../../components';
 import './index.scss';
 
 const NotFound: React.FC = () => {

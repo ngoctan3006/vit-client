@@ -1,12 +1,10 @@
 import { Avatar, Col, Row, Typography } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Loading } from 'components';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Loading } from '../../components';
-import { User } from '../../redux/slices/auth.slice';
-import { getUser } from '../../services/user';
+import { getPosition } from 'utils';
 import NotFound from '../NotFound';
 import './index.scss';
-import { getPosition } from '../../utils';
 
 const Title = Typography.Title;
 

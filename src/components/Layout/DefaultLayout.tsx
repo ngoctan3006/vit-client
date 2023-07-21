@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Footer, Header } from '../';
+import { Footer, Header } from '..';
 
-const Layout: React.FC = () => {
+const DefaultLayout: React.FC = () => {
   return (
     <>
       <Header />
@@ -12,4 +12,4 @@ const Layout: React.FC = () => {
   );
 };
 
-export default Layout;
+export default DefaultLayout;

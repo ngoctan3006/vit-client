@@ -53,3 +53,23 @@
     }
   }
 }
+
+.admin-header {
+  background-color: #fff !important;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 28px;
+  border-bottom: 1px solid #ccc;
+
+  .collapse-button {
+    font-size: 16px;
+    width: 64px;
+    height: 64px;
+
+    .icon-button {
+      font-size: 20px;
+    }
+  }
+}

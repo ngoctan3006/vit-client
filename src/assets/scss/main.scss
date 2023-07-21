@@ -5,6 +5,10 @@
   scroll-behavior: smooth;
 }
 
+.content {
+  padding: 28px;
+}
+
 .title {
   font-size: 2rem;
   font-weight: 700;
@@ -18,11 +22,9 @@
 .text-center {
   text-align: center;
 }
-
 .text-left {
   text-align: left;
 }
-
 .text-right {
   text-align: right;
 }
@@ -34,30 +36,94 @@
 .d-flex {
   display: flex;
 }
-
 .justify-center {
   justify-content: center;
 }
-
+.justify-between {
+  justify-content: space-between;
+}
+.justify-around {
+  justify-content: space-around;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
 .align-center {
   align-content: center;
 }
-
+.align-start {
+  align-content: flex-start;
+}
+.align-end {
+  align-content: flex-end;
+}
 .d-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.mt-auto {
+  margin-top: auto;
+}
+.mb-auto {
+  margin-bottom: auto;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.mr-auto {
+  margin-right: auto;
+}
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.my-auto {
+  margin: auto;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.w-half {
+  width: 50%;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #afe5ff;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
 @mixin spacing($property, $num) {
   #{$property}: 0.25rem * $num;
+}
+
+@mixin gap($num) {
+  gap: 0.25rem * $num;
 }
 
 @function class-name($prefix, $num) {
   @return '#{$prefix}-#{$num}';
 }
 
-@for $i from 1 through 20 {
+@for $i from 0 through 20 {
   .#{class-name('mt', $i)} {
     @include spacing('margin-top', $i);
   }
@@ -103,5 +169,8 @@
   }
   .#{class-name('p', $i)} {
     @include spacing('padding', $i);
+  }
+  .#{class-name('gap', $i)} {
+    @include gap($i);
   }
 }

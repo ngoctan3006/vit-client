@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { COMMON } from '../../constants';
+import { COMMON } from 'src/constants';
 import { getMe, login } from '../actions/auth.action';
 import { RootState } from '../store';
 
@@ -22,9 +22,9 @@ export interface User {
   date_join?: string;
   date_out?: string;
   last_login?: string;
-  gender?: string;
-  status?: string;
-  position?: string;
+  gender: string;
+  status: string;
+  position: string;
 }
 
 export interface AuthState {
