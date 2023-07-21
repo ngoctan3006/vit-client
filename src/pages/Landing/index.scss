@@ -1,0 +1,235 @@
+$padding: 240px;
+
+.justify-center {
+  justify-content: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.landing-header {
+  padding: 0 $padding;
+
+  .wrapper {
+    height: 100%;
+
+    .nav {
+      height: 100%;
+      margin-right: 24px;
+
+      .item {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        cursor: pointer;
+
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+
+        &:hover {
+          color: #0906b8;
+        }
+      }
+    }
+
+    $bg: #f3f8fa;
+    $white: #fff;
+    $black: #282936;
+
+    @mixin transition(
+      $property: all,
+      $duration: 0.45s,
+      $ease: cubic-bezier(0.65, 0, 0.076, 1)
+    ) {
+      transition: $property $duration $ease;
+    }
+
+    button {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      outline: none;
+      border: 0;
+      vertical-align: middle;
+      text-decoration: none;
+      background: transparent;
+      padding: 0;
+      width: 11rem;
+      height: max-content;
+      margin: auto;
+
+      .circle {
+        @include transition(all, 0.45s, cubic-bezier(0.65, 0, 0.076, 1));
+        position: relative;
+        display: block;
+        margin: 0;
+        width: 3rem;
+        height: 3rem;
+        background: $black;
+        border-radius: 1.625rem;
+
+        .icon {
+          @include transition(all, 0.45s, cubic-bezier(0.65, 0, 0.076, 1));
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+          background: $white;
+
+          &.arrow {
+            @include transition(all, 0.45s, cubic-bezier(0.65, 0, 0.076, 1));
+            left: 0.625rem;
+            width: 1.125rem;
+            height: 0.125rem;
+            background: none;
+
+            &::before {
+              position: absolute;
+              content: '';
+              top: -0.25rem;
+              right: 0.0625rem;
+              width: 0.625rem;
+              height: 0.625rem;
+              border-top: 0.125rem solid #fff;
+              border-right: 0.125rem solid #fff;
+              transform: rotate(45deg);
+            }
+          }
+        }
+      }
+
+      .button-text {
+        @include transition(all, 0.45s, cubic-bezier(0.65, 0, 0.076, 1));
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0.75rem 0;
+        margin: 0 0 0 2rem;
+        color: $black;
+        font-weight: 700;
+        line-height: 1.6;
+        text-align: center;
+      }
+
+      &:hover {
+        .circle {
+          width: 100%;
+
+          .icon {
+            &.arrow {
+              background: $white;
+              transform: translate(1rem, 0);
+            }
+          }
+        }
+
+        .button-text {
+          color: $white;
+        }
+      }
+    }
+
+    @supports (display: grid) {
+      body {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 0.625rem;
+        grid-template-areas: '. main main .' '. main main .';
+      }
+
+      #container {
+        grid-area: main;
+        align-self: center;
+        justify-self: center;
+      }
+    }
+  }
+}
+
+.section {
+  margin-top: 90px;
+
+  &.about {
+    height: 150vh;
+    background: url('https://phucvietauto.com/wp-content/uploads/2022/10/modern_background_pvauto.jpg');
+    background-size: cover;
+
+    .title {
+      font-weight: 900;
+      color: #0f28b8;
+    }
+
+    .banner {
+      width: 100%;
+      height: 600px;
+      background-image: url('../../assets/images/home-banner.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .content {
+      padding: 36px $padding;
+
+      h1 {
+        font-size: 38px;
+      }
+
+      .info-container {
+        display: flex;
+        gap: 32px;
+
+        .card {
+          width: 33%;
+          margin-top: 28px;
+          padding: 16px 42px 24px 42px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 24px;
+          position: relative;
+          background: white;
+          border-radius: 24px;
+
+          &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            box-shadow: 0 24px 48px rgba(17, 16, 62, 0.12);
+            mix-blend-mode: multiply;
+          }
+
+          &:nth-child(odd) {
+            top: 80px;
+          }
+
+          .birthday {
+            font-size: 42px;
+          }
+        }
+      }
+    }
+  }
+}
