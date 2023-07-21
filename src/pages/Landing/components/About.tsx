@@ -1,21 +1,24 @@
 import React from 'react';
+import iconMusic from 'assets/images/landing/icon-music.png';
+import iconCalendar from 'assets/images/landing/icon-callendar.png';
+import iconVolunteer from 'assets/images/landing/icon-volunteer.png';
 
 interface Props {
   className?: string;
+  id?: string;
 }
 
-const About: React.FC<Props> = ({ className }: Props) => {
+const About: React.FC<Props> = ({ className, id }: Props) => {
   return (
-    <div className={`${className} flex items-center`}>
-      <div className="banner"></div>
+    <div className={`${className} flex items-center`} id={id}>
       <div className="content">
-        <h1 className="text-center title">Đội Tình nguyện</h1>
-        <h1 className="text-center title">
-          Trường Công nghệ Thông tin và Truyền thông
-        </h1>
+        <div className="text-center title">
+          <div>Đội Tình nguyện</div>
+          <div>Trường Công nghệ Thông tin và Truyền thông</div>
+        </div>
         <div className="info-container">
           <div className="card">
-            <div className="logo d-flex justify-center items-center cursor-pointer">
+            <div className="d-flex justify-center items-center">
               <img src="/logo.png" width={80} height={80} alt="logo" />
             </div>
             <div>
@@ -31,11 +34,11 @@ const About: React.FC<Props> = ({ className }: Props) => {
             </div>
           </div>
           <div className="card">
-            <div className="logo d-flex justify-center items-center cursor-pointer">
-              <img src="/logo.png" width={80} height={80} alt="logo" />
+            <div className="d-flex justify-center items-center">
+              <img src={iconMusic} width={100} height={100} alt="icon-music" />
             </div>
             <div>
-              <h2 className="text-center">Bài hát của Đội:</h2>
+              <h2 className="text-center">Bài hát của Đội</h2>
               <br />
               <p>Đội có các bài hát truyền thống như:</p>
               <ul>
@@ -48,11 +51,16 @@ const About: React.FC<Props> = ({ className }: Props) => {
             </div>
           </div>
           <div className="card">
-            <div className="logo d-flex justify-center items-center cursor-pointer">
-              <img src="/logo.png" width={80} height={80} alt="logo" />
+            <div className="d-flex justify-center items-center">
+              <img
+                src={iconCalendar}
+                width={80}
+                height={80}
+                alt="icon-calendar"
+              />
             </div>
             <div>
-              <h2 className="text-center">Ngày truyền thống của Đội:</h2>
+              <h2 className="text-center">Ngày truyền thống</h2>
               <br />
               <h1 className="text-center birthday">21/09</h1>
               <br />
@@ -60,6 +68,25 @@ const About: React.FC<Props> = ({ className }: Props) => {
                 Đội được thành lập vào ngày 21/09/2009. Vì vậy đây vừa là ngày
                 truyền thống của Đội, cũng đồng thời là ngày sinh nhật Đội luôn.
               </p>
+            </div>
+          </div>
+          <div className="card">
+            <div className="d-flex justify-center items-center">
+              <img
+                src={iconVolunteer}
+                width={80}
+                height={80}
+                alt="icon-volunteer"
+              />
+            </div>
+            <div>
+              <h2 className="text-center">Hoạt động truyền thống hàng tuần</h2>
+              <br />
+              <p>
+                Hàng tuần, Đội có tổ chức hoạt động dạy học cho trẻ em tại Nhà
+                Nuôi dưỡng Trẻ em Hữu nghị Quận Đống Đa
+              </p>
+              <em>Địa chỉ tại: 102 P.Yên Lãng, Thịnh Quang, Đống Đa, Hà Nội</em>
             </div>
           </div>
         </div>

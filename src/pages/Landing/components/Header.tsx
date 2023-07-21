@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Header: React.FC = () => {
   return (
-    <div className="header landing-header d-flex justify-between items-center">
+    <div className="landing-header d-flex justify-between items-center">
       <div className="logo d-flex justify-center items-center cursor-pointer">
         <Link to="/">
           <img src="/logo.png" width={48} height={48} alt="logo" />
