@@ -169,7 +169,7 @@ $padding: 240px;
 
   &.about {
     height: 150vh;
-    background: url('https://phucvietauto.com/wp-content/uploads/2022/10/modern_background_pvauto.jpg');
+    background: url(../../assets/images/landing/landing-bg.png);
     background-size: cover;
 
     .title {
@@ -180,7 +180,7 @@ $padding: 240px;
     .banner {
       width: 100%;
       height: 600px;
-      background-image: url('../../assets/images/home-banner.jpg');
+      background-image: url(../../assets/images/landing/home-banner.jpg);
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
