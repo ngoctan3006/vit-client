@@ -1,16 +1,24 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import {
+  Activity,
+  Club,
+  Dashboard,
+  Department,
+  Event,
   FirstLogin,
   ForgotPassword,
+  Group,
   Home,
   Landing,
   Login,
+  Member,
   NotFound,
   Profile,
   ResetPassword,
-} from '../pages';
-import ProtectedRouter from './ProtectedRouter';
+} from 'pages';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { COMMON } from '../constants';
+import { ProtectedRouter } from './';
 
 const Router: React.FC = () => {
   return (
@@ -25,6 +33,15 @@ const Router: React.FC = () => {
         <Route element={<ProtectedRouter />}>
           <Route path="home" element={<Home />} />
           <Route path="profile/:id?" element={<Profile />} />
+        </Route>
+        <Route path="admin" element={<ProtectedRouter role={COMMON.ADMIN} />}>
+          <Route index element={<Dashboard />} />
+          <Route path="activity" element={<Activity />} />
+          <Route path="department" element={<Department />} />
+          <Route path="member" element={<Member />} />
+          <Route path="event" element={<Event />} />
+          <Route path="group" element={<Group />} />
+          <Route path="club" element={<Club />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

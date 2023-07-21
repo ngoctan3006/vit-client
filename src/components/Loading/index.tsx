@@ -1,6 +1,6 @@
+import animationData from 'assets/lotties/loading.json';
 import React from 'react';
 import Lottie from 'react-lottie';
-import animationData from '../../assets/lotties/loading.json';
 import './index.scss';
 
 const Loading: React.FC = () => {
