@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   DatePicker,
   Form,
   Input,
@@ -152,6 +153,7 @@ const Member: React.FC = () => {
           initialValues={{
             gender: 'OTHER',
             position: 'MEMBER',
+            isSendMail: true,
           }}
         >
           <Form.Item
@@ -202,11 +204,19 @@ const Member: React.FC = () => {
             <DatePicker
               placeholder=""
               className="w-full"
-              format={DATE_FORMAT}
+              picker="month"
+              format="MM/YYYY"
             />
           </Form.Item>
           <Form.Item id="position-select" label="Vị trí" name="position">
             <Select options={Position} />
+          </Form.Item>
+          <Form.Item
+            valuePropName="checked"
+            wrapperCol={{ offset: 6, span: 18 }}
+            name="isSendMail"
+          >
+            <Checkbox>Gửi email?</Checkbox>
           </Form.Item>
         </Form>
       ),
