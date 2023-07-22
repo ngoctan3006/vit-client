@@ -1,5 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import { COMMON } from 'src/constants';
 import { getMe, login } from '../actions/auth.action';
 import { RootState } from '../store';
 
@@ -21,9 +22,9 @@ export interface User {
   date_join?: string;
   date_out?: string;
   last_login?: string;
-  gender?: string;
-  status?: string;
-  position?: string;
+  gender: string;
+  status: string;
+  position: string;
 }
 
 export interface AuthState {
@@ -41,7 +42,15 @@ const initialState: AuthState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    active(state: AuthState) {
+      if (state.user) state.user = { ...state.user, status: COMMON.ACTIVE };
+    },
+    logout(state: AuthState) {
+      state.isAuthenticated = false;
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state: AuthState) => {
       state.loading = true;
@@ -80,5 +89,7 @@ export const authSlice = createSlice({
 });
 
 export const authSelector = (state: RootState) => state.auth;
+
+export const { active, logout } = authSlice.actions;
 
 export default authSlice.reducer;

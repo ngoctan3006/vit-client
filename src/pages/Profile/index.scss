@@ -1,0 +1,15 @@
+@import '../../assets/scss/variables';
+
+.profile {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: $headerHeight;
+
+  .container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 50px auto;
+  }
+}

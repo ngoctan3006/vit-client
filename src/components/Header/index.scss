@@ -1,0 +1,75 @@
+@import '../../assets/scss/variables';
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background-color: rgb(255, 217, 217);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  height: $headerHeight;
+
+  .container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+
+    .logo {
+      width: 60px;
+    }
+
+    .right {
+      margin-left: auto;
+
+      .nav {
+        display: flex;
+        gap: 12px;
+
+        .navlink {
+          color: #333;
+          text-decoration: none;
+          font-weight: 600;
+          animation: all 0.3s ease-in-out;
+
+          &:hover {
+            color: purple;
+          }
+        }
+
+        .active {
+          color: purple;
+        }
+      }
+
+      .dropdown {
+        margin-left: 24px;
+        cursor: pointer;
+
+        .avatar {
+          width: 36px;
+        }
+      }
+    }
+  }
+}
+
+.admin-header {
+  background-color: #fff !important;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 28px;
+  border-bottom: 1px solid #ccc;
+
+  .collapse-button {
+    font-size: 16px;
+    width: 64px;
+    height: 64px;
+
+    .icon-button {
+      font-size: 20px;
+    }
+  }
+}

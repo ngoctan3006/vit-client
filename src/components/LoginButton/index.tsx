@@ -7,7 +7,7 @@ interface Props {
   type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
-const LogginButton: React.FC<Props> = ({ children, onClick, type }) => {
+const LoginButton: React.FC<Props> = ({ children, onClick, type }) => {
   return (
     <div className="login-button-wrap">
       <div className="login-btn-wrap">
@@ -20,4 +20,4 @@ const LogginButton: React.FC<Props> = ({ children, onClick, type }) => {
   );
 };
 
-export default LogginButton;
+export default LoginButton;

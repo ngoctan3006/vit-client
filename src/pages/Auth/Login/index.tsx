@@ -1,13 +1,14 @@
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input } from 'antd';
+import { Loading, LoginButton } from 'components';
 import React, { useEffect } from 'react';
 import { BiLockAlt } from 'react-icons/bi';
 import { FaRegUser } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Loading, LoginButton } from '../../../components';
-import { getMe, login } from '../../../redux/actions/auth.action';
-import { authSelector } from '../../../redux/slices/auth.slice';
-import { AppDispatch } from '../../../redux/store';
+import { getMe, login } from 'redux/actions/auth.action';
+import { authSelector } from 'redux/slices/auth.slice';
+import { useAppDispatch } from 'redux/store';
+import { COMMON } from 'src/constants';
 import '../index.scss';
 
 export interface LoginState {
@@ -17,26 +18,23 @@ export interface LoginState {
 
 const Login: React.FC = () => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const { loading } = useSelector(authSelector);
   const navigate = useNavigate();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: '/home' } };
 
   const handleLogin = async (data: LoginState) => {
-    try {
-      dispatch(login(data)).then((res) => {
-        if (res.type.includes('fulfilled')) {
-          form.resetFields();
-          message.success('Đăng nhập thành công');
-          navigate(from, { replace: true });
-        }
-      });
-    } catch (error) {}
+    dispatch(login(data)).then((res) => {
+      if (res.type.endsWith('fulfilled')) {
+        form.resetFields();
+        navigate(from, { replace: true });
+      }
+    });
   };
 
   useEffect(() => {
-    if (localStorage.getItem('accessToken'))
+    if (localStorage.getItem(COMMON.ACCESS_TOKEN))
       dispatch(getMe()).then((res) => {
         if (res.type.includes('fulfilled')) {
           navigate(from, { replace: true });
