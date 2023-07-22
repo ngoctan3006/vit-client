@@ -20,8 +20,8 @@ const members: MemberInfo[] = [
     isFirstPage: true,
     content: (
       <div className="page-wrapper firstpage">
-        <h1 className="relative text-center">Humans of VIT</h1>
-
+        <h1 className="text-center">Humans of VIT</h1>
+        <div className="relative"></div>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, earum.
           Asperiores sapiente, obcaecati non facilis voluptates a et magni!
@@ -37,7 +37,7 @@ const members: MemberInfo[] = [
     description:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex earum vel sed placeat nihil, exercitationem, repudiandae ipsam alias praesentium sint odio quis ad nulla nobis excepturi. Facilis harum asperiores iste alias autem voluptatem reiciendis officia, quod sint, ipsum ullam iusto explicabo necessitatibus eius. Distinctio recusandae, hic error eius quo suscipit?',
     image:
-      'https://i.pinimg.com/474x/2d/f0/92/2df092a91d84d46215f288086b6509ad.jpg',
+      'https://i.pinimg.com/736x/55/8e/fe/558efe12b06a64e304ab04eab7bedba4.jpg',
   },
   {
     name: 'Lorem, ipsum dolor.',
@@ -53,15 +53,7 @@ const members: MemberInfo[] = [
     description:
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex earum vel sed placeat nihil, exercitationem, repudiandae ipsam alias praesentium sint odio quis ad nulla nobis excepturi. Facilis harum asperiores iste alias autem voluptatem reiciendis officia, quod sint, ipsum ullam iusto explicabo necessitatibus eius. Distinctio recusandae, hic error eius quo suscipit?',
     image:
-      'https://i.pinimg.com/564x/b8/bb/f4/b8bbf4100e56894a54a152d8a122547d.jpg',
-  },
-  {
-    name: 'Lorem, ipsum dolor.',
-    position: 'Lorem ipsum dolor sit amet.',
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex earum vel sed placeat nihil, exercitationem, repudiandae ipsam alias praesentium sint odio quis ad nulla nobis excepturi. Facilis harum asperiores iste alias autem voluptatem reiciendis officia, quod sint, ipsum ullam iusto explicabo necessitatibus eius. Distinctio recusandae, hic error eius quo suscipit?',
-    image:
-      'https://i.pinimg.com/736x/55/8e/fe/558efe12b06a64e304ab04eab7bedba4.jpg',
+      'https://i.pinimg.com/474x/2d/f0/92/2df092a91d84d46215f288086b6509ad.jpg',
   },
   {
     name: 'Lorem, ipsum dolor.',
@@ -70,6 +62,14 @@ const members: MemberInfo[] = [
       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex earum vel sed placeat nihil, exercitationem, repudiandae ipsam alias praesentium sint odio quis ad nulla nobis excepturi. Facilis harum asperiores iste alias autem voluptatem reiciendis officia, quod sint, ipsum ullam iusto explicabo necessitatibus eius. Distinctio recusandae, hic error eius quo suscipit?',
     image:
       'https://i.pinimg.com/474x/2d/f0/92/2df092a91d84d46215f288086b6509ad.jpg',
+  },
+  {
+    name: 'Lorem, ipsum dolor.',
+    position: 'Lorem ipsum dolor sit amet.',
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex earum vel sed placeat nihil, exercitationem, repudiandae ipsam alias praesentium sint odio quis ad nulla nobis excepturi. Facilis harum asperiores iste alias autem voluptatem reiciendis officia, quod sint, ipsum ullam iusto explicabo necessitatibus eius. Distinctio recusandae, hic error eius quo suscipit?',
+    image:
+      'https://i.pinimg.com/564x/b8/bb/f4/b8bbf4100e56894a54a152d8a122547d.jpg',
   },
 ];
 
@@ -106,9 +106,9 @@ const FeaturedMembers: React.FC<Props> = ({ className, id }: Props) => {
       >
         {members?.map((member, index) =>
           member.isFirstPage ? (
-            member.content
+            <div key={index}>{member.content}</div>
           ) : (
-            <div className="page-wrapper">
+            <div className="page-wrapper" key={index}>
               <div className="page relative">
                 <span className="page-num absolute">{index + 1}</span>
                 <div className="wrapper flex">

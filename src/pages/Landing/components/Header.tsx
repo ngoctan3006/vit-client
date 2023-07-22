@@ -18,7 +18,7 @@ const Header: React.FC = () => {
             <a href="#featured-members">Những gương mặt tiêu biểu</a>
           </div>
           <div className="item">
-            <a href="#contact">Liên hệ</a>
+            <a href="#contacts">Liên hệ</a>
           </div>
         </div>
         <button className="btn">
