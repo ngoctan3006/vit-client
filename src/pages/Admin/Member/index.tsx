@@ -35,7 +35,8 @@ const Member: React.FC = () => {
   const { members, loading } = useSelector(memberSelector);
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState('manual');
-  const [form] = Form.useForm<CreateMemberValues>();
+  const [form1] = Form.useForm<CreateMemberValues>();
+  const [form2] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (key: string) => {
@@ -134,7 +135,8 @@ const Member: React.FC = () => {
   };
 
   const handleOK = () => {
-    if (tab === 'manual') form.submit();
+    if (tab === 'manual') form1.submit();
+    else form2.submit();
   };
 
   const handleSubmit = async (createMemberValues: CreateMemberValues) => {
@@ -149,13 +151,17 @@ const Member: React.FC = () => {
       });
       await getMembers();
       message.success(data.data.message);
-      form.resetFields();
+      form1.resetFields();
     } catch (error: any) {
       message.error(error.response.data.message);
       setOpen(true);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleUpload = async (uploadFileValues: any) => {
+    console.log(uploadFileValues);
   };
 
   const getMembers = async () => {
@@ -174,7 +180,7 @@ const Member: React.FC = () => {
       children: (
         <Form
           name="create-member"
-          form={form}
+          form={form1}
           className="mt-6"
           labelCol={{ span: 6 }}
           labelAlign="left"
@@ -253,7 +259,36 @@ const Member: React.FC = () => {
     {
       key: 'file',
       label: <Typography.Text>Thêm tệp</Typography.Text>,
-      children: <div>thêm tệp</div>,
+      children: (
+        <Form
+          name="upload-file"
+          form={form2}
+          className="mt-6"
+          onFinish={handleUpload}
+          labelCol={{ span: 6 }}
+          labelAlign="left"
+          initialValues={{
+            isSendMail: true,
+          }}
+        >
+          <Form.Item
+            label="File excel"
+            name="file"
+            rules={[
+              { required: true, message: 'Vui lòng tải lên file của bạn' },
+            ]}
+          >
+            <Input type="file" />
+          </Form.Item>
+          <Form.Item
+            valuePropName="checked"
+            wrapperCol={{ offset: 6, span: 18 }}
+            name="isSendMail"
+          >
+            <Checkbox>Gửi email?</Checkbox>
+          </Form.Item>
+        </Form>
+      ),
     },
   ];
 
