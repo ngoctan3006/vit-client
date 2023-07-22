@@ -66,7 +66,11 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
             .toISOString(),
         })),
       })
-    );
+    ).then((res) => {
+      if (res.type.endsWith('fulfilled')) {
+        form.resetFields();
+      }
+    });
     setShow(false);
   };
 
