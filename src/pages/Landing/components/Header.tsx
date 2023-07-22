@@ -21,7 +21,7 @@ const Header: React.FC = () => {
             <Link to="#featured-members">Những gương mặt tiêu biểu</Link>
           </div>
           <div className="item">
-            <Link to="#contact">Liên hệ</Link>
+            <Link to="#contacts">Liên hệ</Link>
           </div>
         </div>
         <button className="btn">
