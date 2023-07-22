@@ -1,16 +1,19 @@
 import {
+  About,
   Activity,
-  Club,
-  Dashboard,
-  Department,
+  AdminActivity,
+  AdminClub,
+  AdminDashboard,
+  AdminDepartment,
+  AdminEvent,
+  AdminGroup,
+  AdminMember,
   Event,
   FirstLogin,
   ForgotPassword,
-  Group,
   Home,
   Landing,
   Login,
-  Member,
   NotFound,
   Profile,
   ResetPassword,
@@ -32,16 +35,19 @@ const Router: React.FC = () => {
         <Route path="welcome" element={<FirstLogin />} />
         <Route element={<ProtectedRouter />}>
           <Route path="home" element={<Home />} />
+          <Route path="activity" element={<Activity />} />
+          <Route path="event" element={<Event />} />
+          <Route path="about" element={<About />} />
           <Route path="profile/:id?" element={<Profile />} />
         </Route>
         <Route path="admin" element={<ProtectedRouter role={COMMON.ADMIN} />}>
-          <Route index element={<Dashboard />} />
-          <Route path="activity" element={<Activity />} />
-          <Route path="department" element={<Department />} />
-          <Route path="member" element={<Member />} />
-          <Route path="event" element={<Event />} />
-          <Route path="group" element={<Group />} />
-          <Route path="club" element={<Club />} />
+          <Route index element={<AdminDashboard />} />
+          <Route path="activity" element={<AdminActivity />} />
+          <Route path="department" element={<AdminDepartment />} />
+          <Route path="member" element={<AdminMember />} />
+          <Route path="event" element={<AdminEvent />} />
+          <Route path="group" element={<AdminGroup />} />
+          <Route path="club" element={<AdminClub />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
