@@ -5,9 +5,9 @@ interface Props {
   id?: string;
 }
 
-const FeaturedActivities: React.FC<Props> = ({ className, id }: Props) => {
+const FeaturedActivities: React.FC<Props> = ({ className, id }) => {
   return (
-    <div className={`${className}`} id={id}>
+    <div className={className} id={id}>
       <h1 className="text-center title">
         Các hoạt động tiêu biểu của Đội trong năm học 2022 - 2023
       </h1>
