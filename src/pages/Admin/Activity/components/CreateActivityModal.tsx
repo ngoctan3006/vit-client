@@ -85,7 +85,6 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
         name="create-activity"
         layout="vertical"
         onFinish={handleSubmit}
-        autoComplete="off"
         className="mt-10"
         initialValues={{
           times: [{}],
