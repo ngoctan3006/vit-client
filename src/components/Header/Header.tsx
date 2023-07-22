@@ -26,11 +26,6 @@ const NavLinkItems = [
     path: '/event',
   },
   {
-    key: 'contact',
-    name: 'Liên hệ',
-    path: '/contact',
-  },
-  {
     key: 'about',
     name: 'Về chúng tôi',
     path: '/about',
