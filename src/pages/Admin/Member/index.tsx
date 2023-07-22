@@ -1,33 +1,44 @@
-import { Table, Tag } from 'antd';
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Radio,
+  Select,
+  Table,
+  Tabs,
+  TabsProps,
+  Tag,
+  Typography,
+} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { getAllMember } from 'redux/actions';
 import { memberSelector } from 'redux/slices/member.slice';
 import { useAppDispatch } from 'redux/store';
+import { DATE_FORMAT } from 'src/constants';
 import { defaultQueryParam } from 'src/constants/type';
 import { getPosition } from 'utils';
 import './index.scss';
-
-interface DataType {
-  key: string;
-  username: string;
-  fullname: string;
-  email: string;
-  phone: string;
-  date_join?: string | null;
-  date_out?: string | null;
-  gender: string;
-  status: string;
-  position: string;
-}
+import { CreateMemberValues, MemberDataType } from './types';
+import { Position } from 'src/constants/position';
 
 const Member: React.FC = () => {
   const dispatch = useAppDispatch();
   const { members, loading } = useSelector(memberSelector);
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState('manual');
+  const [form] = Form.useForm<CreateMemberValues>();
 
-  const columns: ColumnsType<DataType> = [
+  const onChange = (key: string) => {
+    setTab(key);
+  };
+
+  const columns: ColumnsType<MemberDataType> = [
     {
       key: 'username',
       title: 'Tên đăng nhập',
@@ -89,7 +100,7 @@ const Member: React.FC = () => {
     },
   ];
 
-  const dataSource: DataType[] = members.map<DataType>(
+  const dataSource: MemberDataType[] = members.map<MemberDataType>(
     ({
       username,
       fullname,
@@ -114,6 +125,10 @@ const Member: React.FC = () => {
     })
   );
 
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
   const getMembers = async () => {
     dispatch(getAllMember(defaultQueryParam));
   };
@@ -123,9 +138,99 @@ const Member: React.FC = () => {
     getMembers();
   }, []);
 
+  const items: TabsProps['items'] = [
+    {
+      key: 'manual',
+      label: <Typography.Text>Nhập tay</Typography.Text>,
+      children: (
+        <Form
+          name="create-member"
+          form={form}
+          className="mt-6"
+          labelCol={{ span: 6 }}
+          labelAlign="left"
+          initialValues={{
+            gender: 'OTHER',
+            position: 'MEMBER',
+          }}
+        >
+          <Form.Item
+            label="Họ tên"
+            name="fullname"
+            rules={[{ required: true, message: 'Vui lòng nhập họ tên' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Số điện thoại"
+            name="phone"
+            rules={[{ required: true, message: 'Vui lòng nhập số điện thoại' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: 'Vui lòng nhập Email' }]}
+          >
+            <Input type="email" />
+          </Form.Item>
+          <Form.Item label="Giới tính" name="gender">
+            <Radio.Group>
+              <Radio value="MALE">Nam</Radio>
+              <Radio value="FEMALE">Nữ</Radio>
+              <Radio value="OTHER">Khác</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item label="Ngày sinh" name="birthday">
+            <DatePicker
+              placeholder=""
+              className="w-full"
+              format={DATE_FORMAT}
+            />
+          </Form.Item>
+          <Form.Item label="Trường (Khoa/Viện)" name="school">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Lớp" name="class">
+            <Input />
+          </Form.Item>
+          <Form.Item label="MSSV" name="student_id">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Ngày vào Đội" name="date_join">
+            <DatePicker
+              placeholder=""
+              className="w-full"
+              format={DATE_FORMAT}
+            />
+          </Form.Item>
+          <Form.Item id="position-select" label="Vị trí" name="position">
+            <Select options={Position} />
+          </Form.Item>
+        </Form>
+      ),
+    },
+    {
+      key: 'file',
+      label: <Typography.Text>Thêm tệp</Typography.Text>,
+      children: <div>thêm tệp</div>,
+    },
+  ];
+
   return (
     <div className="content member">
       <h2 className="title mb-15">Quản lý nhân sự</h2>
+      <div className="d-flex mb-6">
+        <Button
+          className="d-center ml-auto gap-2"
+          type="primary"
+          icon={<AiOutlinePlus />}
+          onClick={() => setOpen(true)}
+        >
+          Thêm thành viên
+        </Button>
+      </div>
       <Table
         loading={loading}
         columns={columns}
@@ -133,6 +238,17 @@ const Member: React.FC = () => {
         size="small"
         bordered
       />
+
+      <Modal
+        open={open}
+        title="Thêm thành viên"
+        onCancel={handleCancel}
+        onOk={handleCancel}
+        cancelText="Huỷ"
+        width={600}
+      >
+        <Tabs items={items} onChange={onChange} />
+      </Modal>
     </div>
   );
 };
