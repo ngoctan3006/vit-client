@@ -1,33 +1,55 @@
-import { Table, Tag } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Radio,
+  Row,
+  Select,
+  Table,
+  Tabs,
+  TabsProps,
+  Tag,
+  Typography,
+  message,
+} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { BsDownload } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import { getAllMember } from 'redux/actions';
 import { memberSelector } from 'redux/slices/member.slice';
 import { useAppDispatch } from 'redux/store';
+import { DATE_FORMAT } from 'src/constants';
+import { Position } from 'src/constants/position';
 import { defaultQueryParam } from 'src/constants/type';
+import { importMany, signupUser } from 'src/services/auth';
 import { getPosition } from 'utils';
 import './index.scss';
-
-interface DataType {
-  key: string;
-  username: string;
-  fullname: string;
-  email: string;
-  phone: string;
-  date_join?: string | null;
-  date_out?: string | null;
-  gender: string;
-  status: string;
-  position: string;
-}
+import { CreateMemberValues, MemberDataType } from './types';
 
 const Member: React.FC = () => {
   const dispatch = useAppDispatch();
   const { members, loading } = useSelector(memberSelector);
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState('manual');
+  const [form1] = Form.useForm<CreateMemberValues>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState<File>();
+  const [value, setValue] = useState();
+  const [isFileEmpty, setIsFileEmpty] = useState(false);
+  const [isSendMail, setIsSendMail] = useState(true);
 
-  const columns: ColumnsType<DataType> = [
+  const onChange = (key: string) => {
+    setTab(key);
+  };
+
+  const columns: ColumnsType<MemberDataType> = [
     {
       key: 'username',
       title: 'Tên đăng nhập',
@@ -89,7 +111,7 @@ const Member: React.FC = () => {
     },
   ];
 
-  const dataSource: DataType[] = members.map<DataType>(
+  const dataSource: MemberDataType[] = members.map<MemberDataType>(
     ({
       username,
       fullname,
@@ -114,8 +136,75 @@ const Member: React.FC = () => {
     })
   );
 
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  const handleOK = () => {
+    if (tab === 'manual') form1.submit();
+    else handleUpload();
+  };
+
+  const handleSubmit = async (createMemberValues: CreateMemberValues) => {
+    const { birthday, date_join, ...rest } = createMemberValues;
+    try {
+      setIsLoading(true);
+      setOpen(false);
+      const { data } = await signupUser({
+        ...rest,
+        birthday: birthday && dayjs(birthday).toISOString(),
+        date_join: date_join && dayjs(date_join).toISOString(),
+      });
+      await getMembers();
+      message.success(data.data.message);
+      form1.resetFields();
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      setOpen(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!file) {
+      setIsFileEmpty(true);
+      return;
+    }
+    const fileData = new FormData();
+    fileData.append('file', file);
+    try {
+      setIsLoading(true);
+      setOpen(false);
+      const { data } = await importMany(fileData, isSendMail);
+      message.success(data.data.message);
+      setValue(undefined);
+    } catch (error: any) {
+      console.log(error);
+      message.error(error.response.data.message);
+      setOpen(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (file) setIsFileEmpty(false);
+  }, [file]);
+
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
   const getMembers = async () => {
     dispatch(getAllMember(defaultQueryParam));
+  };
+
+  const handleDownload = () => {
+    const fileUrl = '/src/assets/excel/template-data.xlsx';
+    window.open(fileUrl, '_blank');
   };
 
   useEffect(() => {
@@ -123,16 +212,204 @@ const Member: React.FC = () => {
     getMembers();
   }, []);
 
+  const items: TabsProps['items'] = [
+    {
+      key: 'manual',
+      label: <Typography.Text>Nhập tay</Typography.Text>,
+      children: (
+        <Form
+          name="create-member"
+          form={form1}
+          className="mt-6"
+          labelCol={{ span: 6 }}
+          labelAlign="left"
+          onFinish={handleSubmit}
+          initialValues={{
+            gender: 'OTHER',
+            position: 'MEMBER',
+            isSendMail: true,
+          }}
+        >
+          <Form.Item
+            label="Họ tên"
+            name="fullname"
+            rules={[{ required: true, message: 'Vui lòng nhập họ tên' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Số điện thoại"
+            name="phone"
+            rules={[{ required: true, message: 'Vui lòng nhập số điện thoại' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: 'Vui lòng nhập Email' }]}
+          >
+            <Input type="email" />
+          </Form.Item>
+          <Form.Item label="Giới tính" name="gender">
+            <Radio.Group>
+              <Radio value="MALE">Nam</Radio>
+              <Radio value="FEMALE">Nữ</Radio>
+              <Radio value="OTHER">Khác</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item label="Ngày sinh" name="birthday">
+            <DatePicker
+              placeholder=""
+              className="w-full"
+              format={DATE_FORMAT}
+            />
+          </Form.Item>
+          <Form.Item label="Trường (Khoa/Viện)" name="school">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Lớp" name="class">
+            <Input />
+          </Form.Item>
+          <Form.Item label="MSSV" name="student_id">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Ngày vào Đội" name="date_join">
+            <DatePicker
+              placeholder=""
+              className="w-full"
+              picker="month"
+              format="MM/YYYY"
+            />
+          </Form.Item>
+          <Form.Item id="position-select" label="Vị trí" name="position">
+            <Select options={Position} />
+          </Form.Item>
+          <Form.Item
+            valuePropName="checked"
+            wrapperCol={{ offset: 6, span: 18 }}
+            name="isSendMail"
+          >
+            <Checkbox>Gửi email?</Checkbox>
+          </Form.Item>
+        </Form>
+      ),
+    },
+    {
+      key: 'file',
+      label: <Typography.Text>Thêm tệp</Typography.Text>,
+      children: (
+        <>
+          <div className="d-flex mt-6">
+            <Button
+              className="d-center ml-auto gap-2"
+              type="primary"
+              icon={<BsDownload />}
+              onClick={handleDownload}
+            >
+              Tải file mẫu
+            </Button>
+          </div>
+          <Row className="mt-6">
+            <Col span={6}>
+              <label htmlFor="upload-file">
+                <span style={{ color: 'red' }}>* </span>
+                File excel :
+              </label>
+            </Col>
+            <Col span={18}>
+              <input
+                value={value}
+                onChange={handleChangeFile}
+                id="upload-file"
+                type="file"
+                name="file"
+                accept=".xlsx,.xls"
+              />
+              {isFileEmpty && (
+                <p className="mb-0" style={{ color: 'red' }}>
+                  Bạn chưa chọn file nào
+                </p>
+              )}
+            </Col>
+          </Row>
+          <Row className="my-4">
+            <Col span={6}></Col>
+            <Col span={18}>
+              <Checkbox
+                checked={isSendMail}
+                onChange={(e) => {
+                  setIsSendMail(e.target.checked);
+                }}
+              >
+                Gửi email?
+              </Checkbox>
+            </Col>
+          </Row>
+          {/* <Form
+            name="upload-file"
+            form={form2}
+            className="mt-6"
+            onFinish={handleUpload}
+            labelCol={{ span: 6 }}
+            labelAlign="left"
+            initialValues={{
+              isSendMail: true,
+            }}
+          >
+            <Form.Item
+              label="File excel"
+              name="file"
+              rules={[
+                { required: true, message: 'Vui lòng tải lên file của bạn' },
+              ]}
+            >
+              <input type="file" />
+            </Form.Item>
+            <Form.Item
+              valuePropName="checked"
+              wrapperCol={{ offset: 6, span: 18 }}
+              name="isSendMail"
+            >
+              <Checkbox>Gửi email?</Checkbox>
+            </Form.Item>
+          </Form> */}
+        </>
+      ),
+    },
+  ];
+
   return (
     <div className="content member">
       <h2 className="title mb-15">Quản lý nhân sự</h2>
+      <div className="d-flex mb-6">
+        <Button
+          className="d-center ml-auto gap-2"
+          type="primary"
+          icon={<AiOutlinePlus />}
+          onClick={() => setOpen(true)}
+        >
+          Thêm thành viên
+        </Button>
+      </div>
       <Table
-        loading={loading}
+        loading={loading || isLoading}
         columns={columns}
         dataSource={dataSource}
         size="small"
         bordered
       />
+
+      <Modal
+        open={open}
+        title="Thêm thành viên"
+        onCancel={handleCancel}
+        onOk={handleOK}
+        cancelText="Huỷ"
+        width={600}
+      >
+        <Tabs items={items} onChange={onChange} />
+      </Modal>
     </div>
   );
 };

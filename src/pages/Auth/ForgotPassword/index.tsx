@@ -27,7 +27,6 @@ const ForgotPassWord: React.FC = () => {
       navigate('/login');
     } catch (error: any) {
       message.error(error.response.data.message);
-      console.log(error.response.data);
     }
     setLoading(false);
   };
