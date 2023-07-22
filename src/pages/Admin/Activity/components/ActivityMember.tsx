@@ -64,7 +64,6 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ activity }) => {
       await getMember();
       message.success(data.data.message);
     } catch (error: any) {
-      console.log(error);
       message.error(error?.response?.data?.message);
     } finally {
       setLoading(false);
@@ -79,7 +78,6 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ activity }) => {
       await getMember();
       message.success(data.data.message);
     } catch (error: any) {
-      console.log(error);
       message.error(error?.response?.data?.message);
     } finally {
       setLoading(false);
