@@ -18,6 +18,7 @@ import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
+import { BsDownload } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import { getAllMember } from 'redux/actions';
 import { memberSelector } from 'redux/slices/member.slice';
@@ -168,6 +169,11 @@ const Member: React.FC = () => {
     dispatch(getAllMember(defaultQueryParam));
   };
 
+  const handleDownload = () => {
+    const fileUrl = '/src/assets/excel/template-data.xlsx';
+    window.open(fileUrl, '_blank');
+  };
+
   useEffect(() => {
     document.title = 'VIT | Quản lý nhân sự';
     getMembers();
@@ -260,34 +266,46 @@ const Member: React.FC = () => {
       key: 'file',
       label: <Typography.Text>Thêm tệp</Typography.Text>,
       children: (
-        <Form
-          name="upload-file"
-          form={form2}
-          className="mt-6"
-          onFinish={handleUpload}
-          labelCol={{ span: 6 }}
-          labelAlign="left"
-          initialValues={{
-            isSendMail: true,
-          }}
-        >
-          <Form.Item
-            label="File excel"
-            name="file"
-            rules={[
-              { required: true, message: 'Vui lòng tải lên file của bạn' },
-            ]}
+        <>
+          <div className="d-flex mt-6">
+            <Button
+              className="d-center ml-auto gap-2"
+              type="primary"
+              icon={<BsDownload />}
+              onClick={handleDownload}
+            >
+              Tải file mẫu
+            </Button>
+          </div>
+          <Form
+            name="upload-file"
+            form={form2}
+            className="mt-6"
+            onFinish={handleUpload}
+            labelCol={{ span: 6 }}
+            labelAlign="left"
+            initialValues={{
+              isSendMail: true,
+            }}
           >
-            <Input type="file" />
-          </Form.Item>
-          <Form.Item
-            valuePropName="checked"
-            wrapperCol={{ offset: 6, span: 18 }}
-            name="isSendMail"
-          >
-            <Checkbox>Gửi email?</Checkbox>
-          </Form.Item>
-        </Form>
+            <Form.Item
+              label="File excel"
+              name="file"
+              rules={[
+                { required: true, message: 'Vui lòng tải lên file của bạn' },
+              ]}
+            >
+              <Input type="file" />
+            </Form.Item>
+            <Form.Item
+              valuePropName="checked"
+              wrapperCol={{ offset: 6, span: 18 }}
+              name="isSendMail"
+            >
+              <Checkbox>Gửi email?</Checkbox>
+            </Form.Item>
+          </Form>
+        </>
       ),
     },
   ];
