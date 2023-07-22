@@ -25,6 +25,7 @@ export interface Activity {
 export interface ActivityTime {
   id: number;
   name: string;
+  number_require: number;
   start_time: string;
   end_time: string;
 }

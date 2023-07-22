@@ -1,4 +1,12 @@
-import { Avatar, Badge, Button, Table, Tooltip, message } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Table,
+  Tooltip,
+  Typography,
+  message,
+} from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useMemo, useState } from 'react';
 import { BsCheck, BsX } from 'react-icons/bs';
@@ -9,11 +17,12 @@ import {
   rejectActivity,
 } from 'services/activity';
 import { GetActivityMember } from 'src/redux/actions';
-import { convertData, getStatus } from '../utils';
+import { Activity } from 'src/redux/slices/activity.slice';
+import { ActivityStatus } from '../constants';
+import { convertAnalyticData, convertData, getStatus } from '../utils';
 
 interface ActivityMemberProps {
-  id?: number;
-  name?: string;
+  activity?: Activity;
 }
 
 export interface ActivityMemberState {
@@ -24,15 +33,20 @@ export interface ActivityMemberState {
   [key: string]: string | null;
 }
 
-const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
+export interface ActivityAnalytic {
+  [key: number]: number;
+  name: string;
+}
+
+const ActivityMember: React.FC<ActivityMemberProps> = ({ activity }) => {
   const [loading, setLoading] = useState(false);
   const [activityMember, setActivityMember] = useState<GetActivityMember[]>([]);
 
   const getMember = async () => {
-    if (id) {
+    if (activity) {
       try {
         setLoading(true);
-        const { data } = await getActivityMember(id);
+        const { data } = await getActivityMember(activity.id);
         setActivityMember(data.data);
       } catch (error: any) {
         console.log(error);
@@ -139,26 +153,53 @@ const ActivityMember: React.FC<ActivityMemberProps> = ({ id, name }) => {
     ];
   }, [activityMember]);
 
+  const analyticColumns: ColumnsType<ActivityAnalytic> = useMemo(() => {
+    return [
+      {
+        dataIndex: 'name',
+        title: '',
+        render: (text: string) => (
+          <Typography.Text>{ActivityStatus[text]}</Typography.Text>
+        ),
+      },
+      ...activityMember.map((item) => ({
+        dataIndex: `${item.id}`,
+        title: item.name,
+      })),
+    ];
+  }, [[activityMember]]);
+
   const dataSource: ActivityMemberState[] = useMemo(
     () => convertData(activityMember),
     [activityMember]
   );
 
-  console.log({ dataSource });
+  const analyticData: ActivityAnalytic[] = useMemo(
+    () => convertAnalyticData(activityMember, activity?.times),
+    [activityMember]
+  );
 
   useEffect(() => {
     getMember();
-  }, [id]);
+  }, [activity?.id]);
 
   return (
     <div>
-      <p className="subtitle">{name}</p>
+      <p className="subtitle">{activity?.name}</p>
       <Table
         loading={loading}
         columns={columns}
         dataSource={dataSource}
         size="small"
         bordered
+      />
+
+      <Table
+        loading={loading}
+        columns={analyticColumns}
+        dataSource={analyticData}
+        size="small"
+        pagination={false}
       />
     </div>
   );
