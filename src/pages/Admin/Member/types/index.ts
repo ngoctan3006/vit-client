@@ -25,3 +25,9 @@ export interface CreateMemberValues {
   gender: string;
   position: string;
 }
+
+export interface CreateUserDto
+  extends Omit<CreateMemberValues, 'birthday' | 'date_join'> {
+  birthday: string;
+  date_join: string;
+}

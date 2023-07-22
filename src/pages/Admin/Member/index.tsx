@@ -12,6 +12,7 @@ import {
   TabsProps,
   Tag,
   Typography,
+  message,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
@@ -22,11 +23,12 @@ import { getAllMember } from 'redux/actions';
 import { memberSelector } from 'redux/slices/member.slice';
 import { useAppDispatch } from 'redux/store';
 import { DATE_FORMAT } from 'src/constants';
+import { Position } from 'src/constants/position';
 import { defaultQueryParam } from 'src/constants/type';
+import { signupUser } from 'src/services/auth';
 import { getPosition } from 'utils';
 import './index.scss';
 import { CreateMemberValues, MemberDataType } from './types';
-import { Position } from 'src/constants/position';
 
 const Member: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -34,6 +36,7 @@ const Member: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState('manual');
   const [form] = Form.useForm<CreateMemberValues>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (key: string) => {
     setTab(key);
@@ -130,6 +133,31 @@ const Member: React.FC = () => {
     setOpen(false);
   };
 
+  const handleOK = () => {
+    if (tab === 'manual') form.submit();
+  };
+
+  const handleSubmit = async (createMemberValues: CreateMemberValues) => {
+    const { birthday, date_join, ...rest } = createMemberValues;
+    try {
+      setIsLoading(true);
+      setOpen(false);
+      const { data } = await signupUser({
+        ...rest,
+        birthday: birthday && dayjs(birthday).toISOString(),
+        date_join: date_join && dayjs(date_join).toISOString(),
+      });
+      await getMembers();
+      message.success(data.data.message);
+      form.resetFields();
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      setOpen(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getMembers = async () => {
     dispatch(getAllMember(defaultQueryParam));
   };
@@ -150,6 +178,7 @@ const Member: React.FC = () => {
           className="mt-6"
           labelCol={{ span: 6 }}
           labelAlign="left"
+          onFinish={handleSubmit}
           initialValues={{
             gender: 'OTHER',
             position: 'MEMBER',
@@ -242,7 +271,7 @@ const Member: React.FC = () => {
         </Button>
       </div>
       <Table
-        loading={loading}
+        loading={loading || isLoading}
         columns={columns}
         dataSource={dataSource}
         size="small"
@@ -253,7 +282,7 @@ const Member: React.FC = () => {
         open={open}
         title="Thêm thành viên"
         onCancel={handleCancel}
-        onOk={handleCancel}
+        onOk={handleOK}
         cancelText="Huỷ"
         width={600}
       >
