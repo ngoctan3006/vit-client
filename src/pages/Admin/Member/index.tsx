@@ -1,11 +1,13 @@
 import {
   Button,
   Checkbox,
+  Col,
   DatePicker,
   Form,
   Input,
   Modal,
   Radio,
+  Row,
   Select,
   Table,
   Tabs,
@@ -26,7 +28,7 @@ import { useAppDispatch } from 'redux/store';
 import { DATE_FORMAT } from 'src/constants';
 import { Position } from 'src/constants/position';
 import { defaultQueryParam } from 'src/constants/type';
-import { signupUser } from 'src/services/auth';
+import { importMany, signupUser } from 'src/services/auth';
 import { getPosition } from 'utils';
 import './index.scss';
 import { CreateMemberValues, MemberDataType } from './types';
@@ -37,8 +39,11 @@ const Member: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState('manual');
   const [form1] = Form.useForm<CreateMemberValues>();
-  const [form2] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState<File>();
+  const [value, setValue] = useState();
+  const [isFileEmpty, setIsFileEmpty] = useState(false);
+  const [isSendMail, setIsSendMail] = useState(true);
 
   const onChange = (key: string) => {
     setTab(key);
@@ -137,7 +142,7 @@ const Member: React.FC = () => {
 
   const handleOK = () => {
     if (tab === 'manual') form1.submit();
-    else form2.submit();
+    else handleUpload();
   };
 
   const handleSubmit = async (createMemberValues: CreateMemberValues) => {
@@ -161,8 +166,36 @@ const Member: React.FC = () => {
     }
   };
 
-  const handleUpload = async (uploadFileValues: any) => {
-    console.log(uploadFileValues);
+  const handleUpload = async () => {
+    if (!file) {
+      setIsFileEmpty(true);
+      return;
+    }
+    const fileData = new FormData();
+    fileData.append('file', file);
+    try {
+      setIsLoading(true);
+      setOpen(false);
+      const { data } = await importMany(fileData, isSendMail);
+      message.success(data.data.message);
+      setValue(undefined);
+    } catch (error: any) {
+      console.log(error);
+      message.error(error.response.data.message);
+      setOpen(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (file) setIsFileEmpty(false);
+  }, [file]);
+
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
   };
 
   const getMembers = async () => {
@@ -277,7 +310,43 @@ const Member: React.FC = () => {
               Tải file mẫu
             </Button>
           </div>
-          <Form
+          <Row className="mt-6">
+            <Col span={6}>
+              <label htmlFor="upload-file">
+                <span style={{ color: 'red' }}>* </span>
+                File excel :
+              </label>
+            </Col>
+            <Col span={18}>
+              <input
+                value={value}
+                onChange={handleChangeFile}
+                id="upload-file"
+                type="file"
+                name="file"
+                accept=".xlsx,.xls"
+              />
+              {isFileEmpty && (
+                <p className="mb-0" style={{ color: 'red' }}>
+                  Bạn chưa chọn file nào
+                </p>
+              )}
+            </Col>
+          </Row>
+          <Row className="my-4">
+            <Col span={6}></Col>
+            <Col span={18}>
+              <Checkbox
+                checked={isSendMail}
+                onChange={(e) => {
+                  setIsSendMail(e.target.checked);
+                }}
+              >
+                Gửi email?
+              </Checkbox>
+            </Col>
+          </Row>
+          {/* <Form
             name="upload-file"
             form={form2}
             className="mt-6"
@@ -295,7 +364,7 @@ const Member: React.FC = () => {
                 { required: true, message: 'Vui lòng tải lên file của bạn' },
               ]}
             >
-              <Input type="file" />
+              <input type="file" />
             </Form.Item>
             <Form.Item
               valuePropName="checked"
@@ -304,7 +373,7 @@ const Member: React.FC = () => {
             >
               <Checkbox>Gửi email?</Checkbox>
             </Form.Item>
-          </Form>
+          </Form> */}
         </>
       ),
     },
