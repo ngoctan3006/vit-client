@@ -27,7 +27,7 @@ const ActivityDetail: React.FC<ActivityDetailProps> = ({
     {
       key: 'member',
       label: 'Thành viên tham gia',
-      children: <ActivityMember id={activity?.id} name={activity?.name} />,
+      children: <ActivityMember activity={activity} />,
     },
   ];
 

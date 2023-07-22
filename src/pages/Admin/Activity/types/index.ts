@@ -10,6 +10,7 @@ export interface ActivityValues {
   times: Array<{
     id?: number;
     name: string;
+    number_require: number;
     date: Dayjs;
     time: Dayjs[];
   }>;

@@ -51,6 +51,7 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
           .toISOString(),
         times: data.times.map((time) => ({
           name: time.name,
+          number_require: time.number_require,
           start_time: dayjs(time.date)
             .hour(time.time[0].hour())
             .minute(time.time[0].minute())
@@ -163,7 +164,7 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
             <>
               {fields.map(({ key, name, ...restField }, index) => (
                 <Row gutter={16} key={key}>
-                  <Col span={6}>
+                  <Col span={5}>
                     <Form.Item
                       {...restField}
                       label="Tên"
@@ -179,7 +180,7 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
                       <Input />
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={6}>
                     <Form.Item
                       {...restField}
                       label="Ngày"
@@ -199,7 +200,7 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
                       />
                     </Form.Item>
                   </Col>
-                  <Col span={8}>
+                  <Col span={7}>
                     <Form.Item
                       {...restField}
                       label="Giờ"
@@ -217,6 +218,22 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
                         placeholder={['Bắt đầu', 'Kết thúc']}
                         format={[TIME_FORMAT, TIME_FORMAT]}
                       />
+                    </Form.Item>
+                  </Col>
+                  <Col span={4}>
+                    <Form.Item
+                      {...restField}
+                      label="Số lượng"
+                      name={[name, 'number_require']}
+                      rules={[
+                        {
+                          required: true,
+                          message:
+                            'Vui lòng nhập số lượng người yêu cầu cho kíp này',
+                        },
+                      ]}
+                    >
+                      <Input type="number" />
                     </Form.Item>
                   </Col>
                   <Col span={2} className="d-flex">
