@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import About from './components/About';
-import Contacts from './components/Contacts';
-import FeaturedActivities from './components/FeaturedActivities';
-import FeaturedMembers from './components/FeaturedMembers';
-import Header from './components/Header';
+import {
+  About,
+  Contacts,
+  FeaturedActivities,
+  FeaturedMembers,
+  Header,
+} from './components';
 import './index.scss';
 
 const Landing: React.FC = () => {

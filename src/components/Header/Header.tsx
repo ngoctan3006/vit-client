@@ -1,10 +1,12 @@
 import { Avatar, Dropdown, MenuProps } from 'antd';
 import React from 'react';
 import { BiLogOutCircle, BiUser } from 'react-icons/bi';
-import { useDispatch, useSelector } from 'react-redux';
+import { MdOutlineAdminPanelSettings } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { COMMON } from '../../constants';
-import { authSelector, logout } from '../../redux/slices/auth.slice';
+import { authSelector, logout } from 'redux/slices/auth.slice';
+import { useAppDispatch } from 'redux/store';
+import { COMMON } from 'src/constants';
 import './index.scss';
 
 const NavLinkItems = [
@@ -24,11 +26,6 @@ const NavLinkItems = [
     path: '/event',
   },
   {
-    key: 'contact',
-    name: 'Liên hệ',
-    path: '/contact',
-  },
-  {
     key: 'about',
     name: 'Về chúng tôi',
     path: '/about',
@@ -38,7 +35,7 @@ const NavLinkItems = [
 const Header: React.FC = () => {
   const { user } = useSelector(authSelector);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const items: MenuProps['items'] = [
     {
@@ -46,11 +43,16 @@ const Header: React.FC = () => {
       label: <Link to="/profile">Thông tin cá nhân</Link>,
       icon: <BiUser />,
     },
+    user?.position === 'ADMIN' && {
+      key: '2',
+      label: <Link to="/admin">Trang quản trị</Link>,
+      icon: <MdOutlineAdminPanelSettings />,
+    },
     {
       type: 'divider',
     },
     {
-      key: '3',
+      key: '4',
       label: <span>Đăng xuẩt</span>,
       danger: true,
       icon: <BiLogOutCircle />,
@@ -62,7 +64,7 @@ const Header: React.FC = () => {
         window.location.reload();
       },
     },
-  ];
+  ].filter(Boolean) as MenuProps['items'];
 
   return (
     <div className="header d-center">

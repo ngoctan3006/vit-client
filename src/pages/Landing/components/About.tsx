@@ -1,7 +1,7 @@
 import React from 'react';
-import iconMusic from '../../../assets/icon-music.png';
-import iconCalendar from '../../../assets/icon-callendar.png';
-import iconVolunteer from '../../../assets/icon-volunteer.png';
+import iconMusic from 'assets/images/landing/icon-music.png';
+import iconCalendar from 'assets/images/landing/icon-callendar.png';
+import iconVolunteer from 'assets/images/landing/icon-volunteer.png';
 
 interface Props {
   className?: string;
@@ -10,7 +10,7 @@ interface Props {
 
 const About: React.FC<Props> = ({ className, id }: Props) => {
   return (
-    <div className={`${className}`} id={id}>
+    <div className={className} id={id}>
       <div className="text-center title">
         <div>Đội Tình nguyện</div>
         <div>Trường Công nghệ Thông tin và Truyền thông</div>
@@ -25,10 +25,10 @@ const About: React.FC<Props> = ({ className, id }: Props) => {
             <br />
             <p>
               Đội có tên gọi đầy đủ là Đội sinh viên Tình Nguyện Trường Công
-              nghệ Thông tin và Truyền thông – Đại học Bách Khoa Hà Nội
+              nghệ Thông tin và Truyền thông - Đại học Bách Khoa Hà Nội
             </p>
             <p>
-              Tên viết tắt: V.I.T (VIT) – Volunteer of Information Technology
+              Tên viết tắt: V.I.T (VIT) - Volunteer of Information Technology
             </p>
           </div>
         </div>

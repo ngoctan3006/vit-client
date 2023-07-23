@@ -73,9 +73,9 @@ const members: MemberInfo[] = [
   },
 ];
 
-const FeaturedMembers: React.FC<Props> = ({ className, id }: Props) => {
+const FeaturedMembers: React.FC<Props> = ({ className, id }) => {
   return (
-    <div className={`${className}`} id={id}>
+    <div className={className} id={id}>
       <h1 className="text-center title">
         Cùng điểm qua những gương mặt tiêu biểu của Đội
       </h1>

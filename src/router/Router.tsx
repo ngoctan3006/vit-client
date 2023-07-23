@@ -1,6 +1,14 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import {
+  About,
+  Activity,
+  AdminActivity,
+  AdminClub,
+  AdminDashboard,
+  AdminDepartment,
+  AdminEvent,
+  AdminGroup,
+  AdminMember,
+  Event,
   FirstLogin,
   ForgotPassword,
   Home,
@@ -9,8 +17,11 @@ import {
   NotFound,
   Profile,
   ResetPassword,
-} from '../pages';
-import ProtectedRouter from './ProtectedRouter';
+} from 'pages';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { COMMON } from '../constants';
+import { ProtectedRouter } from './';
 
 const Router: React.FC = () => {
   return (
@@ -24,7 +35,19 @@ const Router: React.FC = () => {
         <Route path="welcome" element={<FirstLogin />} />
         <Route element={<ProtectedRouter />}>
           <Route path="home" element={<Home />} />
+          <Route path="activity" element={<Activity />} />
+          <Route path="event" element={<Event />} />
+          <Route path="about" element={<About />} />
           <Route path="profile/:id?" element={<Profile />} />
+        </Route>
+        <Route path="admin" element={<ProtectedRouter role={COMMON.ADMIN} />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="activity" element={<AdminActivity />} />
+          <Route path="department" element={<AdminDepartment />} />
+          <Route path="member" element={<AdminMember />} />
+          <Route path="event" element={<AdminEvent />} />
+          <Route path="group" element={<AdminGroup />} />
+          <Route path="club" element={<AdminClub />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

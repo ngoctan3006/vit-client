@@ -1,0 +1,13 @@
+.dropdown {
+  cursor: pointer;
+
+  .username {
+    margin-bottom: 0;
+    margin-left: 8px;
+    font-weight: 700;
+
+    .hello {
+      font-weight: 400;
+    }
+  }
+}

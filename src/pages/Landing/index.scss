@@ -258,7 +258,7 @@ $bannerHeight: 700px;
 .banner {
   width: 100%;
   height: $bannerHeight;
-  background-image: url('../../assets/home-banner.jpg');
+  background-image: url(../../assets/images/landing/home-banner.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -276,7 +276,7 @@ $bannerHeight: 700px;
 
   &.about {
     height: 100vh;
-    background: url('https://phucvietauto.com/wp-content/uploads/2022/10/modern_background_pvauto.jpg');
+    background: url(../../assets/images/landing/landing-bg.png);
     background-size: cover;
 
     .info-container {
@@ -496,7 +496,7 @@ $bannerHeight: 700px;
         -webkit-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        background-image: url('https://img.freepik.com/premium-photo/paper-texture-old-book-page-backgrounds_180633-2925.jpg?w=360');
+        background-image: url(../../assets/images/landing/old-book.png);
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
@@ -527,7 +527,7 @@ $bannerHeight: 700px;
               left: 0;
               width: 100%;
               z-index: 1;
-              background-image: url('../../assets/paint-splatter.png');
+              background-image: url(../../assets/images/landing/paint-splatter.png);
               background-repeat: no-repeat;
               background-size: 100% 100%;
             }

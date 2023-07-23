@@ -1,10 +1,10 @@
 import { Button, Form, Input, message } from 'antd';
+import { Loading, LoginButton } from 'components';
 import React, { useState } from 'react';
 import { FaRegUser } from 'react-icons/fa';
 import { FiMail, FiPhone } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { Loading, LoginButton } from '../../../components';
-import { requestResetPasswordAPI } from '../../../services/auth';
+import { requestResetPasswordAPI } from 'services/auth';
 
 export interface RequestResetPasswordState {
   username: string;
@@ -27,7 +27,6 @@ const ForgotPassWord: React.FC = () => {
       navigate('/login');
     } catch (error: any) {
       message.error(error.response.data.message);
-      console.log(error.response.data);
     }
     setLoading(false);
   };
