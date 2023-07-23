@@ -17,10 +17,8 @@ import {
   NotFound,
   Profile,
   ResetPassword,
-  HPBD,
-  MHX,
-  XYT,
-  NHSVTN,
+  Detail,
+  Members,
 } from 'pages';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -41,10 +39,8 @@ const Router: React.FC = () => {
           <Route path="home" element={<Home />} />
           <Route path="activity" element={<Activity />} />
           <Route path="event" element={<Event />} />
-          <Route path="event/HPBD" element={<HPBD />} />
-          <Route path="event/XYT" element={<XYT />} />
-          <Route path="event/NHSVTN" element={<NHSVTN />} />
-          <Route path="event/MHX" element={<MHX />} />
+          <Route path="event/Detail" element={<Detail />} />
+          <Route path="event/Members" element={<Members />} />
           <Route path="about" element={<About />} />
           <Route path="profile/:id?" element={<Profile />} />
         </Route>

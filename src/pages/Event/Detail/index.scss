@@ -44,16 +44,58 @@ $padding: 360px;
 
     .part {
       border-radius: 20px;
+      padding: 40px;
+      .label {
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      .item {
+         font-size: 20px; 
+         margin-bottom: 15px;
+      }
     }
+
+    
 
     .detail {
       width: 65%;
       background-color: antiquewhite;
+      
     }
 
     .participants {
       width: 35%;
       background-color: azure;
     }
+  }
+
+  .info-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+
+    .card {
+      width: calc(33% - 32px);
+      margin-top: 64px;
+      padding: 16px 42px 24px 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      background-color: rgba(245, 239, 239, 0.95);
+      border-radius: 24px;
+      box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+
+      &:nth-child(odd) {
+        top: 80px;
+      }
+    }
+  }
+  p {
+    font-size: 20px;
+    padding: 50px;
   }
 }

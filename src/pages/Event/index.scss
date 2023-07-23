@@ -1,5 +1,59 @@
-@import '../../assets/scss/variables';
+$padding: 360px;
 
 .event {
-  padding-top: $headerHeight;
+  padding: 0 $padding;
+
+  .main-banner {
+    margin-top: 120px;
+
+    .image-wrapper {
+      width: 100%;
+      height: 100%;
+
+      .image {
+        display: block;
+        width: auto;
+        height: 500px;
+        max-width: 75%;
+        max-height: 100%;
+        border-radius: 48px;
+        margin: auto;
+      }
+    }
+
+    .title {
+      padding: 24px 0;
+
+      .time {
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 1.5;
+      }
+
+      .event-name {
+        font-weight: 900;
+        font-size: 28px;
+        line-height: 1.5;
+      }
+    }
+  }
+
+  .flex {
+    display: flex;
+    padding-bottom: 48px;
+
+    .part {
+      border-radius: 20px;
+    }
+
+    .detail {
+      width: 65%;
+      background-color: antiquewhite;
+    }
+
+    .participants {
+      width: 35%;
+      background-color: azure;
+    }
+  }
 }
