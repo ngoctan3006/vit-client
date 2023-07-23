@@ -3,6 +3,10 @@
 .home {
   padding-top: $headerHeight;
 
+  .d-center {
+    position: relative;
+  }
+
   .left-right-side {
     display: flex;
     justify-content: space-between;
