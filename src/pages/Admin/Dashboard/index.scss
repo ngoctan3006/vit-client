@@ -1,0 +1,64 @@
+.dashboard-main {
+  width: 100%;
+  height: calc(100vh - 64px);
+  padding: 36px 48px;
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+
+  .part {
+    .title {
+      padding: 12px 12px 0 12px;
+      font-size: 20px;
+      text-align: center;
+    }
+  }
+
+  .excellent-members {
+    max-width: 25%;
+    gap: 18px;
+    padding: 20px;
+    background-color: rgb(243, 221, 195);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: 100%;
+    overflow-y: auto;
+
+    .card {
+      padding: 18px 32px;
+      border-radius: 12px;
+      background-color: rgb(173, 104, 19);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+
+      img {
+        border-radius: 100%;
+      }
+
+      div {
+        p {
+          margin-bottom: 0;
+        }
+
+        & > p:first-child {
+          font-size: 18px;
+          font-weight: 700;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  .calendar {
+    max-width: 75%;
+
+    .events {
+      padding-inline-start: 8px;
+    }
+  }
+}
