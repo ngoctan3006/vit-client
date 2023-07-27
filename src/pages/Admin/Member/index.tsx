@@ -179,6 +179,7 @@ const Member: React.FC = () => {
       const { data } = await importMany(fileData, isSendMail);
       message.success(data.data.message);
       setValue(undefined);
+      await getMembers();
     } catch (error: any) {
       console.log(error);
       message.error(error.response.data.message);
