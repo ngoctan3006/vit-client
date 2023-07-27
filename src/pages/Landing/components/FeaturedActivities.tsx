@@ -25,7 +25,7 @@ const FeaturedActivities: React.FC<Props> = ({ className, id }) => {
         </li>
         <li>
           <div className="date" style={{ backgroundColor: '#FBCA3E' }}>
-            05 - 2022
+            05 - 2023
           </div>
           <div className="title">Cốc trà đá vì cộng đồng mùa thứ 12</div>
           <div className="descr">
@@ -73,9 +73,12 @@ const FeaturedActivities: React.FC<Props> = ({ className, id }) => {
           <div className="date" style={{ backgroundColor: '#1B5F8C' }}>
             2022
           </div>
-          <div className="title">Title 5</div>
+          <div className="title">Hỗ trợ chào tân sinh viên K67</div>
           <div className="descr">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odit, non.
+            Trong không khí toàn trường chào đón các bạn sinh viên K67, Đội đã
+            tham gia hỗ trợ các công tác tổ chức sự kiện chào tân, qua đó góp
+            phần giúp sự kiện sôi động và hoành tráng này được diễn ra thành
+            công tốt đẹp, để lại ấn tượng tốt trong lòng các tân sinh viên
           </div>
         </li>
       </ul>
