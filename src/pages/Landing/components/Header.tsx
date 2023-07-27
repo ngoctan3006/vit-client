@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 
 const Header: React.FC = () => {
   return (
@@ -12,25 +13,27 @@ const Header: React.FC = () => {
       <div className="wrapper d-flex">
         <div className="nav d-flex justify-between items-center">
           <div className="item">
-            <Link to="#about">Thông tin chung</Link>
+            <HashLink to="#about">Thông tin chung</HashLink>
           </div>
           <div className="item">
-            <Link to="#featured-activities">Các hoạt động nổi bật</Link>
+            <HashLink to="#featured-activities">Các hoạt động nổi bật</HashLink>
           </div>
           <div className="item">
-            <Link to="#featured-members">Những gương mặt tiêu biểu</Link>
+            <HashLink to="#featured-members">
+              Những gương mặt tiêu biểu
+            </HashLink>
           </div>
           <div className="item">
-            <Link to="#contacts">Liên hệ</Link>
+            <HashLink to="#contacts">Liên hệ</HashLink>
           </div>
         </div>
         <button className="btn">
-          <Link to="/login">
+          <HashLink to="/login">
             <span className="circle" aria-hidden="true">
               <span className="icon arrow"></span>
             </span>
             <span className="button-text">Đăng nhập</span>
-          </Link>
+          </HashLink>
         </button>
       </div>
     </div>
