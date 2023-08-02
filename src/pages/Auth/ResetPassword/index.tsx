@@ -44,7 +44,6 @@ const ResetPassword: React.FC = () => {
       navigate('/login', { replace: true });
     } catch (error: any) {
       message.error(error.response.data.message);
-      console.log(error.response.data);
     } finally {
       setLoading(false);
     }

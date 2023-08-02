@@ -1,5 +1,5 @@
 import {
-  About,
+  Feedback,
   Activity,
   AdminActivity,
   AdminClub,
@@ -37,7 +37,7 @@ const Router: React.FC = () => {
           <Route path="home" element={<Home />} />
           <Route path="activity" element={<Activity />} />
           <Route path="event" element={<Event />} />
-          <Route path="about" element={<About />} />
+          <Route path="feedback" element={<Feedback />} />
           <Route path="profile/:id?" element={<Profile />} />
         </Route>
         <Route path="admin" element={<ProtectedRouter role={COMMON.ADMIN} />}>
