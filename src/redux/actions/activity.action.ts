@@ -37,6 +37,25 @@ export interface GetActivityMember {
   member: ActivityMemberDto[];
 }
 
+export interface GetActivities {
+  id: number;
+  name: string;
+  description: string;
+  location: string;
+  deadline: string;
+  event_id: number;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string;
+  times: Array<{
+    id: number;
+    name: string;
+    number_require: number;
+    start_time: string;
+    end_time: string;
+  }>;
+}
+
 export interface UpdateActivityDto extends CreateActivityDto {
   id: number;
   times: Array<{
@@ -57,6 +76,8 @@ export const getAllActivity = createAsyncThunk<Activity[], QueryParamType>(
       const {
         data: { data: res },
       } = await API.get(`${prefix}?page=${page}&limit=${limit}`);
+      console.log(res);
+
       return res;
     } catch (error: any) {
       message.error(error.response.data.message);

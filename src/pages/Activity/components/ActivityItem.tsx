@@ -3,8 +3,11 @@ import { createEntityAdapter } from '@reduxjs/toolkit';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import { BsPeople } from 'react-icons/bs';
 import { BiMessageDetail } from 'react-icons/bi';
-
-const ActivityItem: React.FC = () => {
+import dayjs from 'dayjs';
+import { DATE_FORMAT } from 'src/constants';
+import { Link } from 'react-router-dom';
+const ActivityItem: React.FC = ({ data }) => {
+  console.log(data);
   return (
     <div
       className="d-flex p-5 ml-5 mb-5"
@@ -21,8 +24,7 @@ const ActivityItem: React.FC = () => {
         <img src="https://ctsv.hust.edu.vn/static/img/activity.a80f3233.png" />
       </div>
       <div style={{ textAlign: 'center', margin: '10px', fontWeight: '600' }}>
-        Đoàn thanh niên - Hội sinh viên Trường Công nghệ Thông tin & Truyền
-        thông
+        {data.name}
       </div>
       <div
         style={{
@@ -32,32 +34,21 @@ const ActivityItem: React.FC = () => {
         }}
       >
         <div style={{ marginBottom: '10px', fontWeight: '500' }}>
-          Tham gia Họp lớp thường kỳ do Trường CNTT&TT tổ chức
+          {data.description}
         </div>
         <div style={{ marginBottom: '10px', fontWeight: '450' }}>
-          <AiOutlineFieldTime /> 2023-02-14
+          <AiOutlineFieldTime /> {dayjs(data.deadline).format(DATE_FORMAT)}
         </div>
         <div className="d-flex justify-between mb-5">
-          <div style={{ color: 'purple' }}>
+          <Link to={`${data.id}/paticipant`} style={{ color: 'purple' }}>
             <BsPeople />
             Thành viên
-          </div>
-          <div style={{ color: '#67c23a' }}>
+          </Link>
+          <Link to={`${data.id}/detail`} style={{ color: '#67c23a' }}>
             <BiMessageDetail />
             Chi tiết
-          </div>
+          </Link>
         </div>
-        <span
-          style={{
-            color: '#67c23a',
-            fontStyle: 'italic',
-            fontSize: '14px',
-            backgroundColor: '#f0f9eb',
-            padding: '5px',
-          }}
-        >
-          Đăng ký thành công
-        </span>
       </div>
     </div>
   );

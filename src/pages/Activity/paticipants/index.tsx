@@ -1,14 +1,12 @@
-import './index.scss';
-import ActivityItem from './components/ActivityItem';
-import PaticipantsTable from './components/PaticipantsTable';
 import React, { useEffect } from 'react';
+import ActivityItem from '../components/ActivityItem';
 import { useAppDispatch } from 'redux/store';
 import { activitySelector } from 'redux/slices/activity.slice';
 import { useSelector } from 'react-redux';
 import { getAllActivity } from 'redux/actions';
 import { defaultQueryParam } from 'src/constants';
 
-const Activity: React.FC = () => {
+const ActivityPaticipant: React.FC = () => {
   const dispatch = useAppDispatch();
   const { activities } = useSelector(activitySelector);
   const getActivities = async () => {
@@ -18,6 +16,7 @@ const Activity: React.FC = () => {
   useEffect(() => {
     getActivities();
   }, []);
+
   return (
     <div
       className="activity m-5 d-flex "
@@ -25,11 +24,9 @@ const Activity: React.FC = () => {
         flexWrap: 'wrap',
       }}
     >
-      {activities?.map((activity) => (
-        <ActivityItem data={activity} />
-      ))}
+      <ActivityItem />
     </div>
   );
 };
 
-export default Activity;
+export default ActivityPaticipant;

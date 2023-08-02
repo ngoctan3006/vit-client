@@ -1,7 +1,7 @@
 import React from 'react';
 import { Space, Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-
+import { Link } from 'react-router-dom';
 interface DataType {
   key: string;
   name: string;
@@ -56,70 +56,35 @@ const data: DataType[] = [
   },
   {
     key: '3',
-    name: 'Tạ Hải Tùng',
+    name: 'Trương Quang Phú',
     mssv: '00000000',
     roll: 'Thành viên',
     school: 'Trường CNTT & TT',
   },
   {
     key: '4',
-    name: 'Tạ Hải Tùng',
+    name: 'Trương Văn Hiển',
     mssv: '00000000',
     roll: 'Thành viên',
     school: 'Trường CNTT & TT',
   },
   {
     key: '5',
-    name: 'Tạ Hải Tùng',
+    name: 'Lưu Toàn Thắng',
     mssv: '00000000',
     roll: 'Thành viên',
     school: 'Trường CNTT & TT',
   },
   {
     key: '6',
-    name: 'Tạ Hải Tùng',
+    name: 'Nguyễn Văn Hiếu',
     mssv: '00000000',
     roll: 'Thành viên',
     school: 'Trường CNTT & TT',
   },
   {
     key: '7',
-    name: 'Tạ Hải Tùng',
-    mssv: '00000000',
-    roll: 'Thành viên',
-    school: 'Trường CNTT & TT',
-  },
-  {
-    key: '8',
-    name: 'Tạ Hải Tùng',
-    mssv: '00000000',
-    roll: 'Thành viên',
-    school: 'Trường CNTT & TT',
-  },
-  {
-    key: '9',
-    name: 'Tạ Hải Tùng',
-    mssv: '00000000',
-    roll: 'Thành viên',
-    school: 'Trường CNTT & TT',
-  },
-  {
-    key: '10',
-    name: 'Tạ Hải Tùng',
-    mssv: '00000000',
-    roll: 'Thành viên',
-    school: 'Trường CNTT & TT',
-  },
-  {
-    key: '11',
-    name: 'Tạ Hải Tùng',
-    mssv: '00000000',
-    roll: 'Thành viên',
-    school: 'Trường CNTT & TT',
-  },
-  {
-    key: '12',
-    name: 'Tạ Hải Tùng',
+    name: 'Nguyễn Ngọc Tân',
     mssv: '00000000',
     roll: 'Thành viên',
     school: 'Trường CNTT & TT',
@@ -127,7 +92,7 @@ const data: DataType[] = [
 ];
 
 const PaticipantsTable: React.FC = () => (
-  <div className="w-full mx-5">
+  <div className="w-full mx-5 mt-20">
     <Table columns={columns} dataSource={data} />
   </div>
 );
