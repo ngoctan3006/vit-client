@@ -1,29 +1,27 @@
+import type { UploadProps } from 'antd';
 import {
-  Avatar,
+  Button,
   Col,
+  DatePicker,
+  Form,
+  Image,
+  Input,
+  Modal,
   Row,
   Typography,
-  Button,
-  Modal,
-  Form,
-  Input,
-  DatePicker,
-  message,
-  Image,
-  Space,
   Upload,
+  message,
 } from 'antd';
-import type { UploadProps } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { Loading } from 'components';
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
+import { BiCamera } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
+import { DATE_FORMAT } from 'src/constants';
 import { getPosition } from 'utils';
 import NotFound from '../NotFound';
 import './index.scss';
-import dayjs from 'dayjs';
-import { DATE_FORMAT } from 'src/constants';
-import { EditOutlined } from '@ant-design/icons';
 
 const Title = Typography.Title;
 
@@ -31,7 +29,7 @@ const profile = {
   id: 32,
   username: 'hieu.dm',
   fullname: 'Dương Minh Hiếu',
-  email: 'hieu.dm176584@sis.hust.edu.vn',
+  email: 'hieu.dm202233@sis.hust.edu.vn',
   phone: '0961360123',
   bio: 'Xin chào',
   avatar: 'https://vit-storage.s3.amazonaws.com/1683949735412_766250704.png',
@@ -39,13 +37,13 @@ const profile = {
   hometown: 'Thành phố Thái Nguyên, tỉnh Thái Nguyên',
   address: 'Yên Lãng, Hà Nội',
   school: 'Đại học Bách Khoa Hà Nội',
-  student_id: '20172233',
-  class: 'Cơ điện tử',
+  student_id: '20202233',
+  class: 'IT2 - 02',
   cccd: '123456789',
   date_join: '2021-04-01T00:59:30.000Z',
   date_out: '2022-04-01T00:59:30.000Z',
   last_login: null,
-  gender: 'MALE',
+  gender: 'Nam',
   status: 'ACTIVE',
   position: 'MEMBER',
   created_at: '2023-05-06T16:02:38.547Z',
@@ -73,13 +71,10 @@ const props: UploadProps = {
 
 const Profile: React.FC = () => {
   const { id } = useParams();
-  // const [profile, setProfile] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [modalText, setModalText] = useState('Content of the modal');
-  const [messageApi, contextHolder] = message.useMessage();
 
   const showModal = () => {
     setOpen(true);
@@ -100,15 +95,6 @@ const Profile: React.FC = () => {
     console.log('Clicked cancel button');
     setOpen(false);
   };
-
-  // const success = () => {
-  //   setTimeout(() => {messageApi.open({
-  //     type: 'success',
-  //     content: 'This is a success message',
-  //   });
-  // }, 2000);
-
-  // };
 
   // useEffect(() => {
   //   const getInfo = async () => {
@@ -134,7 +120,7 @@ const Profile: React.FC = () => {
     <div className="profile">
       <div className="container">
         <Row>
-          <Col xs={24} sm={8} className="d-center">
+          <Col xs={24} sm={8} className="d-center mb-auto">
             {/* <Avatar size={200} src={profile?.avatar} /> */}
             <div className="profile-ava">
               <div className="img-wrap">
@@ -146,9 +132,16 @@ const Profile: React.FC = () => {
               </div>
               <ImgCrop rotationSlider>
                 <Upload {...props}>
-                  <Button icon={<EditOutlined />}>Edit</Button>
+                  <Button
+                    className="d-center"
+                    shape="circle"
+                    icon={<BiCamera />}
+                  ></Button>
                 </Upload>
               </ImgCrop>
+              <div className="bio mt-3 text-center">
+                <Typography.Text>{profile?.bio}</Typography.Text>
+              </div>
             </div>
           </Col>
           <Col xs={24} sm={16}>
@@ -186,6 +179,54 @@ const Profile: React.FC = () => {
                 <Title level={4}>
                   <a href={`tel:${profile?.phone}`}>{profile?.phone}</a>
                 </Title>
+              </Col>
+            </Row>
+            <Row align="middle">
+              <Col span={6}>
+                <Title level={4}>Giới tính: </Title>
+              </Col>
+              <Col span={18}>
+                <Title level={4}>{profile?.gender}</Title>
+              </Col>
+            </Row>
+            <Row align="middle">
+              <Col span={6}>
+                <Title level={4}>Quê quán: </Title>
+              </Col>
+              <Col span={18}>
+                <Title level={4}>{profile?.hometown}</Title>
+              </Col>
+            </Row>
+            <Row align="middle">
+              <Col span={6}>
+                <Title level={4}>Địa chỉ hiện tại: </Title>
+              </Col>
+              <Col span={18}>
+                <Title level={4}>{profile?.address}</Title>
+              </Col>
+            </Row>
+            <Row align="middle">
+              <Col span={6}>
+                <Title level={4}>Trường: </Title>
+              </Col>
+              <Col span={18}>
+                <Title level={4}>{profile?.school}</Title>
+              </Col>
+            </Row>
+            <Row align="middle">
+              <Col span={6}>
+                <Title level={4}>Lớp: </Title>
+              </Col>
+              <Col span={18}>
+                <Title level={4}>{profile?.class}</Title>
+              </Col>
+            </Row>
+            <Row align="middle">
+              <Col span={6}>
+                <Title level={4}>MSSV: </Title>
+              </Col>
+              <Col span={18}>
+                <Title level={4}>{profile?.student_id}</Title>
               </Col>
             </Row>
             <Row align="middle">
