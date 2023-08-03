@@ -76,8 +76,6 @@ export const getAllActivity = createAsyncThunk<Activity[], QueryParamType>(
       const {
         data: { data: res },
       } = await API.get(`${prefix}?page=${page}&limit=${limit}`);
-      console.log(res);
-
       return res;
     } catch (error: any) {
       message.error(error.response.data.message);

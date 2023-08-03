@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ActivityItem from './ActivityItem';
 import { API } from 'services/axios';
 import { message } from 'antd';
 import { AiOutlineFieldTime } from 'react-icons/ai';
-import { BsPeople } from 'react-icons/bs';
-import { BiMessageDetail } from 'react-icons/bi';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { activitySelector } from 'redux/slices/activity.slice';
+import { useSelector } from 'react-redux';
+import { getAllActivity } from 'redux/actions';
+import { defaultQueryParam } from 'src/constants';
+import { useAppDispatch } from 'redux/store';
+
 interface DataType {
   id: React.Key;
   name: string;
@@ -78,6 +82,19 @@ const columns: ColumnsType<DataType> = [
 ];
 
 const DetailActivity: React.FC = () => {
+  const { id } = useParams();
+  const { activities } = useSelector(activitySelector);
+  const dispatch = useAppDispatch();
+  const getActivities = async () => {
+    dispatch(getAllActivity(defaultQueryParam));
+  };
+
+  useEffect(() => {
+    getActivities();
+  }, []);
+
+  const data = activities.filter((activity) => activity.id == Number(id));
+
   return (
     <div className="mt-20 pt-10 w-full d-flex">
       <div
@@ -95,7 +112,7 @@ const DetailActivity: React.FC = () => {
           <img src="https://ctsv.hust.edu.vn/static/img/activity.a80f3233.png" />
         </div>
         <div style={{ textAlign: 'center', margin: '10px', fontWeight: '600' }}>
-          Hỗ trợ dạy học làng trẻ Hữu Nghị
+          {data[0].name}
         </div>
         <div
           style={{
@@ -105,18 +122,17 @@ const DetailActivity: React.FC = () => {
           }}
         >
           <div style={{ marginBottom: '10px', fontWeight: '500' }}>
-            Giúp, hướng dẫn các em nhỏ làm bài tập
+            {data[0].description}
           </div>
           <div style={{ marginBottom: '10px', fontWeight: '450' }}>
-            <AiOutlineFieldTime /> 03/08/2023
+            <AiOutlineFieldTime /> {data[0].deadline.slice(0, 10)}
           </div>
         </div>
       </div>
       <div className="pa-5 mx-5 " style={{ width: '75%' }}>
         <h2>Nội dung</h2>
         <div className="my-5" style={{ color: 'red' }}>
-          Hỗ trợ những em nhỏ ở làng trẻ Hữu Nghị làm bài tập, ngoài ra có thể
-          tạo một số hoạt động nhỏ để các em vui chơi!{' '}
+          {data[0].description}
         </div>
         <h2>Danh sách các kíp đăng ký:</h2>
         <Table columns={columns} dataSource={times} />
