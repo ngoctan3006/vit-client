@@ -1,38 +1,40 @@
-import { Badge, BadgeProps, Calendar } from 'antd';
+import { Badge, BadgeProps, Calendar, message } from 'antd';
 import iconVolunteer from 'assets/images/landing/icon-volunteer.png';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import type { CellRenderInfo } from 'rc-picker/lib/interface';
 import React, { useEffect, useState } from 'react';
+import { getTopMember } from 'src/services/admin';
 import './index.scss';
+
+interface TopMember {
+  id: number;
+  username: string;
+  fullname: string;
+  avatar?: string | null;
+  count: number;
+}
 
 const Dashboard: React.FC = () => {
   useEffect(() => {
     document.title = 'VIT | Trang chủ quản trị';
   }, []);
 
-  const [topMembers, setTopMembers] = useState([
-    {
-      name: 'Le Nhat Nam',
-      numberOfActivities: 10,
-    },
-    {
-      name: 'Nguyen Ngoc Tan',
-      numberOfActivities: 11,
-    },
-    {
-      name: 'Dinh Trong Nghia',
-      numberOfActivities: 5,
-    },
-    {
-      name: 'Duong Minh Hieu',
-      numberOfActivities: 8,
-    },
-    {
-      name: 'Duong Minh Hieu',
-      numberOfActivities: 8,
-    },
-  ]);
+  const [topMembers, setTopMembers] = useState<TopMember[]>([]);
+
+  const getTopMembers = async () => {
+    try {
+      const { data } = await getTopMember();
+      setTopMembers(data.data);
+    } catch (error: any) {
+      message.error(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    getTopMembers();
+  }, []);
+
   const [value, setValue] = useState(() => dayjs());
 
   const getListData = (value: Dayjs) => {
@@ -98,14 +100,21 @@ const Dashboard: React.FC = () => {
     <div className="dashboard-main">
       <div className="part excellent-members">
         <h1 className="title">Top tình nguyện viên xuất sắc</h1>
+        {topMembers && topMembers.length === 0 && (
+          <p className="text-center">Không có dữ liệu</p>
+        )}
         {topMembers.map((member) => (
           <div className="card">
-            <img src={iconVolunteer} width={48} height={48} alt="avatar" />
+            <img
+              src={member?.avatar || iconVolunteer}
+              width={48}
+              height={48}
+              alt="avatar"
+            />
             <div>
-              <p>{member.name}</p>
+              <p>{member.fullname}</p>
               <p>
-                Đã tham gia <b>{member.numberOfActivities}</b> hoạt động trong
-                tháng này
+                Đã tham gia <b>{member.count}</b> hoạt động trong tháng này
               </p>
             </div>
           </div>
