@@ -9,7 +9,7 @@ interface DataType {
   school: string;
 }
 
-const PaticipantsTable: React.FC = () => {
+const ParticipantsTable: React.FC = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: 'STT',
@@ -98,4 +98,4 @@ const PaticipantsTable: React.FC = () => {
   );
 };
 
-export default PaticipantsTable;
+export default ParticipantsTable;

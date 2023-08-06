@@ -6,7 +6,7 @@ import { useAppDispatch } from 'redux/store';
 import { defaultQueryParam } from 'src/constants';
 import ActivityItem from '../components/ActivityItem';
 
-const ActivityPaticipant: React.FC = () => {
+const ActivityParticipant: React.FC = () => {
   const dispatch = useAppDispatch();
   const { activities } = useSelector(activitySelector);
   const getActivities = async () => {
@@ -29,4 +29,4 @@ const ActivityPaticipant: React.FC = () => {
   );
 };
 
-export default ActivityPaticipant;
+export default ActivityParticipant;
