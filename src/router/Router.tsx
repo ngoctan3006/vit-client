@@ -1,5 +1,4 @@
 import {
-  Feedback,
   Activity,
   AdminActivity,
   AdminClub,
@@ -9,6 +8,7 @@ import {
   AdminGroup,
   AdminMember,
   Event,
+  Feedback,
   FirstLogin,
   ForgotPassword,
   Home,
@@ -20,6 +20,8 @@ import {
 } from 'pages';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import DetailActivity from 'src/pages/Activity/components/DetailActivity';
+import ParticipantsTable from 'src/pages/Activity/components/ParticipantsTable';
 import { COMMON } from '../constants';
 import { ProtectedRouter } from './';
 
@@ -36,6 +38,11 @@ const Router: React.FC = () => {
         <Route element={<ProtectedRouter />}>
           <Route path="home" element={<Home />} />
           <Route path="activity" element={<Activity />} />
+          <Route
+            path="activity/:id/paticipant"
+            element={<ParticipantsTable />}
+          />
+          <Route path="activity/:id/detail" element={<DetailActivity />} />
           <Route path="event" element={<Event />} />
           <Route path="feedback" element={<Feedback />} />
           <Route path="profile/:id?" element={<Profile />} />
