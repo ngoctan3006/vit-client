@@ -26,7 +26,7 @@ const Activity: React.FC = () => {
       }}
     >
       {activities?.map((activity) => (
-        <ActivityItem key={activity.id} data={activity} />
+        <ActivityItem key={activity.id} activity={activity} />
       ))}
     </div>
   );

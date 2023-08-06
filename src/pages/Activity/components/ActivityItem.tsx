@@ -7,11 +7,11 @@ import { Link } from 'react-router-dom';
 import { DATE_FORMAT } from 'src/constants';
 
 interface Props {
-  data?: any;
+  activity?: any;
 }
 
-const ActivityItem: React.FC<Props> = ({ data }) => {
-  console.log(data);
+const ActivityItem: React.FC<Props> = ({ activity }) => {
+  console.log(activity);
   return (
     <div
       className="d-flex p-5 ml-5 mb-5"
@@ -28,7 +28,7 @@ const ActivityItem: React.FC<Props> = ({ data }) => {
         <img src="https://ctsv.hust.edu.vn/static/img/activity.a80f3233.png" />
       </div>
       <div style={{ textAlign: 'center', margin: '10px', fontWeight: '600' }}>
-        {data.name}
+        {activity.name}
       </div>
       <div
         style={{
@@ -38,17 +38,17 @@ const ActivityItem: React.FC<Props> = ({ data }) => {
         }}
       >
         <div style={{ marginBottom: '10px', fontWeight: '500' }}>
-          {data.description}
+          {activity.description}
         </div>
         <div style={{ marginBottom: '10px', fontWeight: '450' }}>
-          <AiOutlineFieldTime /> {dayjs(data.deadline).format(DATE_FORMAT)}
+          <AiOutlineFieldTime /> {dayjs(activity.deadline).format(DATE_FORMAT)}
         </div>
         <div className="d-flex justify-between mb-5">
-          <Link to={`${data.id}/paticipant`} style={{ color: 'purple' }}>
+          <Link to={`${activity.id}/paticipant`} style={{ color: 'purple' }}>
             <BsPeople />
             Thành viên
           </Link>
-          <Link to={`${data.id}/detail`} style={{ color: '#67c23a' }}>
+          <Link to={`${activity.id}/detail`} style={{ color: '#67c23a' }}>
             <BiMessageDetail />
             Chi tiết
           </Link>
