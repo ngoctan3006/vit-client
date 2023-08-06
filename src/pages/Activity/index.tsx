@@ -6,6 +6,7 @@ import { useAppDispatch } from 'redux/store';
 import { defaultQueryParam } from 'src/constants';
 import { ActivityItem } from './components';
 import './index.scss';
+import { Col, Row, Typography } from 'antd';
 
 const Activity: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -19,15 +20,15 @@ const Activity: React.FC = () => {
   }, []);
 
   return (
-    <div
-      className="activity m-5 d-flex"
-      style={{
-        flexWrap: 'wrap',
-      }}
-    >
-      {activities?.map((activity) => (
-        <ActivityItem key={activity.id} activity={activity} />
-      ))}
+    <div className="activity m-6">
+      <Typography.Title level={4}>Danh sách hoạt động</Typography.Title>
+      <Row gutter={16}>
+        {activities?.map((activity) => (
+          <Col key={activity.id} span={6}>
+            <ActivityItem activity={activity} />
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 };
