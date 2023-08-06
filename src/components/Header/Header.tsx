@@ -26,9 +26,9 @@ const NavLinkItems = [
     path: '/event',
   },
   {
-    key: 'about',
+    key: 'feedback',
     name: 'Về chúng tôi',
-    path: '/about',
+    path: '/feedback',
   },
 ];
 
