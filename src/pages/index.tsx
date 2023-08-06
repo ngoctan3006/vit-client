@@ -1,4 +1,5 @@
 export { default as Activity } from './Activity';
+export { default as ActivityDetail } from './Activity/ActivityDetail';
 export { default as AdminActivity } from './Admin/Activity';
 export { default as AdminClub } from './Admin/Club';
 export { default as AdminDashboard } from './Admin/Dashboard';
