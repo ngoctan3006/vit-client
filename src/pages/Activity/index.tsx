@@ -4,7 +4,7 @@ import { getAllActivity } from 'redux/actions';
 import { activitySelector } from 'redux/slices/activity.slice';
 import { useAppDispatch } from 'redux/store';
 import { defaultQueryParam } from 'src/constants';
-import ActivityItem from './components/ActivityItem';
+import { ActivityItem } from './components';
 import './index.scss';
 
 const Activity: React.FC = () => {
