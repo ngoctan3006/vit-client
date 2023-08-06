@@ -1,6 +1,6 @@
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -10,12 +10,13 @@ import { useAppDispatch } from 'redux/store';
 import { defaultQueryParam } from 'src/constants';
 
 interface DataType {
-  id: React.Key;
+  id: number;
   name: string;
   number_require: number;
   start_time: string;
   end_time: string;
 }
+
 const times: DataType[] = [
   {
     id: 1,
@@ -90,7 +91,10 @@ const DetailActivity: React.FC = () => {
     getActivities();
   }, []);
 
-  const data = activities.filter((activity) => activity.id == Number(id));
+  const data = useMemo(
+    () => activities.filter((activity) => activity.id === Number(id)),
+    [id]
+  );
 
   return (
     <div className="mt-20 pt-10 w-full d-flex">
