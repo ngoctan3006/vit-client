@@ -65,6 +65,9 @@
   justify-content: center;
   align-items: center;
 }
+.flex-column {
+  flex-direction: column;
+}
 
 .mt-auto {
   margin-top: auto;
