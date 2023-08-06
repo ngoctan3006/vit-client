@@ -1,5 +1,6 @@
 import {
   Activity,
+  ActivityDetail,
   AdminActivity,
   AdminClub,
   AdminDashboard,
@@ -20,7 +21,6 @@ import {
 } from 'pages';
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import DetailActivity from 'src/pages/Activity/components/DetailActivity';
 import ParticipantsTable from 'src/pages/Activity/components/ParticipantsTable';
 import { COMMON } from '../constants';
 import { ProtectedRouter } from './';
@@ -42,7 +42,7 @@ const Router: React.FC = () => {
             path="activity/:id/paticipant"
             element={<ParticipantsTable />}
           />
-          <Route path="activity/:id/detail" element={<DetailActivity />} />
+          <Route path="activity/:id/detail" element={<ActivityDetail />} />
           <Route path="event" element={<Event />} />
           <Route path="feedback" element={<Feedback />} />
           <Route path="profile/:id?" element={<Profile />} />

@@ -79,7 +79,7 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const DetailActivity: React.FC = () => {
+const ActivityDetail: React.FC = () => {
   const { id } = useParams();
   const { activities } = useSelector(activitySelector);
   const dispatch = useAppDispatch();
@@ -142,4 +142,4 @@ const DetailActivity: React.FC = () => {
   );
 };
 
-export default DetailActivity;
+export default ActivityDetail;
