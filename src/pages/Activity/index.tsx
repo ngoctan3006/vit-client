@@ -20,7 +20,7 @@ const Activity: React.FC = () => {
 
   return (
     <div
-      className="activity m-5 d-flex "
+      className="activity m-5 d-flex"
       style={{
         flexWrap: 'wrap',
       }}
