@@ -37,25 +37,6 @@ export interface GetActivityMember {
   member: ActivityMemberDto[];
 }
 
-export interface GetActivities {
-  id: number;
-  name: string;
-  description: string;
-  location: string;
-  deadline: string;
-  event_id: number;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string;
-  times: Array<{
-    id: number;
-    name: string;
-    number_require: number;
-    start_time: string;
-    end_time: string;
-  }>;
-}
-
 export interface UpdateActivityDto extends CreateActivityDto {
   id: number;
   times: Array<{
@@ -68,14 +49,11 @@ export interface UpdateActivityDto extends CreateActivityDto {
 
 export const getAllActivity = createAsyncThunk<Activity[], QueryParamType>(
   'activity/getAll',
-  async (
-    { page, limit }: QueryParamType = defaultQueryParam,
-    { rejectWithValue }
-  ) => {
+  async (params: QueryParamType = defaultQueryParam, { rejectWithValue }) => {
     try {
       const {
         data: { data: res },
-      } = await API.get(`${prefix}?page=${page}&limit=${limit}`);
+      } = await API.get(`${prefix}`, { params });
       return res;
     } catch (error: any) {
       message.error(error.response.data.message);
@@ -89,14 +67,11 @@ export const getAllActivityDeleted = createAsyncThunk<
   QueryParamType
 >(
   'activity/getAllDeleted',
-  async (
-    { page, limit }: QueryParamType = defaultQueryParam,
-    { rejectWithValue }
-  ) => {
+  async (params: QueryParamType = defaultQueryParam, { rejectWithValue }) => {
     try {
       const {
         data: { data: res },
-      } = await API.get(`${prefix}/trash?page=${page}&limit=${limit}`);
+      } = await API.get(`${prefix}/trash`, { params });
       return res;
     } catch (error: any) {
       message.error(error.response.data.message);
