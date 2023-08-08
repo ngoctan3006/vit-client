@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import {
   createActivity,
   deleteActivity,
+  getActivity,
   getAllActivity,
   getAllActivityDeleted,
   restoreActivity,
@@ -32,12 +33,14 @@ export interface ActivityTime {
 
 export interface ActivityState {
   activities: Activity[];
+  activity?: Activity;
   deletedActivities: Activity[];
   loading: boolean;
 }
 
 const initialState: ActivityState = {
   activities: [],
+  activity: undefined,
   deletedActivities: [],
   loading: false,
 };
@@ -70,6 +73,19 @@ export const activitySlice = createSlice({
       getAllActivityDeleted.fulfilled,
       (state: ActivityState, action: PayloadAction<Activity[]>) => {
         state.deletedActivities = action.payload;
+        state.loading = false;
+      }
+    );
+    builder.addCase(getActivity.pending, (state: ActivityState) => {
+      state.loading = true;
+    });
+    builder.addCase(getActivity.rejected, (state: ActivityState) => {
+      state.loading = false;
+    });
+    builder.addCase(
+      getActivity.fulfilled,
+      (state: ActivityState, action: PayloadAction<Activity>) => {
+        state.activity = action.payload;
         state.loading = false;
       }
     );

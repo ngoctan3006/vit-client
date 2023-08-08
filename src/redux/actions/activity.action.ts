@@ -62,6 +62,21 @@ export const getAllActivity = createAsyncThunk<Activity[], QueryParamType>(
   }
 );
 
+export const getActivity = createAsyncThunk<Activity, number>(
+  'activity/getOne',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const {
+        data: { data: res },
+      } = await API.get(`${prefix}/${id}`);
+      return res;
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getAllActivityDeleted = createAsyncThunk<
   Activity[],
   QueryParamType
