@@ -1,13 +1,13 @@
+import { Col, Row, Typography } from 'antd';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getAllActivity } from 'redux/actions';
 import { activitySelector } from 'redux/slices/activity.slice';
 import { useAppDispatch } from 'redux/store';
+import { Loading } from 'src/components';
 import { defaultQueryParam } from 'src/constants';
 import { ActivityItem } from './components';
 import './index.scss';
-import { Col, Row, Typography } from 'antd';
-import { Loading } from 'src/components';
 
 const Activity: React.FC = () => {
   const dispatch = useAppDispatch();
