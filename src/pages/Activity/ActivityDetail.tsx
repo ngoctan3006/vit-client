@@ -1,100 +1,61 @@
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import React, { useEffect, useMemo } from 'react';
+import moment from 'moment';
+import React, { useEffect } from 'react';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getAllActivity } from 'redux/actions';
-import { activitySelector } from 'redux/slices/activity.slice';
+import { getActivity } from 'redux/actions';
+import { ActivityTime, activitySelector } from 'redux/slices/activity.slice';
 import { useAppDispatch } from 'redux/store';
-import { defaultQueryParam } from 'src/constants';
-
-interface DataType {
-  id: number;
-  name: string;
-  number_require: number;
-  start_time: string;
-  end_time: string;
-}
-
-const times: DataType[] = [
-  {
-    id: 1,
-    name: 'Kíp 1',
-    number_require: 5,
-    start_time: '2023-08-03/12:00',
-    end_time: '2023-08-03/14:00',
-  },
-  {
-    id: 2,
-    name: 'Kíp 2',
-    number_require: 5,
-    start_time: '2023-08-04/12:00',
-    end_time: '2023-08-04/14:00',
-  },
-  {
-    id: 3,
-    name: 'Kíp 3',
-    number_require: 5,
-    start_time: '2023-08-05/12:00',
-    end_time: '2023-08-05/14:00',
-  },
-];
-
-const columns: ColumnsType<DataType> = [
-  {
-    title: 'Tên kíp',
-    dataIndex: 'id',
-    width: 30,
-    key: 'id',
-    fixed: 'left',
-  },
-  {
-    title: 'Số lượng yêu cầu',
-    dataIndex: 'number_require',
-    key: 'number_require',
-    width: 30,
-    fixed: 'left',
-  },
-  {
-    title: 'Thời gian bắt đầu',
-    dataIndex: 'end_time',
-    key: 'end_time',
-    fixed: 'left',
-    width: 50,
-  },
-  {
-    title: 'Thời gian kết thúc',
-    dataIndex: 'start_time',
-    key: 'start_time',
-    fixed: 'left',
-    width: 50,
-  },
-  {
-    title: '',
-    key: 'operation',
-    fixed: 'right',
-    width: 30,
-    render: () => <a>Đăng ký</a>,
-  },
-];
+import { Loading } from 'src/components';
+import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
 
 const ActivityDetail: React.FC = () => {
   const { id } = useParams();
-  const { activities } = useSelector(activitySelector);
+  const { activity, loading } = useSelector(activitySelector);
   const dispatch = useAppDispatch();
-  const getActivities = async () => {
-    dispatch(getAllActivity(defaultQueryParam));
+
+  const columns: ColumnsType<ActivityTime> = [
+    {
+      title: 'Tên kíp',
+      dataIndex: 'name',
+    },
+    {
+      title: 'Số lượng yêu cầu',
+      dataIndex: 'number_require',
+    },
+    {
+      title: 'Ngày diễn ra',
+      key: 'date_time',
+      render: (_: string, { start_time }: ActivityTime) =>
+        moment(start_time).format(DATE_FORMAT),
+    },
+    {
+      title: 'Thời gian kết thúc',
+      key: 'hour_time',
+      render: (_: string, { start_time, end_time }: ActivityTime) =>
+        `${moment(start_time).format(TIME_FORMAT)} - ${moment(end_time).format(
+          TIME_FORMAT
+        )}`,
+    },
+    {
+      title: 'Đăng ký',
+      key: 'action',
+      render: () => <a>Đăng ký</a>,
+    },
+  ];
+
+  const getActivityDetail = () => {
+    if (id) dispatch(getActivity(Number(id)));
   };
 
   useEffect(() => {
-    getActivities();
+    document.title = 'VIT | Hoạt động';
+    getActivityDetail();
   }, []);
 
-  const data = useMemo(
-    () => activities.filter((activity) => activity.id === Number(id)),
-    [id]
-  );
+  if (loading) return <Loading />;
 
   return (
     <div className="mt-20 pt-10 w-full d-flex">
@@ -113,7 +74,7 @@ const ActivityDetail: React.FC = () => {
           <img src="https://ctsv.hust.edu.vn/static/img/activity.a80f3233.png" />
         </div>
         <div style={{ textAlign: 'center', margin: '10px', fontWeight: '600' }}>
-          {data[0].name}
+          {activity?.name}
         </div>
         <div
           style={{
@@ -123,20 +84,24 @@ const ActivityDetail: React.FC = () => {
           }}
         >
           <div style={{ marginBottom: '10px', fontWeight: '500' }}>
-            {data[0].description}
+            {activity?.description}
           </div>
           <div style={{ marginBottom: '10px', fontWeight: '450' }}>
-            <AiOutlineFieldTime /> {data[0].deadline.slice(0, 10)}
+            <AiOutlineFieldTime /> {activity?.deadline.slice(0, 10)}
           </div>
         </div>
       </div>
       <div className="pa-5 mx-5 " style={{ width: '75%' }}>
         <h2>Nội dung</h2>
         <div className="my-5" style={{ color: 'red' }}>
-          {data[0].description}
+          {activity?.description}
         </div>
         <h2>Danh sách các kíp đăng ký:</h2>
-        <Table columns={columns} dataSource={times} />
+        <Table
+          columns={columns}
+          dataSource={activity?.times}
+          pagination={false}
+        />
       </div>
     </div>
   );
