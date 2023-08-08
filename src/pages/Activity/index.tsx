@@ -7,10 +7,11 @@ import { defaultQueryParam } from 'src/constants';
 import { ActivityItem } from './components';
 import './index.scss';
 import { Col, Row, Typography } from 'antd';
+import { Loading } from 'src/components';
 
 const Activity: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { activities } = useSelector(activitySelector);
+  const { activities, loading } = useSelector(activitySelector);
   const getActivities = async () => {
     dispatch(getAllActivity(defaultQueryParam));
   };
@@ -18,6 +19,8 @@ const Activity: React.FC = () => {
   useEffect(() => {
     getActivities();
   }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="activity m-6">
