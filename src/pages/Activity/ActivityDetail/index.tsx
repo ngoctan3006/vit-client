@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { Loading } from 'components';
 import moment from 'moment';
 import React, { useEffect } from 'react';
 import { AiOutlineFieldTime } from 'react-icons/ai';
@@ -8,7 +9,6 @@ import { useParams } from 'react-router-dom';
 import { getActivity } from 'redux/actions';
 import { ActivityTime, activitySelector } from 'redux/slices/activity.slice';
 import { useAppDispatch } from 'redux/store';
-import { Loading } from 'src/components';
 import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
 
 const ActivityDetail: React.FC = () => {
