@@ -1,5 +1,5 @@
 import { Typography } from 'antd';
-import dayjs from 'dayjs';
+import moment from 'moment';
 import React from 'react';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import { BiMessageDetail } from 'react-icons/bi';
@@ -39,8 +39,10 @@ const ActivityItem: React.FC<Props> = ({ activity }) => {
         <Typography.Title
           level={5}
           className="d-flex align-center gap-1 mt-0 activity-description"
+          type={moment().isAfter(activity?.deadline) ? 'danger' : undefined}
         >
-          <AiOutlineFieldTime /> {dayjs(activity?.deadline).format(DATE_FORMAT)}
+          <AiOutlineFieldTime />{' '}
+          {moment(activity?.deadline).format(DATE_FORMAT)}
         </Typography.Title>
         <div className="d-flex justify-between">
           <Link
