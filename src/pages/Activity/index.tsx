@@ -1,5 +1,5 @@
-import { Col, Row, Typography } from 'antd';
-import React, { useEffect } from 'react';
+import { Col, Pagination, Row, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getAllActivity } from 'redux/actions';
 import { activitySelector } from 'redux/slices/activity.slice';
@@ -10,6 +10,7 @@ import { ActivityItem } from './components';
 import './index.scss';
 
 const Activity: React.FC = () => {
+  const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
   const { activities, loading } = useSelector(activitySelector);
   const getActivities = async () => {
@@ -31,6 +32,17 @@ const Activity: React.FC = () => {
             <ActivityItem activity={activity} />
           </Col>
         ))}
+
+        <Pagination
+          className="mt-5 ml-auto"
+          current={page}
+          onChange={(page) => {
+            setPage(page);
+          }}
+          pageSize={8}
+          showSizeChanger={false}
+          total={activities.length}
+        />
       </Row>
     </div>
   );
