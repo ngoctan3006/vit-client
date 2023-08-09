@@ -30,7 +30,7 @@ const ActivityItem: React.FC<Props> = ({ activity }) => {
       </Typography.Title>
       <div className="p-5 w-full activity-detail-wrap">
         <Typography.Title
-          ellipsis={{ tooltip: activity?.deadline }}
+          ellipsis={{ tooltip: activity?.description }}
           className="activity-description"
           level={5}
         >
