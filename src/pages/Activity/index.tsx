@@ -33,16 +33,18 @@ const Activity: React.FC = () => {
           </Col>
         ))}
 
-        <Pagination
-          className="mt-5 ml-auto"
-          current={page}
-          onChange={(page) => {
-            setPage(page);
-          }}
-          pageSize={8}
-          showSizeChanger={false}
-          total={activities.length}
-        />
+        {activities.length > 8 && (
+          <Pagination
+            className="mt-5 ml-auto"
+            current={page}
+            onChange={(page) => {
+              setPage(page);
+            }}
+            pageSize={8}
+            showSizeChanger={false}
+            total={activities.length}
+          />
+        )}
       </Row>
     </div>
   );
