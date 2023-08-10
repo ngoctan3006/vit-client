@@ -1,25 +1,43 @@
-import { Button, Col, Row, Table, Typography } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Col,
+  Row,
+  Table,
+  Tabs,
+  TabsProps,
+  Tooltip,
+  Typography,
+} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Loading } from 'components';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import { MdOutlineLocationOn } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getActivity } from 'redux/actions';
+import {
+  GetActivityMember,
+  getActivity,
+  getActivityMember,
+} from 'redux/actions';
 import { ActivityTime, activitySelector } from 'redux/slices/activity.slice';
 import { useAppDispatch } from 'redux/store';
 import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
+import { ActivityMemberState } from 'src/pages/Admin/Activity/components/ActivityMember';
+import { getStatus } from 'src/pages/Admin/Activity/utils';
 import { getColorOfDate } from 'src/utils';
 import './index.scss';
 
 const ActivityDetail: React.FC = () => {
   const { id } = useParams();
-  const { activity, loading } = useSelector(activitySelector);
+  const { activity, loading, member } = useSelector(activitySelector);
+  const [activityMember, setActivityMember] = useState<GetActivityMember[]>([]);
   const dispatch = useAppDispatch();
 
-  const columns: ColumnsType<ActivityTime> = [
+  const timesColumns: ColumnsType<ActivityTime> = [
     {
       title: 'Tên kíp',
       dataIndex: 'name',
@@ -58,9 +76,85 @@ const ActivityDetail: React.FC = () => {
     },
   ];
 
+  const memberColumns: ColumnsType<ActivityMemberState> = useMemo(() => {
+    return [
+      {
+        key: 'fullname',
+        title: 'Họ Tên',
+        render: (
+          _: string,
+          { fullname, avatar, username }: ActivityMemberState
+        ) => (
+          <div className="d-flex gap-2 justify-start align-center">
+            <Avatar src={avatar}>{username.charAt(0).toUpperCase()}</Avatar>
+            <Tooltip title={username}>
+              <p className="d-center mb-0">{fullname}</p>
+            </Tooltip>
+          </div>
+        ),
+      },
+      ...activityMember.map((item) => ({
+        key: `${item.id}`,
+        title: item.name,
+        render: (_: string, row: ActivityMemberState) => {
+          const [color, text] = getStatus(row[`${item.id}`]);
+          return (
+            row[`${item.id}`] && (
+              <div className="d-flex justify-between">
+                <Badge color={color} text={text} />
+              </div>
+            )
+          );
+        },
+      })),
+    ];
+  }, [activityMember]);
+
   const getActivityDetail = () => {
-    if (id) dispatch(getActivity(Number(id)));
+    if (id) {
+      dispatch(getActivity(Number(id)));
+      dispatch(getActivityMember(Number(id))).then((value) => {
+        if (value.type.includes('fulfilled')) {
+          setActivityMember(value.payload as GetActivityMember[]);
+        }
+      });
+    }
   };
+
+  const items: TabsProps['items'] = [
+    {
+      key: 'times',
+      label: 'Kíp hoạt động',
+      children: (
+        <>
+          <Typography.Title level={4}>
+            Danh sách các kíp đăng ký:
+          </Typography.Title>
+          <Table
+            columns={timesColumns}
+            dataSource={activity?.times}
+            pagination={false}
+          />
+        </>
+      ),
+    },
+    {
+      key: 'member',
+      label: 'Danh sách thành viên',
+      children: (
+        <>
+          <Typography.Title level={4}>
+            Danh sách các thành viên đăng ký:
+          </Typography.Title>
+          <Table
+            columns={memberColumns}
+            dataSource={member}
+            pagination={false}
+          />
+        </>
+      ),
+    },
+  ];
 
   useEffect(() => {
     document.title = 'VIT | Hoạt động';
@@ -119,14 +213,7 @@ const ActivityDetail: React.FC = () => {
           </div>
         </Col>
         <Col span={19}>
-          <Typography.Title level={4}>
-            Danh sách các kíp đăng ký:
-          </Typography.Title>
-          <Table
-            columns={columns}
-            dataSource={activity?.times}
-            pagination={false}
-          />
+          <Tabs type="card" items={items} />
         </Col>
       </Row>
     </div>
