@@ -1,14 +1,18 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import {
+  GetActivityMember,
   createActivity,
   deleteActivity,
   getActivity,
+  getActivityMember,
   getAllActivity,
   getAllActivityDeleted,
   restoreActivity,
   updateActivity,
 } from '../actions';
 import { RootState } from '../store';
+import { ActivityMemberState } from 'src/pages/Admin/Activity/components/ActivityMember';
+import { convertData } from 'src/pages/Admin/Activity/utils';
 
 export interface Activity {
   id: number;
@@ -35,6 +39,7 @@ export interface ActivityState {
   activities: Activity[];
   activity?: Activity;
   deletedActivities: Activity[];
+  member: ActivityMemberState[];
   loading: boolean;
 }
 
@@ -42,6 +47,7 @@ const initialState: ActivityState = {
   activities: [],
   activity: undefined,
   deletedActivities: [],
+  member: [],
   loading: false,
 };
 
@@ -147,6 +153,20 @@ export const activitySlice = createSlice({
         state.deletedActivities = state.deletedActivities.filter(
           (act: Activity) => act.id !== action.payload
         );
+        state.loading = false;
+      }
+    );
+
+    builder.addCase(getActivityMember.pending, (state: ActivityState) => {
+      state.loading = true;
+    });
+    builder.addCase(getActivityMember.rejected, (state: ActivityState) => {
+      state.loading = false;
+    });
+    builder.addCase(
+      getActivityMember.fulfilled,
+      (state: ActivityState, action: PayloadAction<GetActivityMember[]>) => {
+        state.member = convertData(action.payload);
         state.loading = false;
       }
     );

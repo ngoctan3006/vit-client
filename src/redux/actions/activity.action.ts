@@ -156,8 +156,8 @@ export const restoreActivity = createAsyncThunk<number, number>(
   }
 );
 
-export const getActivityMember = createAsyncThunk<GetActivityMember, number>(
-  'activity/get-member',
+export const getActivityMember = createAsyncThunk<GetActivityMember[], number>(
+  'activity/getMember',
   async (id: number, { rejectWithValue }) => {
     try {
       const { data } = await API.get(`${prefix}/member/${id}`);
