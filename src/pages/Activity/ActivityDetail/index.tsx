@@ -96,18 +96,24 @@ const ActivityDetail: React.FC = () => {
                 level={5}
                 className="d-flex align-center gap-2"
               >
-                <AiOutlineFieldTime />
-                {`${moment(activity?.deadline).format(DATE_FORMAT)} - ${moment(
+                <span className="d-center">
+                  <AiOutlineFieldTime />
+                </span>
+                <span className="d-center">{`${moment(
                   activity?.deadline
-                ).format(TIME_FORMAT)}`}
+                ).format(DATE_FORMAT)} - ${moment(activity?.deadline).format(
+                  TIME_FORMAT
+                )}`}</span>
               </Typography.Title>
               <Typography.Title
                 level={5}
                 title="Địa điểm diễn ra hoạt động"
                 className="d-flex align-center gap-2 mt-0"
               >
-                <MdOutlineLocationOn />
-                {activity?.location}
+                <span className="d-center">
+                  <MdOutlineLocationOn />
+                </span>
+                <span className="d-center">{activity?.location}</span>
               </Typography.Title>
             </div>
           </div>
