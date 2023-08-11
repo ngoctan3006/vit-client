@@ -19,7 +19,11 @@ import { BiCamera } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { DATE_FORMAT } from 'src/constants';
-import { UpdateUserInfo, updateUserInfo } from 'src/redux/actions';
+import {
+  UpdateUserInfo,
+  updateAvatar,
+  updateUserInfo,
+} from 'src/redux/actions';
 import { User, authSelector } from 'src/redux/slices/auth.slice';
 import { useAppDispatch } from 'src/redux/store';
 import { getUser } from 'src/services/user';
@@ -46,7 +50,9 @@ const Profile: React.FC = () => {
   const handleBeforeUpload = (file: File) => {
     getBufferFromFile(file)
       .then((buffer) => {
-        console.log(buffer);
+        const formData = new FormData();
+        formData.append('file', new Blob([buffer]), file.name);
+        dispatch(updateAvatar(formData));
       })
       .catch((error: any) => {
         message.error('Lỗi khi tải lên ảnh của bạn.');
