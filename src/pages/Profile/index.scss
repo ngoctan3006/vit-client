@@ -1,16 +1,12 @@
 @import '../../assets/scss/variables';
 
 .profile {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding-top: $headerHeight;
 
   .container {
     max-width: 1200px;
-    width: 100%;
     margin: 50px auto;
+
     .ant-image-img {
       cursor: pointer;
     }
@@ -18,10 +14,12 @@
     .ant-image-mask {
       display: none !important;
     }
+
     .profile-ava {
       position: relative;
       width: 200px;
       height: 200px;
+
       .img-wrap {
         width: 100%;
         border-radius: 50%;
@@ -30,8 +28,8 @@
 
       .ant-upload-wrapper {
         position: absolute;
-        right: -4px;
-        bottom: 16px;
+        right: 5px;
+        bottom: 10%;
       }
     }
   }

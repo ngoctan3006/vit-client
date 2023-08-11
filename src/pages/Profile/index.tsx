@@ -1,10 +1,9 @@
-import type { UploadProps } from 'antd';
 import {
+  Avatar,
   Button,
   Col,
   DatePicker,
   Form,
-  Image,
   Input,
   Modal,
   Row,
@@ -15,305 +14,285 @@ import {
 import ImgCrop from 'antd-img-crop';
 import { Loading } from 'components';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiCamera } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { DATE_FORMAT } from 'src/constants';
-import { authSelector } from 'src/redux/slices/auth.slice';
+import { User, authSelector } from 'src/redux/slices/auth.slice';
+import { getUser } from 'src/services/user';
 import { getPosition } from 'utils';
 import NotFound from '../NotFound';
 import './index.scss';
 
 const Title = Typography.Title;
 
-const profile = {
-  id: 32,
-  username: 'hieu.dm',
-  fullname: 'Dương Minh Hiếu',
-  email: 'hieu.dm202233@sis.hust.edu.vn',
-  phone: '0961360123',
-  bio: 'Xin chào',
-  avatar: 'https://vit-storage.s3.amazonaws.com/1683949735412_766250704.png',
-  birthday: '1999-01-29T00:00:00.000Z',
-  hometown: 'Thành phố Thái Nguyên, tỉnh Thái Nguyên',
-  address: 'Yên Lãng, Hà Nội',
-  school: 'Đại học Bách Khoa Hà Nội',
-  student_id: '20202233',
-  class: 'IT2 - 02',
-  cccd: '123456789',
-  date_join: '2021-04-01T00:59:30.000Z',
-  date_out: '2022-04-01T00:59:30.000Z',
-  last_login: null,
-  gender: 'Nam',
-  status: 'ACTIVE',
-  position: 'MEMBER',
-  created_at: '2023-05-06T16:02:38.547Z',
-  updated_at: '2023-05-13T03:52:16.305Z',
-};
-
-const props: UploadProps = {
-  name: 'file',
-  accept: 'image/*',
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-};
-
 const Profile: React.FC = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [profile, setProfile] = useState<User>();
   const { user } = useSelector(authSelector);
 
   const showModal = () => {
     setOpen(true);
   };
 
-  const handleOk = () => {
-    // setModalText('The modal will be closed after two seconds');
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
-
-    message.success('Đã thay đổi thông tin thành công');
+  const handleBeforeUpload = (file: File) => {
+    getBufferFromFile(file)
+      .then((buffer) => {
+        console.log(buffer);
+      })
+      .catch((error: any) => {
+        message.error('Lỗi khi tải lên ảnh của bạn.');
+      });
+    return false;
   };
 
+  const getBufferFromFile = (file: File) => {
+    return new Promise<ArrayBuffer>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        resolve(event.target?.result as ArrayBuffer);
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
+  const handleOk = () => {};
+
   const handleCancel = () => {
-    console.log('Clicked cancel button');
     setOpen(false);
   };
 
-  // useEffect(() => {
-  //   const getInfo = async () => {
-  //     if (!id) return;
-  //     try {
-  //       setLoading(true);
-  //       const res = await getUser(id);
-  //       setProfile(res.data.data);
-  //     } catch (error: any) {
-  //       setIsError(true);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  const getInfo = async () => {
+    if (!id) {
+      if (user) setProfile(user);
+      return;
+    }
 
-  //   getInfo();
-  // }, [id]);
+    try {
+      setLoading(true);
+      const { data } = await getUser(id);
+      setProfile(data.data);
+    } catch (error: any) {
+      setIsError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getInfo();
+  }, [id]);
 
   if (isError) return <NotFound />;
-  if (loading) return <Loading />;
 
   return (
-    <div className="profile">
-      <div className="container">
-        <Typography.Title className="text-center mb-10" level={2}>
-          Thông tin cá nhân
-        </Typography.Title>
-        <Row>
-          <Col xs={24} sm={8} className="d-center mb-auto">
-            {/* <Avatar size={200} src={profile?.avatar} /> */}
-            <div className="profile-ava">
-              <div className="img-wrap">
-                <Image
-                  height="100%"
-                  fallback="data:image/png;base64,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"
-                  src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                />
-              </div>
-              <ImgCrop rotationSlider>
-                <Upload {...props}>
-                  <Button
-                    className="d-center"
-                    shape="circle"
-                    icon={<BiCamera />}
-                  ></Button>
-                </Upload>
-              </ImgCrop>
-              <div className="bio mt-3 text-center">
-                <Typography.Text>{profile?.bio}</Typography.Text>
-              </div>
-            </div>
-          </Col>
-          <Col xs={24} sm={16}>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>Họ và tên: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>{profile?.fullname}</Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>Chức vụ: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>{getPosition(profile?.position)}</Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>Địa chỉ email: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>
-                  <a href={`mailto:${profile?.email}`}>{profile?.email}</a>
-                </Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>Số điện thoại: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>
-                  <a href={`tel:${profile?.phone}`}>{profile?.phone}</a>
-                </Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>Giới tính: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>{profile?.gender}</Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>Quê quán: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>{profile?.hometown}</Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>Địa chỉ hiện tại: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>{profile?.address}</Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>Trường: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>{profile?.school}</Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>Lớp: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>{profile?.class}</Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Col span={6}>
-                <Title level={4}>MSSV: </Title>
-              </Col>
-              <Col span={18}>
-                <Title level={4}>{profile?.student_id}</Title>
-              </Col>
-            </Row>
-            <Row align="middle">
-              <Button type="primary" onClick={showModal}>
-                Chỉnh sửa thông tin
-              </Button>
-              <Modal
-                title="Chỉnh sửa thông tin TNV"
-                open={open}
-                onOk={handleOk}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
-                okText="Lưu"
-                cancelText="Huỷ"
-              >
-                <Form
-                  name="basic"
-                  labelCol={{ span: 8 }}
-                  wrapperCol={{ span: 16 }}
-                  style={{ maxWidth: 600 }}
-                  initialValues={{
-                    ...profile,
-                    birthday: dayjs(profile?.birthday),
-                  }}
-                  // onFinish={onFinish}
-                  // onFinishFailed={onFinishFailed}
-                  autoComplete="off"
-                >
-                  <Form.Item
-                    label="Email"
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please input your email!',
-                      },
-                    ]}
+    <>
+      <div className="profile d-center w-full">
+        <div className="container w-full">
+          <Title className="text-center mb-10" level={2}>
+            Thông tin cá nhân
+          </Title>
+          <Row>
+            <Col xs={24} sm={8} className="d-center mb-auto">
+              <div className="profile-ava">
+                <div className="img-wrap">
+                  <Avatar
+                    size={200}
+                    className="w-full d-center"
+                    src={profile?.avatar}
                   >
-                    <Input />
-                  </Form.Item>
+                    <Title className="mb-0 text-white">
+                      {user?.username.charAt(0).toUpperCase()}
+                    </Title>
+                  </Avatar>
+                </div>
+                <ImgCrop rotationSlider>
+                  <Upload
+                    beforeUpload={handleBeforeUpload}
+                    showUploadList={false}
+                    accept="image/*"
+                  >
+                    <Button
+                      className="d-center"
+                      shape="circle"
+                      icon={<BiCamera />}
+                      title="Thay đổi ảnh đại diện"
+                    ></Button>
+                  </Upload>
+                </ImgCrop>
+                <div className="bio mt-3 text-center">
+                  <Typography.Text>{profile?.bio}</Typography.Text>
+                </div>
+              </div>
+            </Col>
+            <Col xs={24} sm={16}>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>Họ và tên: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>{profile?.fullname}</Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>Chức vụ: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>
+                    {profile && getPosition(profile?.position)}
+                  </Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>Địa chỉ email: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>
+                    <a href={`mailto:${profile?.email}`}>{profile?.email}</a>
+                  </Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>Số điện thoại: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>
+                    <a href={`tel:${profile?.phone}`}>{profile?.phone}</a>
+                  </Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>Giới tính: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>{profile?.gender}</Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>Quê quán: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>{profile?.hometown}</Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>Địa chỉ hiện tại: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>{profile?.address}</Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>Trường: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>{profile?.school}</Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>Lớp: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>{profile?.class}</Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Col span={6}>
+                  <Title level={4}>MSSV: </Title>
+                </Col>
+                <Col span={18}>
+                  <Title level={4}>{profile?.student_id}</Title>
+                </Col>
+              </Row>
+              <Row align="middle">
+                <Button type="primary" onClick={showModal}>
+                  Chỉnh sửa thông tin
+                </Button>
+              </Row>
+            </Col>
+          </Row>
+        </div>
 
-                  <Form.Item
-                    label="Số điện thoại"
-                    name="phone"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please input your phone!',
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    label="DatePicker"
-                    name="birthday"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please input your birthday!',
-                      },
-                    ]}
-                  >
-                    <DatePicker className="w-full" format={DATE_FORMAT} />
-                  </Form.Item>
-                  <Form.Item label="Quê quán" name="hometown">
-                    <Input />
-                  </Form.Item>
-                  <Form.Item label="Địa chỉ tạm trú" name="address">
-                    <Input />
-                  </Form.Item>
-                  {/* <Form.Item label="Bio" name="bio">
-                    <Input.TextArea showCount maxLength={100}/>
-                  </Form.Item> */}
-                </Form>
-              </Modal>
-            </Row>
-          </Col>
-        </Row>
+        <Modal
+          title="Chỉnh sửa thông tin TNV"
+          open={open}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          okText="Lưu"
+          cancelText="Huỷ"
+        >
+          <Form
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600 }}
+            initialValues={{
+              ...profile,
+              birthday: dayjs(profile?.birthday),
+            }}
+            // onFinish={onFinish}
+          >
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your email!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              label="Số điện thoại"
+              name="phone"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your phone!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="DatePicker"
+              name="birthday"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your birthday!',
+                },
+              ]}
+            >
+              <DatePicker className="w-full" format={DATE_FORMAT} />
+            </Form.Item>
+            <Form.Item label="Quê quán" name="hometown">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Địa chỉ tạm trú" name="address">
+              <Input />
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
-    </div>
+
+      {loading && <Loading />}
+    </>
   );
 };
 
