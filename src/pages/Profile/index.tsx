@@ -19,7 +19,9 @@ import { BiCamera } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { DATE_FORMAT } from 'src/constants';
+import { UpdateUserInfo, updateUserInfo } from 'src/redux/actions';
 import { User, authSelector } from 'src/redux/slices/auth.slice';
+import { useAppDispatch } from 'src/redux/store';
 import { getUser } from 'src/services/user';
 import { getPosition } from 'utils';
 import NotFound from '../NotFound';
@@ -33,7 +35,9 @@ const Profile: React.FC = () => {
   const [isError, setIsError] = useState(false);
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState<User>();
-  const { user } = useSelector(authSelector);
+  const { user, loading: authLoading } = useSelector(authSelector);
+  const [form] = Form.useForm<UpdateUserInfo>();
+  const dispatch = useAppDispatch();
 
   const showModal = () => {
     setOpen(true);
@@ -60,7 +64,18 @@ const Profile: React.FC = () => {
     });
   };
 
-  const handleOk = () => {};
+  const handleOk = () => {
+    form.submit();
+  };
+
+  const handleSubmit = async (formData: UpdateUserInfo) => {
+    setOpen(false);
+    dispatch(updateUserInfo(formData)).then((value) => {
+      if (value.type.includes('rejected')) {
+        setOpen(true);
+      }
+    });
+  };
 
   const handleCancel = () => {
     setOpen(false);
@@ -85,7 +100,7 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     getInfo();
-  }, [id]);
+  }, [id, user]);
 
   if (isError) return <NotFound />;
 
@@ -217,7 +232,7 @@ const Profile: React.FC = () => {
               {profile?.school && (
                 <Row align="middle">
                   <Col span={6}>
-                    <Title level={4}>Trường:</Title>
+                    <Title level={4}>Trường (Khoa/Viện):</Title>
                   </Col>
                   <Col span={18}>
                     <Title level={4}>{profile?.school}</Title>
@@ -296,6 +311,7 @@ const Profile: React.FC = () => {
           cancelText="Huỷ"
         >
           <Form
+            form={form}
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
@@ -304,7 +320,7 @@ const Profile: React.FC = () => {
               ...profile,
               birthday: dayjs(profile?.birthday),
             }}
-            // onFinish={onFinish}
+            onFinish={handleSubmit}
           >
             <Form.Item
               label="Email"
@@ -365,7 +381,7 @@ const Profile: React.FC = () => {
         </Modal>
       </div>
 
-      {loading && <Loading />}
+      {(loading || authLoading) && <Loading />}
     </>
   );
 };
