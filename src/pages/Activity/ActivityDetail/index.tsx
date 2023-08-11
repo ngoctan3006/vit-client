@@ -10,6 +10,7 @@ import {
   Tag,
   Tooltip,
   Typography,
+  message,
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Loading } from 'components';
@@ -30,15 +31,34 @@ import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
 import { ActivityMemberState } from 'src/pages/Admin/Activity/components/ActivityMember';
 import { getStatus } from 'src/pages/Admin/Activity/utils';
 import { authSelector } from 'src/redux/slices/auth.slice';
+import { registerActivity } from 'src/services/activity';
 import { getColorOfDate } from 'src/utils';
 import './index.scss';
 
 const ActivityDetail: React.FC = () => {
   const { id } = useParams();
+  const dispatch = useAppDispatch();
   const { activity, loading, member } = useSelector(activitySelector);
   const { user } = useSelector(authSelector);
   const [activityMember, setActivityMember] = useState<GetActivityMember[]>([]);
-  const dispatch = useAppDispatch();
+  const [registerLoading, setRegisterLoading] = useState(false);
+
+  const handleRegisterActivity = async (timeId: number) => {
+    if (!id || !activity) return;
+    try {
+      setRegisterLoading(true);
+      const { data } = await registerActivity({
+        timeId,
+        activityId: activity.id,
+      });
+      await getActivityDetail();
+      message.success(data.data.message);
+    } catch (error: any) {
+      message.error(error.response.data.message);
+    } finally {
+      setRegisterLoading(false);
+    }
+  };
 
   const timesColumns: ColumnsType<ActivityTime> = [
     {
@@ -87,6 +107,7 @@ const ActivityDetail: React.FC = () => {
               description="Bạn chắc chắn muốn đăng ký hoạt động này?"
               cancelText="Không"
               okText="Chắc chắn"
+              onConfirm={() => handleRegisterActivity(id)}
             >
               <Button type="primary">Đăng ký</Button>
             </Popconfirm>
@@ -142,7 +163,7 @@ const ActivityDetail: React.FC = () => {
     ];
   }, [activityMember]);
 
-  const getActivityDetail = () => {
+  const getActivityDetail = async () => {
     if (id) {
       dispatch(getActivity(Number(id)));
       dispatch(getActivityMember(Number(id))).then((value) => {
@@ -189,62 +210,63 @@ const ActivityDetail: React.FC = () => {
     getActivityDetail();
   }, []);
 
-  if (loading) return <Loading />;
-
   return (
-    <div className="activity-detail p-5">
-      <Row gutter={16}>
-        <Col span={5}>
-          <div className="activity-left d-flex flex-column align-center p-3">
-            <div>
-              <img src="https://ctsv.hust.edu.vn/static/img/activity.a80f3233.png" />
+    <>
+      {(loading || registerLoading) && <Loading />}
+      <div className="activity-detail p-5">
+        <Row gutter={16}>
+          <Col span={5}>
+            <div className="activity-left d-flex flex-column align-center p-3">
+              <div>
+                <img src="https://ctsv.hust.edu.vn/static/img/activity.a80f3233.png" />
+              </div>
+              <Typography.Title className="text-center" level={3}>
+                {activity?.name}
+              </Typography.Title>
+              <div className="activity-info w-full p-5">
+                <Typography.Title level={5}>
+                  {activity?.description}
+                </Typography.Title>
+                <Typography.Title
+                  type={
+                    moment().isBefore(activity?.deadline) ? 'success' : 'danger'
+                  }
+                  title={
+                    moment().isBefore(activity?.deadline)
+                      ? 'Deadline đăng ký'
+                      : 'Đã hết thời gian đăng ký'
+                  }
+                  level={5}
+                  className="d-flex align-center gap-2"
+                >
+                  <span className="d-center">
+                    <AiOutlineFieldTime />
+                  </span>
+                  <span className="d-center">{`${moment(
+                    activity?.deadline
+                  ).format(DATE_FORMAT)} - ${moment(activity?.deadline).format(
+                    TIME_FORMAT
+                  )}`}</span>
+                </Typography.Title>
+                <Typography.Title
+                  level={5}
+                  title="Địa điểm diễn ra hoạt động"
+                  className="d-flex align-center gap-2 mt-0"
+                >
+                  <span className="d-center">
+                    <MdOutlineLocationOn />
+                  </span>
+                  <span className="d-center">{activity?.location}</span>
+                </Typography.Title>
+              </div>
             </div>
-            <Typography.Title className="text-center" level={3}>
-              {activity?.name}
-            </Typography.Title>
-            <div className="activity-info w-full p-5">
-              <Typography.Title level={5}>
-                {activity?.description}
-              </Typography.Title>
-              <Typography.Title
-                type={
-                  moment().isBefore(activity?.deadline) ? 'success' : 'danger'
-                }
-                title={
-                  moment().isBefore(activity?.deadline)
-                    ? 'Deadline đăng ký'
-                    : 'Đã hết thời gian đăng ký'
-                }
-                level={5}
-                className="d-flex align-center gap-2"
-              >
-                <span className="d-center">
-                  <AiOutlineFieldTime />
-                </span>
-                <span className="d-center">{`${moment(
-                  activity?.deadline
-                ).format(DATE_FORMAT)} - ${moment(activity?.deadline).format(
-                  TIME_FORMAT
-                )}`}</span>
-              </Typography.Title>
-              <Typography.Title
-                level={5}
-                title="Địa điểm diễn ra hoạt động"
-                className="d-flex align-center gap-2 mt-0"
-              >
-                <span className="d-center">
-                  <MdOutlineLocationOn />
-                </span>
-                <span className="d-center">{activity?.location}</span>
-              </Typography.Title>
-            </div>
-          </div>
-        </Col>
-        <Col span={19}>
-          <Tabs type="card" items={items} />
-        </Col>
-      </Row>
-    </div>
+          </Col>
+          <Col span={19}>
+            <Tabs type="card" items={items} />
+          </Col>
+        </Row>
+      </div>
+    </>
   );
 };
 
