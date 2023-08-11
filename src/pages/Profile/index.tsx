@@ -267,7 +267,7 @@ const Profile: React.FC = () => {
                   </Col>
                 </Row>
               )}
-              {profile?.cccd && (
+              {profile?.id === user?.id && profile?.cccd && (
                 <Row align="middle">
                   <Col span={6}>
                     <Title level={4}>Số CCCD/CMT:</Title>
