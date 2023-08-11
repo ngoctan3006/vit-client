@@ -1,6 +1,7 @@
 import { Carousel } from 'antd';
 import MHX from 'assets/images/home/MHX.png';
 import NHSVTN from 'assets/images/home/NHSVTN.jpg';
+import TD from 'assets/images/home/TD.jpg';
 import TTNV from 'assets/images/home/TTNV.jpg';
 import XYT from 'assets/images/home/XYT.jpg';
 import React from 'react';
@@ -15,6 +16,7 @@ const Main: React.FC = () => {
             <Carousel autoplay>
               <img src={MHX} alt="mùa hè xanh" />
               <img src={NHSVTN} alt="ngày hội sinh viên tình nguyện" />
+              <img src={TD} alt="cốc trà đá vì cộng đồng" />
               <img src={XYT} alt="xuân yêu thương" />
               <img src={TTNV} alt="tuyển tình nguyện viên" />
             </Carousel>
