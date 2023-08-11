@@ -42,8 +42,6 @@ const LeftSide: React.FC = () => {
     }
   };
 
-  console.log(management);
-
   useEffect(() => {
     getManagement();
   }, []);
@@ -66,7 +64,7 @@ const LeftSide: React.FC = () => {
                     </Avatar>
                   }
                   title={
-                    <Link className="text-16" to={`profile/${item.id}`}>
+                    <Link className="text-16" to={`/profile/${item.id}`}>
                       {item.fullname}
                     </Link>
                   }

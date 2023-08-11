@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { getTopMember } from 'src/services/admin';
 import './index.scss';
 
-interface TopMember {
+export interface TopMember {
   id: number;
   username: string;
   fullname: string;
@@ -16,10 +16,6 @@ interface TopMember {
 }
 
 const Dashboard: React.FC = () => {
-  useEffect(() => {
-    document.title = 'VIT | Trang chủ quản trị';
-  }, []);
-
   const [topMembers, setTopMembers] = useState<TopMember[]>([]);
 
   const getTopMembers = async () => {
@@ -32,6 +28,7 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() => {
+    document.title = 'VIT | Trang chủ quản trị';
     getTopMembers();
   }, []);
 

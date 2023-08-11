@@ -28,13 +28,6 @@ const Main: React.FC = () => {
           <p>quest 1</p>
           <p>quest 1</p>
           <p>quest 1</p>
-          <p>quest 1</p>
-          <p>quest 1</p>
-          <p>quest 1</p>
-          <p>quest 1</p>
-          <p>quest 1</p>
-          <p>quest 1</p>
-          <p>quest 1</p>
         </div>
       </div>
     </div>
