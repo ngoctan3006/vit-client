@@ -19,7 +19,7 @@ export interface UpdateUserInfo {
   cccd?: string;
 }
 
-export const getMe = createAsyncThunk<User, void>(
+export const getMe = createAsyncThunk(
   'auth/getMe',
   async (_, { rejectWithValue }) => {
     try {
