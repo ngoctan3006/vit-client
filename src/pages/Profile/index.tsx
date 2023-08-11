@@ -131,20 +131,22 @@ const Profile: React.FC = () => {
                     </Title>
                   </Avatar>
                 </div>
-                <ImgCrop rotationSlider>
-                  <Upload
-                    beforeUpload={handleBeforeUpload}
-                    showUploadList={false}
-                    accept="image/*"
-                  >
-                    <Button
-                      className="d-center"
-                      shape="circle"
-                      icon={<BiCamera />}
-                      title="Thay đổi ảnh đại diện"
-                    />
-                  </Upload>
-                </ImgCrop>
+                {profile?.id === user?.id && (
+                  <ImgCrop rotationSlider>
+                    <Upload
+                      beforeUpload={handleBeforeUpload}
+                      showUploadList={false}
+                      accept="image/*"
+                    >
+                      <Button
+                        className="d-center"
+                        shape="circle"
+                        icon={<BiCamera />}
+                        title="Thay đổi ảnh đại diện"
+                      />
+                    </Upload>
+                  </ImgCrop>
+                )}
                 <div className="bio mt-3 text-center">
                   <Typography.Text>{profile?.bio}</Typography.Text>
                 </div>
@@ -299,11 +301,13 @@ const Profile: React.FC = () => {
                   </Col>
                 </Row>
               )}
-              <Row align="middle">
-                <Button type="primary" onClick={showModal}>
-                  Chỉnh sửa thông tin
-                </Button>
-              </Row>
+              {profile?.id === user?.id && (
+                <Row align="middle">
+                  <Button type="primary" onClick={showModal}>
+                    Chỉnh sửa thông tin
+                  </Button>
+                </Row>
+              )}
             </Col>
           </Row>
         </div>
