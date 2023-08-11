@@ -121,7 +121,7 @@ const Profile: React.FC = () => {
                       shape="circle"
                       icon={<BiCamera />}
                       title="Thay đổi ảnh đại diện"
-                    ></Button>
+                    />
                   </Upload>
                 </ImgCrop>
                 <div className="bio mt-3 text-center">
@@ -132,7 +132,7 @@ const Profile: React.FC = () => {
             <Col xs={24} sm={16}>
               <Row align="middle">
                 <Col span={6}>
-                  <Title level={4}>Họ và tên: </Title>
+                  <Title level={4}>Họ và tên:</Title>
                 </Col>
                 <Col span={18}>
                   <Title level={4}>{profile?.fullname}</Title>
@@ -140,7 +140,7 @@ const Profile: React.FC = () => {
               </Row>
               <Row align="middle">
                 <Col span={6}>
-                  <Title level={4}>Chức vụ: </Title>
+                  <Title level={4}>Chức vụ:</Title>
                 </Col>
                 <Col span={18}>
                   <Title level={4}>
@@ -150,7 +150,7 @@ const Profile: React.FC = () => {
               </Row>
               <Row align="middle">
                 <Col span={6}>
-                  <Title level={4}>Địa chỉ email: </Title>
+                  <Title level={4}>Địa chỉ email:</Title>
                 </Col>
                 <Col span={18}>
                   <Title level={4}>
@@ -160,7 +160,7 @@ const Profile: React.FC = () => {
               </Row>
               <Row align="middle">
                 <Col span={6}>
-                  <Title level={4}>Số điện thoại: </Title>
+                  <Title level={4}>Số điện thoại:</Title>
                 </Col>
                 <Col span={18}>
                   <Title level={4}>
@@ -170,52 +170,114 @@ const Profile: React.FC = () => {
               </Row>
               <Row align="middle">
                 <Col span={6}>
-                  <Title level={4}>Giới tính: </Title>
+                  <Title level={4}>Giới tính:</Title>
                 </Col>
                 <Col span={18}>
-                  <Title level={4}>{profile?.gender}</Title>
+                  <Title level={4}>
+                    {profile?.gender === 'MALE'
+                      ? 'Nam'
+                      : profile?.gender === 'FEMALE'
+                      ? 'Nữ'
+                      : 'Khác'}
+                  </Title>
                 </Col>
               </Row>
-              <Row align="middle">
-                <Col span={6}>
-                  <Title level={4}>Quê quán: </Title>
-                </Col>
-                <Col span={18}>
-                  <Title level={4}>{profile?.hometown}</Title>
-                </Col>
-              </Row>
-              <Row align="middle">
-                <Col span={6}>
-                  <Title level={4}>Địa chỉ hiện tại: </Title>
-                </Col>
-                <Col span={18}>
-                  <Title level={4}>{profile?.address}</Title>
-                </Col>
-              </Row>
-              <Row align="middle">
-                <Col span={6}>
-                  <Title level={4}>Trường: </Title>
-                </Col>
-                <Col span={18}>
-                  <Title level={4}>{profile?.school}</Title>
-                </Col>
-              </Row>
-              <Row align="middle">
-                <Col span={6}>
-                  <Title level={4}>Lớp: </Title>
-                </Col>
-                <Col span={18}>
-                  <Title level={4}>{profile?.class}</Title>
-                </Col>
-              </Row>
-              <Row align="middle">
-                <Col span={6}>
-                  <Title level={4}>MSSV: </Title>
-                </Col>
-                <Col span={18}>
-                  <Title level={4}>{profile?.student_id}</Title>
-                </Col>
-              </Row>
+              {profile?.birthday && (
+                <Row align="middle">
+                  <Col span={6}>
+                    <Title level={4}>Ngày sinh:</Title>
+                  </Col>
+                  <Col span={18}>
+                    <Title level={4}>
+                      {dayjs(profile?.birthday).format(DATE_FORMAT)}
+                    </Title>
+                  </Col>
+                </Row>
+              )}
+              {profile?.hometown && (
+                <Row align="middle">
+                  <Col span={6}>
+                    <Title level={4}>Quê quán:</Title>
+                  </Col>
+                  <Col span={18}>
+                    <Title level={4}>{profile?.hometown}</Title>
+                  </Col>
+                </Row>
+              )}
+              {profile?.address && (
+                <Row align="middle">
+                  <Col span={6}>
+                    <Title level={4}>Địa chỉ hiện tại:</Title>
+                  </Col>
+                  <Col span={18}>
+                    <Title level={4}>{profile?.address}</Title>
+                  </Col>
+                </Row>
+              )}
+              {profile?.school && (
+                <Row align="middle">
+                  <Col span={6}>
+                    <Title level={4}>Trường:</Title>
+                  </Col>
+                  <Col span={18}>
+                    <Title level={4}>{profile?.school}</Title>
+                  </Col>
+                </Row>
+              )}
+              {profile?.class && (
+                <Row align="middle">
+                  <Col span={6}>
+                    <Title level={4}>Lớp:</Title>
+                  </Col>
+                  <Col span={18}>
+                    <Title level={4}>{profile?.class}</Title>
+                  </Col>
+                </Row>
+              )}
+              {profile?.student_id && (
+                <Row align="middle">
+                  <Col span={6}>
+                    <Title level={4}>MSSV:</Title>
+                  </Col>
+                  <Col span={18}>
+                    <Title level={4}>{profile?.student_id}</Title>
+                  </Col>
+                </Row>
+              )}
+              {profile?.cccd && (
+                <Row align="middle">
+                  <Col span={6}>
+                    <Title level={4}>Số CCCD/CMT:</Title>
+                  </Col>
+                  <Col span={18}>
+                    <Title level={4}>{profile?.cccd}</Title>
+                  </Col>
+                </Row>
+              )}
+              {profile?.date_join && (
+                <Row align="middle">
+                  <Col span={6}>
+                    <Title level={4}>Ngày vào Đội:</Title>
+                  </Col>
+                  <Col span={18}>
+                    <Title level={4}>
+                      {dayjs(profile?.date_join).format('MM/YYYY')}
+                    </Title>
+                  </Col>
+                </Row>
+              )}
+              {profile?.date_out && (
+                <Row align="middle">
+                  <Col span={6}>
+                    <Title level={4}>Ngày rời Đội:</Title>
+                  </Col>
+                  <Col span={18}>
+                    <Title level={4}>
+                      {dayjs(profile?.date_out).format('MM/YYYY')}
+                    </Title>
+                  </Col>
+                </Row>
+              )}
               <Row align="middle">
                 <Button type="primary" onClick={showModal}>
                   Chỉnh sửa thông tin
