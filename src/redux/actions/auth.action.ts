@@ -64,3 +64,18 @@ export const updateUserInfo = createAsyncThunk<User, UpdateUserInfo>(
     }
   }
 );
+
+export const updateAvatar = createAsyncThunk<User, FormData>(
+  'auth/updateAvatar',
+  async (formData: FormData, { rejectWithValue }) => {
+    try {
+      const {
+        data: { data: res },
+      } = await API.put('user/avatar', formData);
+      message.success('Cập nhật ảnh đại diện thành công');
+      return res;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
