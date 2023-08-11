@@ -13,7 +13,7 @@ export interface User {
   bio?: string;
   avatar?: string;
   birthday?: string;
-  howntown?: string;
+  hometown?: string;
   address?: string;
   school?: string;
   student_id?: string;
