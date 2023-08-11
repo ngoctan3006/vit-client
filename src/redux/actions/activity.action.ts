@@ -49,14 +49,26 @@ export interface UpdateActivityDto extends CreateActivityDto {
 
 export const getAllActivity = createAsyncThunk<Activity[], QueryParamType>(
   'activity/getAll',
-  async (
-    { page, limit }: QueryParamType = defaultQueryParam,
-    { rejectWithValue }
-  ) => {
+  async (params: QueryParamType = defaultQueryParam, { rejectWithValue }) => {
     try {
       const {
         data: { data: res },
-      } = await API.get(`${prefix}?page=${page}&limit=${limit}`);
+      } = await API.get(`${prefix}`, { params });
+      return res;
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getActivity = createAsyncThunk<Activity, number>(
+  'activity/getOne',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const {
+        data: { data: res },
+      } = await API.get(`${prefix}/${id}`);
       return res;
     } catch (error: any) {
       message.error(error.response.data.message);
@@ -70,14 +82,11 @@ export const getAllActivityDeleted = createAsyncThunk<
   QueryParamType
 >(
   'activity/getAllDeleted',
-  async (
-    { page, limit }: QueryParamType = defaultQueryParam,
-    { rejectWithValue }
-  ) => {
+  async (params: QueryParamType = defaultQueryParam, { rejectWithValue }) => {
     try {
       const {
         data: { data: res },
-      } = await API.get(`${prefix}/trash?page=${page}&limit=${limit}`);
+      } = await API.get(`${prefix}/trash`, { params });
       return res;
     } catch (error: any) {
       message.error(error.response.data.message);
@@ -147,8 +156,8 @@ export const restoreActivity = createAsyncThunk<number, number>(
   }
 );
 
-export const getActivityMember = createAsyncThunk<GetActivityMember, number>(
-  'activity/get-member',
+export const getActivityMember = createAsyncThunk<GetActivityMember[], number>(
+  'activity/getMember',
   async (id: number, { rejectWithValue }) => {
     try {
       const { data } = await API.get(`${prefix}/member/${id}`);
