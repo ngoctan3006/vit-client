@@ -4,6 +4,10 @@ import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import type { CellRenderInfo } from 'rc-picker/lib/interface';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Loading } from 'src/components';
+import { activitySelector } from 'src/redux/slices/activity.slice';
 import { getTopMember } from 'src/services/admin';
 import './index.scss';
 
@@ -17,13 +21,18 @@ export interface TopMember {
 
 const Dashboard: React.FC = () => {
   const [topMembers, setTopMembers] = useState<TopMember[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { activities, loading } = useSelector(activitySelector);
 
   const getTopMembers = async () => {
     try {
+      setIsLoading(true);
       const { data } = await getTopMember();
       setTopMembers(data.data);
     } catch (error: any) {
       message.error(error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -94,38 +103,41 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="dashboard-main">
-      <div className="part excellent-members">
-        <h1 className="title">Top tình nguyện viên xuất sắc</h1>
-        {topMembers && topMembers.length === 0 && (
-          <p className="text-center">Không có dữ liệu</p>
-        )}
-        {topMembers.map((member) => (
-          <div className="card">
-            <img
-              src={member?.avatar || iconVolunteer}
-              width={48}
-              height={48}
-              alt="avatar"
-            />
-            <div>
-              <p>{member.fullname}</p>
-              <p>
-                Đã tham gia <b>{member.count}</b> hoạt động trong tháng này
-              </p>
+    <>
+      <div className="dashboard-main">
+        <div className="part excellent-members">
+          <h1 className="title">Top tình nguyện viên xuất sắc</h1>
+          {topMembers && topMembers.length === 0 && (
+            <p className="text-center">Không có dữ liệu</p>
+          )}
+          {topMembers.map((member) => (
+            <div className="card">
+              <img
+                src={member?.avatar || iconVolunteer}
+                width={48}
+                height={48}
+                alt="avatar"
+              />
+              <div>
+                <p>
+                  <Link to={`/profile/${member.id}`}>{member.fullname}</Link>
+                </p>
+                <p>
+                  Đã tham gia <b>{member.count}</b> hoạt động trong tháng này
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="part calendar">
+          <h1 className="title">Các sự kiện trong tháng</h1>
+          {/* @ts-ignore */}
+          <Calendar value={value} cellRender={cellRender} />
+        </div>
       </div>
-      <div className="part calendar">
-        <h1 className="title">Các sự kiện trong tháng</h1>
-        {/* @ts-ignore */}
-        <Calendar value={value} cellRender={cellRender} />
-      </div>
-    </div>
+      {(loading || isLoading) && <Loading />}
+    </>
   );
-
-  return <div>Dashboard</div>;
 };
 
 export default Dashboard;
