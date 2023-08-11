@@ -1,3 +1,7 @@
+import { Carousel } from 'antd';
+import MHX from 'assets/images/home/MHX.png';
+import TTNV from 'assets/images/home/TTNV.jpg';
+import XYT from 'assets/images/home/XYT.jpg';
 import React from 'react';
 
 const Main: React.FC = () => {
@@ -6,7 +10,13 @@ const Main: React.FC = () => {
       <div>
         <p className="subtitle">Sự kiện hot</p>
         <div className="d-center">
-          <div className="card"></div>
+          <div className="card">
+            <Carousel autoplay>
+              <img src={MHX} alt="mhx" />
+              <img src={XYT} alt="mhx" />
+              <img src={TTNV} alt="mhx" />
+            </Carousel>
+          </div>
         </div>
       </div>
       <div className="mt-5">
