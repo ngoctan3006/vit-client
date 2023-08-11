@@ -47,7 +47,7 @@ const ActivityItem: React.FC<Props> = ({ activity }) => {
         <div className="d-flex justify-between">
           <Link
             className="d-center gap-1"
-            to={`${activity?.id}/paticipant`}
+            to={`${activity?.id}`}
             style={{ color: 'purple' }}
           >
             <BsPeople />
@@ -55,7 +55,7 @@ const ActivityItem: React.FC<Props> = ({ activity }) => {
           </Link>
           <Link
             className="d-center gap-1"
-            to={`${activity?.id}/detail`}
+            to={`${activity?.id}`}
             style={{ color: '#67c23a' }}
           >
             <BiMessageDetail />
