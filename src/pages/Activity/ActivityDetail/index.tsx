@@ -2,6 +2,7 @@ import {
   Avatar,
   Button,
   Col,
+  Popconfirm,
   Row,
   Table,
   Tabs,
@@ -80,12 +81,28 @@ const ActivityDetail: React.FC = () => {
           );
         const isRegisted = member.find((m) => m.id === String(user?.id));
         if (!isRegisted || !isRegisted[id] || isRegisted[id] === 'WITHDRAWN')
-          return <Button type="primary">Đăng ký</Button>;
+          return (
+            <Popconfirm
+              title="Đăng ký"
+              description="Bạn chắc chắn muốn đăng ký hoạt động này?"
+              cancelText="Không"
+              okText="Chắc chắn"
+            >
+              <Button type="primary">Đăng ký</Button>
+            </Popconfirm>
+          );
         if (isRegisted[id] === 'REGISTERED' || isRegisted[id] === 'ACCEPTED')
           return (
-            <Button type="primary" danger>
-              Xin nghỉ
-            </Button>
+            <Popconfirm
+              title="Xin nghỉ"
+              description="Bạn chắc chắn muốn xin nghỉ hoạt động này?"
+              cancelText="Không"
+              okText="Chắc chắn"
+            >
+              <Button type="primary" danger>
+                Xin nghỉ
+              </Button>
+            </Popconfirm>
           );
         if (isRegisted[id] === 'REJECTED')
           return (
