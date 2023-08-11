@@ -1,12 +1,12 @@
 import {
   Avatar,
-  Badge,
   Button,
   Col,
   Row,
   Table,
   Tabs,
   TabsProps,
+  Tag,
   Tooltip,
   Typography,
 } from 'antd';
@@ -28,12 +28,14 @@ import { useAppDispatch } from 'redux/store';
 import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
 import { ActivityMemberState } from 'src/pages/Admin/Activity/components/ActivityMember';
 import { getStatus } from 'src/pages/Admin/Activity/utils';
+import { authSelector } from 'src/redux/slices/auth.slice';
 import { getColorOfDate } from 'src/utils';
 import './index.scss';
 
 const ActivityDetail: React.FC = () => {
   const { id } = useParams();
   const { activity, loading, member } = useSelector(activitySelector);
+  const { user } = useSelector(authSelector);
   const [activityMember, setActivityMember] = useState<GetActivityMember[]>([]);
   const dispatch = useAppDispatch();
 
@@ -68,11 +70,30 @@ const ActivityDetail: React.FC = () => {
     {
       title: 'Đăng ký',
       key: 'action',
-      render: () => (
-        <Button disabled={moment().isAfter(activity?.deadline)} type="primary">
-          {moment().isAfter(activity?.deadline) ? 'Đã hết hạn' : 'Đăng ký'}
-        </Button>
-      ),
+      render: (_: string, { id }: ActivityTime) => {
+        const isExpired = moment().isAfter(activity?.deadline);
+        if (isExpired)
+          return (
+            <Button disabled type="primary">
+              Đã hết hạn
+            </Button>
+          );
+        const isRegisted = member.find((m) => m.id === String(user?.id));
+        if (!isRegisted || !isRegisted[id] || isRegisted[id] === 'WITHDRAWN')
+          return <Button type="primary">Đăng ký</Button>;
+        if (isRegisted[id] === 'REGISTERED' || isRegisted[id] === 'ACCEPTED')
+          return (
+            <Button type="primary" danger>
+              Xin nghỉ
+            </Button>
+          );
+        if (isRegisted[id] === 'REJECTED')
+          return (
+            <Button type="primary" disabled>
+              Bị từ chối
+            </Button>
+          );
+      },
     },
   ];
 
@@ -98,13 +119,7 @@ const ActivityDetail: React.FC = () => {
         title: item.name,
         render: (_: string, row: ActivityMemberState) => {
           const [color, text] = getStatus(row[`${item.id}`]);
-          return (
-            row[`${item.id}`] && (
-              <div className="d-flex justify-between">
-                <Badge color={color} text={text} />
-              </div>
-            )
-          );
+          return row[`${item.id}`] && <Tag color={color}>{text}</Tag>;
         },
       })),
     ];
@@ -146,11 +161,7 @@ const ActivityDetail: React.FC = () => {
           <Typography.Title level={4}>
             Danh sách các thành viên đăng ký:
           </Typography.Title>
-          <Table
-            columns={memberColumns}
-            dataSource={member}
-            pagination={false}
-          />
+          <Table columns={memberColumns} dataSource={member} />
         </>
       ),
     },
