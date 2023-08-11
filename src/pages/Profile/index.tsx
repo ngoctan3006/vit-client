@@ -127,7 +127,7 @@ const Profile: React.FC = () => {
                     src={profile?.avatar}
                   >
                     <Title className="mb-0 text-white">
-                      {user?.username.charAt(0).toUpperCase()}
+                      {profile?.username.charAt(0).toUpperCase()}
                     </Title>
                   </Avatar>
                 </div>
