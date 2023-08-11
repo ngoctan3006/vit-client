@@ -31,7 +31,7 @@ import { DATE_FORMAT, TIME_FORMAT } from 'src/constants';
 import { ActivityMemberState } from 'src/pages/Admin/Activity/components/ActivityMember';
 import { getStatus } from 'src/pages/Admin/Activity/utils';
 import { authSelector } from 'src/redux/slices/auth.slice';
-import { registerActivity } from 'src/services/activity';
+import { registerActivity, withdrawnActivity } from 'src/services/activity';
 import { getColorOfDate } from 'src/utils';
 import './index.scss';
 
@@ -44,13 +44,26 @@ const ActivityDetail: React.FC = () => {
   const [registerLoading, setRegisterLoading] = useState(false);
 
   const handleRegisterActivity = async (timeId: number) => {
-    if (!id || !activity) return;
+    if (!activity) return;
     try {
       setRegisterLoading(true);
       const { data } = await registerActivity({
         timeId,
         activityId: activity.id,
       });
+      await getActivityDetail();
+      message.success(data.data.message);
+    } catch (error: any) {
+      message.error(error.response.data.message);
+    } finally {
+      setRegisterLoading(false);
+    }
+  };
+
+  const handleWithdrawnActivity = async (timeId: number) => {
+    try {
+      setRegisterLoading(true);
+      const { data } = await withdrawnActivity(timeId);
       await getActivityDetail();
       message.success(data.data.message);
     } catch (error: any) {
@@ -119,6 +132,7 @@ const ActivityDetail: React.FC = () => {
               description="Bạn chắc chắn muốn xin nghỉ hoạt động này?"
               cancelText="Không"
               okText="Chắc chắn"
+              onConfirm={() => handleWithdrawnActivity(id)}
             >
               <Button type="primary" danger>
                 Xin nghỉ

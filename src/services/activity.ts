@@ -30,3 +30,6 @@ export const rejectActivity = (
 export const registerActivity = (
   data: RegisterActivity
 ): Promise<AxiosResponse<any>> => API.post(`${prefix}/register`, data);
+
+export const withdrawnActivity = (id: number): Promise<AxiosResponse<any>> =>
+  API.put(`${prefix}/withdrawn/${id}`);
