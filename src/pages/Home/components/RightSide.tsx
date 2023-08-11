@@ -80,7 +80,7 @@ const RightSide: React.FC = () => {
           <p>Nguyễn Mai Anh</p>
         </div> */}
         <div className="mb-5">
-          <h3 className="subtitle mb-2">Top</h3>
+          <h3 className="subtitle mb-2">Top thành viên hoạt động</h3>
           <hr />
           <List
             itemLayout="horizontal"
