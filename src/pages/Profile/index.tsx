@@ -312,41 +312,53 @@ const Profile: React.FC = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Please input your email!',
+                  message: 'Bạn không được bỏ trống địa chỉ email',
                 },
               ]}
             >
-              <Input />
+              <Input type="email" />
             </Form.Item>
-
             <Form.Item
               label="Số điện thoại"
               name="phone"
               rules={[
                 {
                   required: true,
-                  message: 'Please input your phone!',
+                  message: 'Bạn không được bỏ trống số điện thoại',
                 },
               ]}
             >
               <Input />
             </Form.Item>
-            <Form.Item
-              label="DatePicker"
-              name="birthday"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your birthday!',
-                },
-              ]}
-            >
-              <DatePicker className="w-full" format={DATE_FORMAT} />
+            <Form.Item label="Bio" name="bio">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Khoá" name="gen">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Sinh nhật" name="birthday">
+              <DatePicker
+                placeholder=""
+                className="w-full"
+                format={DATE_FORMAT}
+              />
             </Form.Item>
             <Form.Item label="Quê quán" name="hometown">
               <Input />
             </Form.Item>
             <Form.Item label="Địa chỉ tạm trú" name="address">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Trường (Khoa/Viện)" name="school">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Lớp" name="class">
+              <Input />
+            </Form.Item>
+            <Form.Item label="MSSV" name="student_id">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Số CCCD/CMT" name="cccd">
               <Input />
             </Form.Item>
           </Form>
