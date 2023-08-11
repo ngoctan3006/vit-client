@@ -19,7 +19,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlineFieldTime } from 'react-icons/ai';
 import { MdOutlineLocationOn } from 'react-icons/md';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   GetActivityMember,
   getActivity,
@@ -42,6 +42,7 @@ const ActivityDetail: React.FC = () => {
   const { user } = useSelector(authSelector);
   const [activityMember, setActivityMember] = useState<GetActivityMember[]>([]);
   const [registerLoading, setRegisterLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleRegisterActivity = async (timeId: number) => {
     if (!activity) return;
@@ -156,9 +157,15 @@ const ActivityDetail: React.FC = () => {
         title: 'Họ Tên',
         render: (
           _: string,
-          { fullname, avatar, username }: ActivityMemberState
+          { fullname, avatar, username, id }: ActivityMemberState
         ) => (
-          <div className="d-flex gap-2 justify-start align-center">
+          <div
+            className="d-flex gap-2 justify-start align-center cursor-pointer"
+            onClick={() => {
+              if (String(user?.id) === id) navigate('/profile');
+              else navigate(`/profile/${id}`);
+            }}
+          >
             <Avatar src={avatar}>{username.charAt(0).toUpperCase()}</Avatar>
             <Tooltip title={username}>
               <p className="d-center mb-0">{fullname}</p>
