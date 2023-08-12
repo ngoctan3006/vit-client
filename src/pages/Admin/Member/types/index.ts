@@ -1,6 +1,7 @@
 import { Dayjs } from 'dayjs';
 
 export interface MemberDataType {
+  id: number;
   key: string;
   username: string;
   fullname: string;
