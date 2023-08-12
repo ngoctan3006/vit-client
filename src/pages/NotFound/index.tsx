@@ -19,7 +19,7 @@ const NotFound: React.FC = () => {
   return (
     <div className="not-found-container">
       <Lottie options={defaultOptions} height={500} width={500} />
-      <LoginButton onClick={() => navigate('/', { replace: true })}>
+      <LoginButton onClick={() => navigate('/home', { replace: true })}>
         quay lại trang chủ
       </LoginButton>
     </div>

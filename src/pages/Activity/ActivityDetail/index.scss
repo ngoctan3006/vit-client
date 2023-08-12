@@ -1,0 +1,15 @@
+@import '../../../assets/scss/variables';
+
+.activity-detail {
+  margin-top: $headerHeight;
+
+  .activity-left {
+    background-color: #d5edf1;
+    border-radius: 10px;
+
+    .activity-info {
+      background-color: #fff;
+      border-radius: 10px;
+    }
+  }
+}

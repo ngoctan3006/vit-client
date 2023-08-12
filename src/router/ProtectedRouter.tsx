@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { getMe } from 'redux/actions/auth.action';
 import { authSelector } from 'redux/slices/auth.slice';
 import { useAppDispatch } from 'redux/store';
+import { NotFound } from 'src/pages';
 import { COMMON } from '../constants';
 
 interface ProtectedRouterProps {
@@ -33,9 +34,10 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
             state: { from },
           });
         }
-        // if (role && res.payload?.role !== role) {
-        //   navigate('/home');
-        // }
+        if (role && res.payload?.position === 'MEMBER') {
+          // navigate('/home');
+          return <NotFound />;
+        }
       });
     } else if (user?.status === COMMON.INACTIVE) {
       navigate('/welcome', {
@@ -45,8 +47,13 @@ const ProtectedRouter: React.FC<ProtectedRouterProps> = ({ role }) => {
     }
   }, []);
 
-  if (isAuthenticated)
+  if (isAuthenticated) {
+    if (role && user?.position === 'MEMBER') {
+      // navigate('/home');
+      return <NotFound />;
+    }
     return role === COMMON.ADMIN ? <AdminLayout /> : <DefaultLayout />;
+  }
   return <Loading />;
 };
 

@@ -18,9 +18,10 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { BsDownload } from 'react-icons/bs';
+import { MdModeEditOutline } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { getAllMember } from 'redux/actions';
 import { memberSelector } from 'redux/slices/member.slice';
@@ -32,6 +33,16 @@ import { importMany, signupUser } from 'src/services/auth';
 import { getPosition } from 'utils';
 import './index.scss';
 import { CreateMemberValues, MemberDataType } from './types';
+import { updateMemberPosition } from 'src/services/admin';
+
+export interface UpdateUserInfo {
+  id: number;
+  fullname: string;
+  username: string;
+  email: string;
+  phone: string;
+  position: string;
+}
 
 const Member: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -39,11 +50,26 @@ const Member: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState('manual');
   const [form1] = Form.useForm<CreateMemberValues>();
+  const [form2] = Form.useForm<MemberDataType>();
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState<File>();
   const [value, setValue] = useState();
   const [isFileEmpty, setIsFileEmpty] = useState(false);
   const [isSendMail, setIsSendMail] = useState(true);
+  const [filter, setFilter] = useState('');
+  const [filterText, setFilterText] = useState('');
+  const [editModal, setEditModal] = useState(false);
+  const [currMember, setCurrMember] = useState<UpdateUserInfo>();
+
+  const onKeyPress = (e: any) => {
+    if (e.key === 'Enter') {
+      setFilterText(filter);
+    }
+  };
+
+  const onFilterChange = (e: any) => {
+    setFilter(e.target.value);
+  };
 
   const onChange = (key: string) => {
     setTab(key);
@@ -109,32 +135,82 @@ const Member: React.FC = () => {
       dataIndex: 'position',
       render: (text) => getPosition(text),
     },
+    {
+      key: 'action',
+      title: 'Chỉnh sửa',
+      render: (_: string, member: MemberDataType) => (
+        <Button
+          icon={<MdModeEditOutline />}
+          shape="circle"
+          type="primary"
+          onClick={() => {
+            setCurrMember(member);
+            setEditModal(true);
+            form2.setFieldsValue(member);
+          }}
+        />
+      ),
+    },
   ];
 
-  const dataSource: MemberDataType[] = members.map<MemberDataType>(
-    ({
-      username,
-      fullname,
-      email,
-      phone,
-      date_join,
-      date_out,
-      gender,
-      status,
-      position,
-    }) => ({
-      key: username,
-      username,
-      fullname,
-      email,
-      phone,
-      date_join,
-      date_out,
-      gender,
-      status,
-      position,
-    })
-  );
+  const dataSource: MemberDataType[] = useMemo(() => {
+    if (filterText)
+      return members
+        .filter((mem) => mem.username.includes(filterText))
+        .map<MemberDataType>(
+          ({
+            id,
+            username,
+            fullname,
+            email,
+            phone,
+            date_join,
+            date_out,
+            gender,
+            status,
+            position,
+          }) => ({
+            id,
+            key: username,
+            username,
+            fullname,
+            email,
+            phone,
+            date_join,
+            date_out,
+            gender,
+            status,
+            position,
+          })
+        );
+    else
+      return members.map<MemberDataType>(
+        ({
+          id,
+          username,
+          fullname,
+          email,
+          phone,
+          date_join,
+          date_out,
+          gender,
+          status,
+          position,
+        }) => ({
+          id,
+          key: username,
+          username,
+          fullname,
+          email,
+          phone,
+          date_join,
+          date_out,
+          gender,
+          status,
+          position,
+        })
+      );
+  }, [filterText, members]);
 
   const handleCancel = () => {
     setOpen(false);
@@ -206,6 +282,31 @@ const Member: React.FC = () => {
   const handleDownload = () => {
     const fileUrl = '/src/assets/excel/template-data.xlsx';
     window.open(fileUrl, '_blank');
+  };
+
+  const handleEditInfoOk = () => {
+    form2.submit();
+    setEditModal(false);
+  };
+
+  const handleEditModalCancel = () => {
+    form2.resetFields();
+    setEditModal(false);
+  };
+
+  const handleEditFormSubmit = async (formData: UpdateUserInfo) => {
+    if (!currMember) return;
+    try {
+      setIsLoading(true);
+      const { data } = await updateMemberPosition(currMember.id, formData);
+      await getMembers();
+      message.success('Cập nhật vị trí thành viên thành công');
+      console.log(data);
+    } catch (error: any) {
+      message.error(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -383,9 +484,17 @@ const Member: React.FC = () => {
   return (
     <div className="content member">
       <h2 className="title mb-15">Quản lý nhân sự</h2>
-      <div className="d-flex mb-6">
+      <div className="d-flex mb-6 gap-2">
+        <Input
+          placeholder="tìm theo username"
+          style={{ width: 250 }}
+          className="ml-auto"
+          value={filter}
+          onChange={onFilterChange}
+          onKeyDown={onKeyPress}
+        />
         <Button
-          className="d-center ml-auto gap-2"
+          className="d-center gap-2"
           type="primary"
           icon={<AiOutlinePlus />}
           onClick={() => setOpen(true)}
@@ -410,6 +519,38 @@ const Member: React.FC = () => {
         width={600}
       >
         <Tabs items={items} onChange={onChange} />
+      </Modal>
+
+      <Modal
+        title="Chỉnh sửa thông tin TNV"
+        open={editModal}
+        onOk={handleEditInfoOk}
+        onCancel={handleEditModalCancel}
+        okText="Lưu"
+        cancelText="Huỷ"
+      >
+        <Form
+          form={form2}
+          name="basic"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+          style={{ maxWidth: 600 }}
+          initialValues={currMember}
+          onFinish={handleEditFormSubmit}
+        >
+          <Form.Item label="Username" name="username">
+            <Input disabled />
+          </Form.Item>
+          <Form.Item label="Email" name="email">
+            <Input disabled />
+          </Form.Item>
+          <Form.Item label="Số điện thoại" name="phone">
+            <Input disabled />
+          </Form.Item>
+          <Form.Item id="position-select" label="Vị trí" name="position">
+            <Select options={Position} />
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );
