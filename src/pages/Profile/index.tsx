@@ -17,8 +17,8 @@ import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { BiCamera } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { DATE_FORMAT } from 'src/constants';
+import { useNavigate, useParams } from 'react-router-dom';
+import { COMMON, DATE_FORMAT } from 'src/constants';
 import {
   UpdateUserInfo,
   updateAvatar,
@@ -26,6 +26,7 @@ import {
 } from 'src/redux/actions';
 import { User, authSelector } from 'src/redux/slices/auth.slice';
 import { useAppDispatch } from 'src/redux/store';
+import { ChangePasswordDto, changePassword } from 'src/services/auth';
 import { getUser } from 'src/services/user';
 import { getPosition } from 'utils';
 import NotFound from '../NotFound';
@@ -41,10 +42,17 @@ const Profile: React.FC = () => {
   const [profile, setProfile] = useState<User>();
   const { user, loading: authLoading } = useSelector(authSelector);
   const [form] = Form.useForm<UpdateUserInfo>();
+  const [form2] = Form.useForm<ChangePasswordDto>();
   const dispatch = useAppDispatch();
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
+  const navigate = useNavigate();
 
   const showModal = () => {
     setOpen(true);
+  };
+
+  const showPasswordModal = () => {
+    setChangePasswordModal(true);
   };
 
   const handleBeforeUpload = (file: File) => {
@@ -83,8 +91,33 @@ const Profile: React.FC = () => {
     });
   };
 
+  const handleChangePass = async (formData: ChangePasswordDto) => {
+    setChangePasswordModal(false);
+    try {
+      setLoading(true);
+      const { data } = await changePassword(formData);
+      message.success(data.data.message);
+      localStorage.removeItem(COMMON.ACCESS_TOKEN);
+      localStorage.removeItem(COMMON.REFRESH_TOKEN);
+      navigate('/');
+    } catch (error: any) {
+      message.error(error.response.data.message);
+      setChangePasswordModal(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleCancel = () => {
     setOpen(false);
+  };
+
+  const handleCancelChangePassword = () => {
+    setChangePasswordModal(false);
+  };
+
+  const handleChangePasswordOk = () => {
+    form2.submit();
   };
 
   const getInfo = async () => {
@@ -306,6 +339,13 @@ const Profile: React.FC = () => {
                   <Button type="primary" onClick={showModal}>
                     Chỉnh sửa thông tin
                   </Button>
+                  <Button
+                    className="ml-2"
+                    type="primary"
+                    onClick={showPasswordModal}
+                  >
+                    Đổi mật khẩu
+                  </Button>
                 </Row>
               )}
             </Col>
@@ -386,6 +426,61 @@ const Profile: React.FC = () => {
             </Form.Item>
             <Form.Item label="Số CCCD/CMT" name="cccd">
               <Input />
+            </Form.Item>
+          </Form>
+        </Modal>
+
+        <Modal
+          title="Đổi mật khẩu"
+          open={changePasswordModal}
+          onOk={handleChangePasswordOk}
+          onCancel={handleCancelChangePassword}
+          okText="Thay đổi"
+          cancelText="Huỷ"
+        >
+          <Form
+            form={form2}
+            name="change-password-form"
+            labelCol={{ span: 10 }}
+            wrapperCol={{ span: 14 }}
+            style={{ maxWidth: 600 }}
+            onFinish={handleChangePass}
+          >
+            <Form.Item
+              label="Mật khẩu cũ"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Bạn không được bỏ trống mật khẩu cũ',
+                },
+              ]}
+            >
+              <Input type="password" />
+            </Form.Item>
+            <Form.Item
+              label="Mật khẩu mới"
+              name="newPassword"
+              rules={[
+                {
+                  required: true,
+                  message: 'Bạn không được bỏ trống mật khẩu mới',
+                },
+              ]}
+            >
+              <Input type="password" />
+            </Form.Item>
+            <Form.Item
+              label="Xác nhận mật khẩu mới"
+              name="cfPassword"
+              rules={[
+                {
+                  required: true,
+                  message: 'Bạn không được bỏ trống xác nhận mật khẩu mới',
+                },
+              ]}
+            >
+              <Input type="password" />
             </Form.Item>
           </Form>
         </Modal>
