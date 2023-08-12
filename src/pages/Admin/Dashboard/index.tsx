@@ -1,14 +1,17 @@
 import { Badge, BadgeProps, Calendar, message } from 'antd';
 import iconVolunteer from 'assets/images/landing/icon-volunteer.png';
+import { Loading } from 'components';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import type { CellRenderInfo } from 'rc-picker/lib/interface';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Loading } from 'src/components';
-import { activitySelector } from 'src/redux/slices/activity.slice';
-import { getTopMember } from 'src/services/admin';
+import { getAllActivity } from 'redux/actions';
+import { activitySelector } from 'redux/slices/activity.slice';
+import { useAppDispatch } from 'redux/store';
+import { getTopMember } from 'services/admin';
+import { defaultQueryParam } from 'src/constants';
 import './index.scss';
 
 export interface TopMember {
@@ -23,6 +26,7 @@ const Dashboard: React.FC = () => {
   const [topMembers, setTopMembers] = useState<TopMember[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { activities, loading } = useSelector(activitySelector);
+  const dispatch = useAppDispatch();
 
   const getTopMembers = async () => {
     try {
@@ -39,44 +43,42 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     document.title = 'VIT | Trang chủ quản trị';
     getTopMembers();
+    dispatch(getAllActivity(defaultQueryParam));
   }, []);
 
   const [value, setValue] = useState(() => dayjs());
 
   const getListData = (value: Dayjs) => {
     let listData;
-    switch (value.date()) {
-      case 8:
-        listData = [
-          { type: 'warning', content: 'This is warning event.' },
-          { type: 'success', content: 'This is usual event.' },
-        ];
-        break;
-      case 10:
-        listData = [
-          { type: 'warning', content: 'This is warning event.' },
-          { type: 'success', content: 'This is usual event.' },
-          { type: 'error', content: 'This is error event.' },
-        ];
-        break;
-      default:
-    }
-    return listData || [];
+    listData = activities.map((item) => {
+      if (dayjs(item.deadline).date() === value.date()) {
+        return {
+          type: value.isBefore(dayjs()) ? 'error' : 'success',
+          content: item.name,
+        };
+      }
+    });
+    return value.month() === dayjs().month() ? listData || [] : [];
   };
 
   const dateCellRender = (value: Dayjs) => {
     const listData = getListData(value);
     return (
-      <ul className="events">
-        {listData.map((item) => (
-          <li key={item.content}>
-            <Badge
-              status={item.type as BadgeProps['status']}
-              text={item.content}
-            />
-          </li>
-        ))}
-      </ul>
+      listData && (
+        <ul className="events">
+          {listData.map(
+            (item) =>
+              item && (
+                <li key={item?.content}>
+                  <Badge
+                    status={item?.type as BadgeProps['status']}
+                    text={item?.content}
+                  />
+                </li>
+              )
+          )}
+        </ul>
+      )
     );
   };
 
