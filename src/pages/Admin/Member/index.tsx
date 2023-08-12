@@ -18,7 +18,7 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { BsDownload } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
@@ -44,6 +44,18 @@ const Member: React.FC = () => {
   const [value, setValue] = useState();
   const [isFileEmpty, setIsFileEmpty] = useState(false);
   const [isSendMail, setIsSendMail] = useState(true);
+  const [filter, setFilter] = useState('');
+  const [filterText, setFilterText] = useState('');
+
+  const onKeyPress = (e: any) => {
+    if (e.key === 'Enter') {
+      setFilterText(filter);
+    }
+  };
+
+  const onFilterChange = (e: any) => {
+    setFilter(e.target.value);
+  };
 
   const onChange = (key: string) => {
     setTab(key);
@@ -111,30 +123,60 @@ const Member: React.FC = () => {
     },
   ];
 
-  const dataSource: MemberDataType[] = members.map<MemberDataType>(
-    ({
-      username,
-      fullname,
-      email,
-      phone,
-      date_join,
-      date_out,
-      gender,
-      status,
-      position,
-    }) => ({
-      key: username,
-      username,
-      fullname,
-      email,
-      phone,
-      date_join,
-      date_out,
-      gender,
-      status,
-      position,
-    })
-  );
+  const dataSource: MemberDataType[] = useMemo(() => {
+    if (filterText)
+      return members
+        .filter((mem) => mem.username.includes(filterText))
+        .map<MemberDataType>(
+          ({
+            username,
+            fullname,
+            email,
+            phone,
+            date_join,
+            date_out,
+            gender,
+            status,
+            position,
+          }) => ({
+            key: username,
+            username,
+            fullname,
+            email,
+            phone,
+            date_join,
+            date_out,
+            gender,
+            status,
+            position,
+          })
+        );
+    else
+      return members.map<MemberDataType>(
+        ({
+          username,
+          fullname,
+          email,
+          phone,
+          date_join,
+          date_out,
+          gender,
+          status,
+          position,
+        }) => ({
+          key: username,
+          username,
+          fullname,
+          email,
+          phone,
+          date_join,
+          date_out,
+          gender,
+          status,
+          position,
+        })
+      );
+  }, [filterText]);
 
   const handleCancel = () => {
     setOpen(false);
@@ -383,9 +425,17 @@ const Member: React.FC = () => {
   return (
     <div className="content member">
       <h2 className="title mb-15">Quản lý nhân sự</h2>
-      <div className="d-flex mb-6">
+      <div className="d-flex mb-6 gap-2">
+        <Input
+          placeholder="username"
+          style={{ width: 250 }}
+          className="ml-auto"
+          value={filter}
+          onChange={onFilterChange}
+          onKeyDown={onKeyPress}
+        />
         <Button
-          className="d-center ml-auto gap-2"
+          className="d-center gap-2"
           type="primary"
           icon={<AiOutlinePlus />}
           onClick={() => setOpen(true)}
