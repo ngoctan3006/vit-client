@@ -5,6 +5,12 @@ import { ResetPasswordState } from 'pages/Auth/ResetPassword';
 import { CreateUserDto } from 'src/pages/Admin/Member/types';
 import { API } from './axios';
 
+export interface ChangePasswordDto {
+  password: string;
+  newPassword: string;
+  cfPassword: string;
+}
+
 export const requestResetPasswordAPI = (
   data: RequestResetPasswordState
 ): Promise<AxiosResponse<{ data: { message: string } }>> =>
@@ -34,3 +40,7 @@ export const importMany = (
   API.post('/auth/import-many', data, {
     params: { isSendMail },
   });
+
+export const changePassword = (
+  formData: ChangePasswordDto
+): Promise<AxiosResponse<any>> => API.put('/user/password', formData);
