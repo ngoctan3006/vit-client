@@ -1,7 +1,12 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { COMMON } from 'src/constants';
-import { getMe, login } from '../actions/auth.action';
+import {
+  getMe,
+  login,
+  updateAvatar,
+  updateUserInfo,
+} from '../actions/auth.action';
 import { RootState } from '../store';
 
 export interface User {
@@ -13,7 +18,7 @@ export interface User {
   bio?: string;
   avatar?: string;
   birthday?: string;
-  howntown?: string;
+  hometown?: string;
   address?: string;
   school?: string;
   student_id?: string;
@@ -81,6 +86,40 @@ export const authSlice = createSlice({
       }
     );
     builder.addCase(getMe.rejected, (state: AuthState) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+    });
+
+    builder.addCase(updateUserInfo.pending, (state: AuthState) => {
+      state.loading = true;
+    });
+    builder.addCase(
+      updateUserInfo.fulfilled,
+      (state: AuthState, action: PayloadAction<User>) => {
+        state.user = action.payload;
+        state.isAuthenticated = true;
+        state.loading = false;
+      }
+    );
+    builder.addCase(updateUserInfo.rejected, (state: AuthState) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+    });
+
+    builder.addCase(updateAvatar.pending, (state: AuthState) => {
+      state.loading = true;
+    });
+    builder.addCase(
+      updateAvatar.fulfilled,
+      (state: AuthState, action: PayloadAction<User>) => {
+        state.user = action.payload;
+        state.isAuthenticated = true;
+        state.loading = false;
+      }
+    );
+    builder.addCase(updateAvatar.rejected, (state: AuthState) => {
       state.loading = false;
       state.isAuthenticated = false;
       state.user = null;

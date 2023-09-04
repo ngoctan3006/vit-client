@@ -9,6 +9,11 @@ export interface ConfirmationDto {
   timeId: number;
 }
 
+export interface RegisterActivity {
+  activityId: number;
+  timeId: number;
+}
+
 export const getActivityMember = (
   id: number
 ): Promise<AxiosResponse<{ data: GetActivityMember[] }>> =>
@@ -21,3 +26,10 @@ export const approveActivity = (
 export const rejectActivity = (
   data: ConfirmationDto
 ): Promise<AxiosResponse<any>> => API.post(`${prefix}/reject`, data);
+
+export const registerActivity = (
+  data: RegisterActivity
+): Promise<AxiosResponse<any>> => API.post(`${prefix}/register`, data);
+
+export const withdrawnActivity = (id: number): Promise<AxiosResponse<any>> =>
+  API.put(`${prefix}/withdrawn/${id}`);

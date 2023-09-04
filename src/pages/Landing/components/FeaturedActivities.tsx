@@ -25,7 +25,7 @@ const FeaturedActivities: React.FC<Props> = ({ className, id }) => {
         </li>
         <li>
           <div className="date" style={{ backgroundColor: '#FBCA3E' }}>
-            05 - 2022
+            05 - 2023
           </div>
           <div className="title">Cốc trà đá vì cộng đồng mùa thứ 12</div>
           <div className="descr">

@@ -10,7 +10,7 @@ import {
   Typography,
 } from 'antd';
 import dayjs from 'dayjs';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { HiOutlineTrash } from 'react-icons/hi2';
 import { createActivity } from 'redux/actions';
 import { useAppDispatch } from 'redux/store';
@@ -28,6 +28,9 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const [form] = Form.useForm<ActivityValues>();
+  const [initialValues, setInitialValues] = useState({
+    times: [{}],
+  });
 
   const handleOk = () => {
     form.submit();
@@ -66,7 +69,14 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
             .toISOString(),
         })),
       })
-    );
+    ).then((res) => {
+      if (res.type.endsWith('fulfilled')) {
+        form.resetFields();
+        setInitialValues({
+          times: [{}],
+        });
+      }
+    });
     setShow(false);
   };
 
@@ -85,11 +95,8 @@ const CreateActivityModal: React.FC<CreateActivityModalProps> = ({
         name="create-activity"
         layout="vertical"
         onFinish={handleSubmit}
-        autoComplete="off"
         className="mt-10"
-        initialValues={{
-          times: [{}],
-        }}
+        initialValues={initialValues}
       >
         <Form.Item
           label="Tên hoạt động"
