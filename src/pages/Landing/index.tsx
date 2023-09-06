@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
   About,
+  Activities,
   Banner,
-  Contacts,
-  FeaturedActivities,
-  FeaturedMembers,
+  Contact,
   Header,
+  Humans,
 } from './components';
 import './index.scss';
 
@@ -31,20 +31,14 @@ const Landing: React.FC = () => {
 
   return (
     <>
-      <div className="page">
+      <div className="page landing-page">
         <Header />
         <Banner />
         {showToTop && <div className="to-top" onClick={scrollToTop} />}
-        <About className="section about" id="about" />
-        <FeaturedActivities
-          className="section featured-activities"
-          id="featured-activities"
-        />
-        <FeaturedMembers
-          className="section featured-members"
-          id="featured-members"
-        />
-        <Contacts className="section contacts" id="contacts" />
+        <About />
+        <Activities />
+        <Humans />
+        <Contact />
       </div>
     </>
   );

@@ -1,0 +1,9 @@
+.page.landing-page {
+  .section {
+    @apply py-16;
+
+    .title {
+      @apply pt-0 px-32 pb-9 text-center text-[32px] font-bold uppercase border-b-4 w-fit mx-auto;
+    }
+  }
+}

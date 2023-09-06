@@ -24,13 +24,24 @@ const ArrowButton: React.FC<Props> = ({
   children,
   onClick,
 }) => {
+  if (to) {
+    return (
+      <Link to={to}>
+        <button
+          className={`${className} ${styles.arrowButton}`}
+          onClick={onClick || (() => {})}
+        >
+          {buttonContent(children)}
+        </button>
+      </Link>
+    );
+  }
   return (
     <button
       className={`${className} ${styles.arrowButton}`}
       onClick={onClick || (() => {})}
     >
-      {to && <Link to={to}>{buttonContent(children)}</Link>}
-      {!to && buttonContent(children)}
+      {buttonContent(children)}
     </button>
   );
 };

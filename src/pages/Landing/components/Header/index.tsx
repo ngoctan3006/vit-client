@@ -40,7 +40,13 @@ const LandingHeader: React.FC = () => {
           >
             <HashLink to="#contacts">Liên hệ</HashLink>
           </div>
-          <ArrowButton to="/login">Đăng nhập</ArrowButton>
+          <div
+            className={`${styles.navLink} my-auto text-center hover:text-blue-800 hover:font-bold`}
+          >
+            <ArrowButton to="/login" className="w-44">
+              Đăng nhập
+            </ArrowButton>
+          </div>
         </div>
       </div>
       <div className="flex py-6 justify-center items-center bg-blue-800 mt-[90px]">
