@@ -1,4 +1,5 @@
 export { default as About } from './About';
+export { default as Banner } from './Banner';
 export { default as Contacts } from './Contacts';
 export { default as FeaturedActivities } from './FeaturedActivities';
 export { default as FeaturedMembers } from './FeaturedMembers';

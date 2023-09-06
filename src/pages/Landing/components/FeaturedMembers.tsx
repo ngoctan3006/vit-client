@@ -83,7 +83,7 @@ const members: MemberInfo[] = [
   },
 ];
 
-const FeaturedMembers: React.FC<Props> = ({ className, id }) => {
+const FeaturedMembers: React.FC<Props> = ({ className='', id }) => {
   return (
     <div className={className} id={id}>
       <h1 className="text-center title">

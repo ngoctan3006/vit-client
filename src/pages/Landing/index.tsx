@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   About,
+  Banner,
   Contacts,
   FeaturedActivities,
   FeaturedMembers,
@@ -32,16 +33,8 @@ const Landing: React.FC = () => {
     <>
       <div className="page">
         <Header />
-        <div className="banner"></div>
-        {showToTop && (
-          <div className="to-top" onClick={scrollToTop}>
-            <div className="indicator">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-        )}
+        <Banner />
+        {showToTop && <div className="to-top" onClick={scrollToTop} />}
         <About className="section about" id="about" />
         <FeaturedActivities
           className="section featured-activities"

@@ -5,7 +5,7 @@ interface Props {
   id?: string;
 }
 
-const FeaturedActivities: React.FC<Props> = ({ className, id }) => {
+const FeaturedActivities: React.FC<Props> = ({ className='', id }) => {
   return (
     <div className={className} id={id}>
       <h1 className="text-center title">

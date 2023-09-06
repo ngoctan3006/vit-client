@@ -125,7 +125,7 @@ const contacts: Contact[] = [
   },
 ];
 
-const About: React.FC<Props> = ({ className, id }: Props) => {
+const About: React.FC<Props> = ({ className='', id }: Props) => {
   return (
     <div className={`${className}`} id={id}>
       <h1 className="title text-center">Liên hệ với chúng tôi</h1>

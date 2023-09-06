@@ -8,7 +8,7 @@ interface Props {
   id?: string;
 }
 
-const About: React.FC<Props> = ({ className, id }: Props) => {
+const About: React.FC<Props> = ({ className='', id }: Props) => {
   return (
     <div className={className} id={id}>
       <div className="text-center title">
