@@ -9,9 +9,11 @@ interface Props {
   to?: To;
 }
 
-const ButtonContent: React.FC<React.ReactNode> = (
-  children: React.ReactNode
-) => (
+interface ContentProps {
+  children?: React.ReactNode;
+}
+
+const ButtonContent: React.FC<ContentProps> = ({ children }) => (
   <>
     <span className={`${styles.circle}`} aria-hidden="true">
       <span className={`${styles.icon} ${styles.arrow}`}></span>
@@ -37,7 +39,7 @@ const ArrowButton: React.FC<Props> = ({
           className={`${className} ${styles.arrowButton}`}
           onClick={onClick || (() => {})}
         >
-          {ButtonContent(children)}
+          <ButtonContent>{children}</ButtonContent>
         </button>
       </Link>
     );
@@ -47,7 +49,7 @@ const ArrowButton: React.FC<Props> = ({
       className={`${className} ${styles.arrowButton}`}
       onClick={onClick || (() => {})}
     >
-      {ButtonContent(children)}
+      <ButtonContent>{children}</ButtonContent>
     </button>
   );
 };
