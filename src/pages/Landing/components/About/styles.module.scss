@@ -1,0 +1,11 @@
+.landingAbout {
+  * {
+    box-sizing: border-box;
+  }
+
+  .cards {
+    & > :nth-child(even) {
+      @apply mt-36;
+    }
+  }
+}
