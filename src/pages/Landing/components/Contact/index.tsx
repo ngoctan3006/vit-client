@@ -91,7 +91,10 @@ const contacts: ContactProps[] = [
 
 const About: React.FC<Props> = ({ className = '' }: Props) => {
   return (
-    <div className={`${className} section bg-white px-[300px]`}>
+    <div
+      className={`${className} section bg-white px-[300px]`}
+      id="contact"
+    >
       <div className="title text-blue-800 border-b-blue-800">
         Thông tin liên hệ
       </div>

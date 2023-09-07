@@ -9,7 +9,9 @@ interface Props {
   to?: To;
 }
 
-const buttonContent = (children: React.ReactNode) => (
+const ButtonContent: React.FC<React.ReactNode> = (
+  children: React.ReactNode
+) => (
   <>
     <span className={`${styles.circle}`} aria-hidden="true">
       <span className={`${styles.icon} ${styles.arrow}`}></span>
@@ -18,6 +20,10 @@ const buttonContent = (children: React.ReactNode) => (
   </>
 );
 
+/**
+ * If props "to" is passed, the button would be treated as a react-router-dom Link component.
+ * Otherwise, props "onClick" should be passed. The button would then be treated as a normal button.
+ */
 const ArrowButton: React.FC<Props> = ({
   className = '',
   to,
@@ -31,7 +37,7 @@ const ArrowButton: React.FC<Props> = ({
           className={`${className} ${styles.arrowButton}`}
           onClick={onClick || (() => {})}
         >
-          {buttonContent(children)}
+          {ButtonContent(children)}
         </button>
       </Link>
     );
@@ -41,7 +47,7 @@ const ArrowButton: React.FC<Props> = ({
       className={`${className} ${styles.arrowButton}`}
       onClick={onClick || (() => {})}
     >
-      {buttonContent(children)}
+      {ButtonContent(children)}
     </button>
   );
 };

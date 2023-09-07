@@ -10,6 +10,7 @@ const About: React.FC<Props> = ({ className = '' }: Props) => {
   return (
     <div
       className={`${className} ${styles.landingAbout} section bg-[url('images/landing/section-about-bg.webp')] bg-cover bg-no-repeat px-[300px]`}
+      id="about"
     >
       <div className="title text-white border-b-white">Tổng quan</div>
       <div className={`${styles.cards} flex py-20 justify-between gap-10`}>

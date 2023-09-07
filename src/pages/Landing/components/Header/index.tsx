@@ -38,7 +38,7 @@ const LandingHeader: React.FC = () => {
             className={`${styles.navLink} my-auto text-center hover:text-blue-800 hover:font-bold`}
             data-title="Liên hệ"
           >
-            <HashLink to="#contacts">Liên hệ</HashLink>
+            <HashLink to="#contact">Liên hệ</HashLink>
           </div>
           <div
             className={`${styles.navLink} my-auto text-center hover:text-blue-800 hover:font-bold`}

@@ -9,6 +9,7 @@ const Humans: React.FC<Props> = ({ className = '' }: Props) => {
   return (
     <div
       className={`${className} ${styles.landingActivity} section bg-gray-200 px-[300px]`}
+      id="featured-members"
     >
       <div className="py-20">
         {
