@@ -25,6 +25,7 @@ const ButtonContent: React.FC<ContentProps> = ({ children }) => (
 /**
  * If props "to" is passed, the button would be treated as a react-router-dom Link component.
  * Otherwise, props "onClick" should be passed. The button would then be treated as a normal button.
+ * You can also pass both "to" and "onClick". Both actions would then be triggered.
  */
 const ArrowButton: React.FC<Props> = ({
   className = '',

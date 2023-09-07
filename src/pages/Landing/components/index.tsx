@@ -3,4 +3,4 @@ export { default as Banner } from './Banner';
 export { default as Contact } from './Contact';
 export { default as Activities } from './Activities';
 export { default as Humans } from './Humans';
-export { default as Header } from './Header';
+export * from './Header';
