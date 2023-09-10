@@ -15,7 +15,7 @@ const LandingHeaderDesktop: React.FC = () => {
           </Link>
         </div>
         <div className="flex pr-6 gap-12">
-          {HEADER_LINKS.map((link, index) => (
+          {HEADER_LINKS?.map((link, index) => (
             <div
               className={`${styles.navLink} my-auto text-center hover:text-blue-800 hover:font-bold`}
               data-title={link.title}

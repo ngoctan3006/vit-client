@@ -6,14 +6,14 @@ interface Props {
   className?: string;
 }
 
-const About: React.FC<Props> = ({ className = '' }: Props) => {
+const About: React.FC<Props> = ({ className = '' }) => {
   return (
     <div
-      className={`${className} ${styles.landingAbout} section bg-[url('images/landing/section-about-bg.webp')] bg-cover bg-no-repeat px-[300px]`}
+      className={`${className} ${styles.landingAbout} section bg-[url('images/landing/section-about-bg.webp')] bg-cover bg-no-repeat px-9 lg:px-[300px]`}
       id="about"
     >
-      <div className="title text-white border-b-white">Tổng quan</div>
-      <div className={`${styles.cards} flex py-20 justify-between gap-10`}>
+      <div className="title text-white lg:border-b-white">Tổng quan</div>
+      <div className={`${styles.cards} flex flex-col lg:flex-row py-9 lg:py-20 justify-between gap-10`}>
         <Card
           label="Các tên gọi"
           icon={<img src="/logo.png" width={80} height={80} alt="logo" />}

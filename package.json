@@ -25,7 +25,8 @@
     "react-pageflip": "2.0.3",
     "react-redux": "8.0.5",
     "react-router-dom": "6.10.0",
-    "react-router-hash-link": "2.4.3"
+    "react-router-hash-link": "2.4.3",
+    "swiper": "^10.2.0"
   },
   "devDependencies": {
     "@types/node": "18.16.2",

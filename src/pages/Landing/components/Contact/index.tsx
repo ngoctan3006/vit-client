@@ -89,19 +89,19 @@ const contacts: ContactProps[] = [
   },
 ];
 
-const About: React.FC<Props> = ({ className = '' }: Props) => {
+const About: React.FC<Props> = ({ className = '' }) => {
   return (
     <div
-      className={`${className} section bg-white px-[300px]`}
+      className={`${className} section bg-white px-7 lg:px-[300px]`}
       id="contact"
     >
       <div className="title text-blue-800 border-b-blue-800">
         Thông tin liên hệ
       </div>
-      <div className="flex justify-between py-20 gap-6">
-        {contacts.map((contact, index) => (
+      <div className="flex justify-between flex-col 2xl:flex-row py-9 2xl:py-20 gap-6 w-[300px] 2xl:w-full mx-auto">
+        {contacts?.map((contact, index) => (
           <div
-            className={`relative w-full align-self bg-white font-semibold border-[1px] border-solid border-blue-800 shadow-[0_10px_4px_rgba(0,0,0,0.5)] rounded-3xl group transition-all duration-200`}
+            className={`relative align-self bg-white font-semibold border-[1px] border-solid border-blue-800 shadow-[0_10px_4px_rgba(0,0,0,0.5)] rounded-3xl group transition-all duration-200 w-full h-[114px] 2xl:h-auto 2xl:mx-auto`}
             key={index}
           >
             <div className="absolute inset-0 w-full h-full z-10 flex items-center justify-center scale-100  transition-all duration-200 group-hover:scale-0">
@@ -119,9 +119,6 @@ const About: React.FC<Props> = ({ className = '' }: Props) => {
           </div>
         ))}
       </div>
-      {
-        // TODO: Code phần liên hệ vào đây
-      }
     </div>
   );
 };

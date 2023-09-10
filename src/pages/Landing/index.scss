@@ -1,9 +1,9 @@
 .page.landing-page {
   .section {
-    @apply py-16;
+    @apply py-9 lg:py-16;
 
     .title {
-      @apply pt-0 px-32 pb-9 text-center text-[32px] font-bold uppercase border-b-4 w-fit mx-auto;
+      @apply pt-0 px-4 lg:px-32 lg:pb-9 text-center text-[32px] font-bold uppercase lg:border-b-4 w-fit mx-auto;
     }
   }
 }

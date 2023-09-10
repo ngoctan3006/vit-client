@@ -4,8 +4,6 @@ import config from '../../tailwind.config.js';
 
 const tailwindConfig = resolveConfig(config);
 
-console.log(tailwindConfig.screens);
-
 export const BREAKPOINT_SM = tailwindConfig.theme.screens['sm'];
 export const BREAKPOINT_MD = tailwindConfig.theme.screens['md'];
 export const BREAKPOINT_LG = tailwindConfig.theme.screens['lg'];

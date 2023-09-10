@@ -11,12 +11,11 @@ import {
 } from './components';
 import './index.scss';
 
+export const DEVICE_MOBILE = 0;
+export const DEVICE_DESKTOP = 1;
+
 const Landing: React.FC = () => {
   const [showToTop, setShowToTop] = useState<boolean>(false);
-  /**
-   * 0 - Mobile
-   * 1 - Desktop
-   */
   const [device, setDevice] = useState<number>(0);
 
   useLayoutEffect(() => {
@@ -66,14 +65,14 @@ const Landing: React.FC = () => {
       <div className="page landing-page">
         {device ? <HeaderDesktop /> : <HeaderMobile />}
         <Banner />
-        {/* <About />
+        <About />
         <Activities />
-        <Humans />
-        <Contact /> */}
+        <Humans device={device} />
+        <Contact />
         {showToTop && (
           <button
             type="button"
-            className="!fixed bottom-5 right-5 rounded-full bg-blue-600 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg focus:bg-blue-800 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-900 active:shadow-lg"
+            className="!fixed bottom-5 right-5 rounded-full bg-blue-600 p-3 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-800 hover:shadow-lg focus:bg-blue-800 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-900 active:shadow-lg z-50"
             onClick={scrollToTop}
           >
             <svg
