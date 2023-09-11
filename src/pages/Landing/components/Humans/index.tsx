@@ -4,6 +4,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { DEVICE_MOBILE } from '../..';
 import styles from './styles.module.scss';
+import Card from 'src/components/Card';
 
 interface Props {
   className?: string;
@@ -64,10 +65,34 @@ const Humans: React.FC<Props> = ({ className = '', device }) => {
         <SlidesPerView
           slidesPerView={device === DEVICE_MOBILE ? 1 : 3}
           slides={[
-            <div className="w-80 h-96 rounded-xl bg-gray-500"></div>,
-            <div className="w-80 h-96 rounded-xl bg-gray-500"></div>,
-            <div className="w-80 h-96 rounded-xl bg-gray-500"></div>,
-            <div className="w-80 h-96 rounded-xl bg-gray-500"></div>,
+            <Card
+              className="max-w-sm"
+              thumbnail="public/images/landing/card-thumbnail.png"
+              title="Anh Phạm Minh Hiệp"
+              subtitle="Đội trưởng"
+              description="Chiến dịch Xuân yêu thương tại xã Đồng Tiến, huyện Ứng Hòa, Hà Nội tuy ngắn nhưng đã đọng lại trong tâm thức của các TNV VIT cùng toàn thể bà con làng xóm nơi đây những cảm xúc xôn xao khó tả."
+            />,
+            <Card
+              className="max-w-sm"
+              thumbnail="public/images/landing/card-thumbnail.png"
+              title="Anh Phạm Minh Hiệp"
+              subtitle="Đội trưởng"
+              description="Chiến dịch Xuân yêu thương tại xã Đồng Tiến, huyện Ứng Hòa, Hà Nội tuy ngắn nhưng đã đọng lại trong tâm thức của các TNV VIT cùng toàn thể bà con làng xóm nơi đây những cảm xúc xôn xao khó tả."
+            />,
+            <Card
+              className="max-w-sm"
+              thumbnail="public/images/landing/card-thumbnail.png"
+              title="Anh Phạm Minh Hiệp"
+              subtitle="Đội trưởng"
+              description="Chiến dịch Xuân yêu thương tại xã Đồng Tiến, huyện Ứng Hòa, Hà Nội tuy ngắn nhưng đã đọng lại trong tâm thức của các TNV VIT cùng toàn thể bà con làng xóm nơi đây những cảm xúc xôn xao khó tả."
+            />,
+            <Card
+              className="max-w-sm"
+              thumbnail="public/images/landing/card-thumbnail.png"
+              title="Anh Phạm Minh Hiệp"
+              subtitle="Đội trưởng"
+              description="Chiến dịch Xuân yêu thương tại xã Đồng Tiến, huyện Ứng Hòa, Hà Nội tuy ngắn nhưng đã đọng lại trong tâm thức của các TNV VIT cùng toàn thể bà con làng xóm nơi đây những cảm xúc xôn xao khó tả."
+            />,
           ]}
         ></SlidesPerView>
       </div>
