@@ -21,7 +21,7 @@ const Activities: React.FC<Props> = ({ className = '' }) => {
           <li>
             <Card
               className="max-w-md"
-              thumbnail="public/images/landing/card-thumbnail.png"
+              thumbnail="images/landing/card-thumbnail.png"
               title="Xuân yêu thương 2023"
               description="Chiến dịch Xuân yêu thương tại xã Đồng Tiến, huyện Ứng Hòa, Hà Nội tuy ngắn nhưng đã đọng lại trong tâm thức của các TNV VIT cùng toàn thể bà con làng xóm nơi đây những cảm xúc xôn xao khó tả."
             />
@@ -29,7 +29,7 @@ const Activities: React.FC<Props> = ({ className = '' }) => {
           <li>
             <Card
               className="max-w-md"
-              thumbnail="public/images/landing/card-thumbnail.png"
+              thumbnail="images/landing/card-thumbnail.png"
               title="Xuân yêu thương 2023"
               description="Chiến dịch Xuân yêu thương tại xã Đồng Tiến, huyện Ứng Hòa, Hà Nội tuy ngắn nhưng đã đọng lại trong tâm thức của các TNV VIT cùng toàn thể bà con làng xóm nơi đây những cảm xúc xôn xao khó tả."
             />
@@ -37,7 +37,7 @@ const Activities: React.FC<Props> = ({ className = '' }) => {
           <li>
             <Card
               className="max-w-md"
-              thumbnail="public/images/landing/card-thumbnail.png"
+              thumbnail="images/landing/card-thumbnail.png"
               title="Xuân yêu thương 2023"
               description="Chiến dịch Xuân yêu thương tại xã Đồng Tiến, huyện Ứng Hòa, Hà Nội tuy ngắn nhưng đã đọng lại trong tâm thức của các TNV VIT cùng toàn thể bà con làng xóm nơi đây những cảm xúc xôn xao khó tả."
             />
@@ -45,7 +45,7 @@ const Activities: React.FC<Props> = ({ className = '' }) => {
           <li>
             <Card
               className="max-w-md"
-              thumbnail="public/images/landing/card-thumbnail.png"
+              thumbnail="images/landing/card-thumbnail.png"
               title="Xuân yêu thương 2023"
               description="Chiến dịch Xuân yêu thương tại xã Đồng Tiến, huyện Ứng Hòa, Hà Nội tuy ngắn nhưng đã đọng lại trong tâm thức của các TNV VIT cùng toàn thể bà con làng xóm nơi đây những cảm xúc xôn xao khó tả."
             />
