@@ -13,14 +13,14 @@ export const HEADER_LINKS: Link[] = [
   },
   {
     title: 'Các hoạt động nổi bật',
-    id: 'about',
+    id: 'featured-activities',
   },
   {
     title: 'Những gương mặt tiêu biểu',
-    id: 'about',
+    id: 'featured-members',
   },
   {
     title: 'Liên hệ',
-    id: 'about',
+    id: 'contact',
   },
 ];
