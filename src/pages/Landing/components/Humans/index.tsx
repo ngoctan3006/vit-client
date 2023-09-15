@@ -27,7 +27,7 @@ const Humans: React.FC<Props> = ({ className = '', device }) => {
           hoạt động tốt. Hãy cùng xem họ là ai nhé.
         </p>
         <div className="flex w-full justify-between px-20 lg:px-0 lg:w-fit lg:gap-8 mt-6">
-          <div className="w-12 h-12 bg-blue-400 rounded-sm flex items-center justify-center cursor-pointer hover:bg-blue-600">
+          <div className="image-swiper-button-prev w-12 h-12 bg-blue-400 rounded-sm flex items-center justify-center cursor-pointer hover:bg-blue-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -43,7 +43,7 @@ const Humans: React.FC<Props> = ({ className = '', device }) => {
               />
             </svg>
           </div>
-          <div className="w-12 h-12 bg-blue-400 rounded-sm flex items-center justify-center cursor-pointer hover:bg-blue-600">
+          <div className="image-swiper-button-next w-12 h-12 bg-blue-400 rounded-sm flex items-center justify-center cursor-pointer hover:bg-blue-600">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
