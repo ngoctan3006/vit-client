@@ -8,6 +8,7 @@ import {
   HeaderDesktop,
   HeaderMobile,
   Humans,
+  Section,
 } from './components';
 import './index.scss';
 
@@ -64,11 +65,21 @@ const Landing: React.FC = () => {
     <>
       <div className="page landing-page">
         {device ? <HeaderDesktop /> : <HeaderMobile />}
-        <Banner />
-        <About />
-        <Activities />
-        <Humans device={device} />
-        <Contact />
+        <Section type="Slide" direction="left" className="scroll-smooth">
+          <Banner />
+        </Section>
+        <Section type="Slide" direction="right" className="scroll-smooth">
+          <About />
+        </Section>
+        <Section type="Slide" direction="left" className="scroll-smooth">
+          <Activities />
+        </Section>
+        <Section type="Slide" direction="right" className="scroll-smooth">
+          <Humans device={device} />
+        </Section>
+        <Section type="Slide" direction="down" className="scroll-smooth">
+          <Contact />
+        </Section>
         {showToTop && (
           <button
             type="button"
