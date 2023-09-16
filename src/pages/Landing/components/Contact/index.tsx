@@ -45,10 +45,10 @@ const contacts: ContactProps[] = [
         width="40"
         height="40"
         src="https://img.icons8.com/ultraviolet/40/facebook-new.png"
-        alt="phone"
+        alt="facebook"
       />
     ),
-    href: 'tel:0968124602',
+    href: 'https://www.facebook.com/doitinhnguyen.soict',
     title: 'Đội Tình nguyện Trường Công nghệ Thông tin và Truyền thông',
   },
   {
@@ -57,7 +57,7 @@ const contacts: ContactProps[] = [
         width="40"
         height="40"
         src="https://img.icons8.com/ultraviolet/40/youtube.png"
-        alt="phone"
+        alt="youtube"
       />
     ),
     href: 'https://www.youtube.com/c/tinhnguyenict',
@@ -69,7 +69,7 @@ const contacts: ContactProps[] = [
         width="40"
         height="40"
         src="https://img.icons8.com/ultraviolet/40/instagram-new.png"
-        alt="phone"
+        alt="instagram"
       />
     ),
     href: 'https://www.instagram.com/vit_chungtalamotgiadinh',
@@ -81,7 +81,7 @@ const contacts: ContactProps[] = [
         width="40"
         height="40"
         src="https://img.icons8.com/ultraviolet/40/gmail--v1.png"
-        alt="phone"
+        alt="email"
       />
     ),
     href: 'mailto:tinhnguyen.ict@gmail.com',
