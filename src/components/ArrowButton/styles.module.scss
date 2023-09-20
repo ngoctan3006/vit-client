@@ -1,5 +1,5 @@
 .arrowButton {
-  @apply relative inline-block cursor-pointer outline-none border-0 align-middle text-base bg-transparent p-0 h-max m-auto;
+  @apply relative inline-block cursor-pointer outline-none border-[1px] rounded-full border-black border-opacity-10 align-middle text-base bg-transparent p-0 h-max m-auto;
 
   .circle {
     transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
