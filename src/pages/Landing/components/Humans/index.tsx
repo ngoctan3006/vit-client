@@ -1,7 +1,5 @@
 import React from 'react';
 import SlidesPerView from 'src/components/Swiper/SlidesPerView';
-import 'swiper/css';
-import 'swiper/css/pagination';
 import { DEVICE_MOBILE } from '../..';
 import styles from './styles.module.scss';
 import Card from 'src/components/Card';

@@ -6,11 +6,34 @@ const LandingBanner: React.FC = () => {
   return (
     <div className={`${styles.landingBanner}`}>
       <Carousel className="w-full h-screen">
-        <div className="w-full h-screen bg-[url('images/landing/banner.webp')] bg-center" />
-        <div className="w-full h-screen bg-[url('images/landing/banner.webp')] bg-center" />
-        <div className="w-full h-screen bg-[url('images/landing/banner.webp')] bg-center" />
-        <div className="w-full h-screen bg-[url('images/landing/banner.webp')] bg-center" />
-        <div className="w-full h-screen bg-[url('images/landing/banner.webp')] bg-center" />
+        <div className="w-full h-screen">
+          <img
+            src="images/landing/banner.webp"
+            alt="banner image"
+            className="w-full h-auto object-cover"
+          />
+        </div>
+        <div className="w-full h-screen">
+          <img
+            src="images/landing/banner.webp"
+            alt="banner image"
+            className="w-full h-auto object-cover"
+          />
+        </div>
+        <div className="w-full h-screen">
+          <img
+            src="images/landing/banner.webp"
+            alt="banner image"
+            className="w-full h-auto object-cover"
+          />
+        </div>
+        <div className="w-full h-screen">
+          <img
+            src="images/landing/banner.webp"
+            alt="banner image"
+            className="w-full h-auto object-cover"
+          />
+        </div>
       </Carousel>
     </div>
   );

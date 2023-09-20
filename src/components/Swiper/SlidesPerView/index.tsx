@@ -1,8 +1,8 @@
 import React from 'react';
-import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { Autoplay, Navigation, Pagination } from 'swiper';
+import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import './styles.scss';
-import 'swiper/css';
 
 interface Props {
   classNames?: string;
