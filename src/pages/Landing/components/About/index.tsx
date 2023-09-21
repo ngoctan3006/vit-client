@@ -13,7 +13,7 @@ const About: React.FC<Props> = ({ className = '' }) => {
       id="about"
     >
       <div className="title text-white lg:border-b-white">Tổng quan</div>
-      <div className={`${styles.cards} flex flex-col lg:flex-row py-9 lg:py-20 justify-between gap-10`}>
+      <div className={`${styles.cards} flex flex-col lg:flex-row lg:flex-wrap py-9 lg:py-20 justify-between gap-10`}>
         <Card
           label="Các tên gọi"
           icon={<img src="/logo.png" width={80} height={80} alt="logo" />}
