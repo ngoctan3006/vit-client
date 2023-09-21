@@ -71,13 +71,13 @@ const Landing: React.FC = () => {
         <Section type="Slide" direction="right" className="scroll-smooth">
           <About />
         </Section>
-        <Section type="Slide" direction="left" className="scroll-smooth">
+        <Section type="Slide" direction="up" className="scroll-smooth">
           <Activities />
         </Section>
-        <Section type="Slide" direction="right" className="scroll-smooth">
+        <Section type="Slide" direction="left" className="scroll-smooth">
           <Humans device={device} />
         </Section>
-        <Section type="Slide" direction="down" className="scroll-smooth">
+        <Section type="Slide" direction="right" className="scroll-smooth">
           <Contact />
         </Section>
         {showToTop && (
