@@ -1,0 +1,47 @@
+.arrowButton {
+  @apply relative inline-block cursor-pointer outline-none border-[1px] rounded-full border-black border-opacity-10 align-middle text-base bg-transparent p-0 h-max m-auto;
+
+  .circle {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    @apply relative block m-0 w-12 h-12 from-blue-800 to-blue-400 bg-gradient-to-b rounded-full;
+
+    .icon {
+      transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+      @apply absolute m-auto bg-white;
+      top: 0;
+      bottom: 0;
+
+      &.arrow {
+        transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+        @apply left-[0.625rem] w-[1.125rem] h-[0.125rem];
+        background: none;
+
+        &::before {
+          @apply absolute rotate-45 -top-1 w-[0.625rem] h-[0.625rem] border-t-2 border-r-2 right-[0.05rem];
+          content: '';
+        }
+      }
+    }
+  }
+
+  .buttonText {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    @apply absolute inset-0 py-3 ml-8 text-black font-bold text-center;
+  }
+
+  &:hover {
+    .circle {
+      width: 100%;
+
+      .icon {
+        &.arrow {
+          @apply bg-white translate-x-4;
+        }
+      }
+    }
+
+    .buttonText {
+      @apply text-white;
+    }
+  }
+}

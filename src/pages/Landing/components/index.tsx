@@ -1,5 +1,7 @@
 export { default as About } from './About';
-export { default as Contacts } from './Contacts';
-export { default as FeaturedActivities } from './FeaturedActivities';
-export { default as FeaturedMembers } from './FeaturedMembers';
-export { default as Header } from './Header';
+export { default as Banner } from './Banner';
+export { default as Contact } from './Contact';
+export { default as Activities } from './Activities';
+export { default as Humans } from './Humans';
+export { default as Section } from './Section';
+export * from './Header';

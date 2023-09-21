@@ -1,0 +1,8 @@
+.landingHeader {
+  .navLink {
+    &::before {
+      content: attr(data-title);
+      @apply block h-0 font-bold overflow-hidden;
+    }
+  }
+}
