@@ -8,7 +8,7 @@ import { HEADER_LINKS } from '../index';
 const LandingHeaderDesktop: React.FC = () => {
   return (
     <div className={styles.landingHeader}>
-      <div className="flex justify-between px-[300px] h-[90px] fixed inset-0 z-50 bg-white border-b-2 lg:desktop">
+      <div className="flex justify-between px-[300px] h-[90px] fixed inset-0 z-50 bg-white border-b-2">
         <div className="flex justify-center items-center cursor-pointer">
           <Link to="/">
             <img src="/logo.png" width={48} height={48} alt="logo" />
