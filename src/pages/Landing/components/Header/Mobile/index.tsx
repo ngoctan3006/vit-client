@@ -5,12 +5,12 @@ import ArrowButton from 'src/components/ArrowButton';
 import { HEADER_LINKS } from '../index';
 import styles from './styles.module.scss';
 
-const LandingHeaderDesktop: React.FC = () => {
+const LandingHeaderMobile: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
     <div className={styles.landingHeader}>
-      <div className="flex justify-between px-[24px] h-[90px] fixed inset-0 z-50 bg-white border-b-2 lg:desktop">
+      <div className="flex justify-between px-[24px] h-[90px] fixed inset-0 z-50 bg-white border-b-2">
         <div className="flex justify-center items-center cursor-pointer">
           <Link to="/">
             <img src="/logo.png" width={48} height={48} alt="logo" />
@@ -82,4 +82,4 @@ const LandingHeaderDesktop: React.FC = () => {
   );
 };
 
-export default LandingHeaderDesktop;
+export default LandingHeaderMobile;
