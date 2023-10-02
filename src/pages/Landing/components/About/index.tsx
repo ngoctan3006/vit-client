@@ -9,7 +9,7 @@ interface Props {
 const About: React.FC<Props> = ({ className = '' }) => {
   return (
     <div
-      className={`${className} ${styles.landingAbout} section bg-[url('images/landing/section-about-bg.webp')] bg-cover bg-no-repeat px-9 lg:px-[300px]`}
+      className={`${className} ${styles.landingAbout} section bg-[url('/images/landing/section-about-bg.webp')] bg-cover bg-no-repeat px-9 lg:px-[300px]`}
       id="about"
     >
       <div className="title text-white lg:border-b-white">Tổng quan</div>
